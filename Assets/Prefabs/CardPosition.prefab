@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 8581750114281002202}
   - component: {fileID: 8581750114281002203}
   - component: {fileID: 2154642668085556575}
+  - component: {fileID: 3392618617007716479}
   m_Layer: 0
   m_Name: CardPosition
   m_TagString: Untagged
@@ -186,3 +187,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.06, y: 2.06}
   m_EdgeRadius: 0
+--- !u!114 &3392618617007716479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8581750114281002201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec5e3f698e02ceb43acb62c944a42f1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  borderline: {fileID: 7213434398500498672}
