@@ -3,13 +3,11 @@
 [ExecuteInEditMode]
 public class TestEditorInUpdate : MonoBehaviour
 {
-    public int testValue = 0;
+    static TestEditorInUpdate() {
+        UnityEditor.EditorApplication.update -= EditorUpdate;
+    }
 
-    private void Update() {
-        testValue++;
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
-#endif
+    private static void EditorUpdate() {
+        Debug.Log("ok");
     }
 }
