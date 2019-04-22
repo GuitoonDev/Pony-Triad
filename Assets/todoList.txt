@@ -1,5 +1,26 @@
 Todo List
 
 -> Features :
-- Créer Carte Prefab
-- Créer plateau 3x3
+- Créer Carte Prefab - DONE
+- Créer plateau 3x3 - DONE
+- Highlight de la zone quand la souris passe dessus - DONE
+
+- Spawn des cartes pour les deux joueurs
+- Tirage aléatoire des cartes pour les deux joueurs
+- Drag'n Drop d'une carte dans une case
+- Test si une carte en retourne une autre
+
+- Définir la règle "Plus"
+- Définir la règle "Same"
+- Gérer les situations de Combo
+- Définir la règle "Borderless"
+- Définir la règle "Ace Walls"
+- Définir la règle "Battle"
+
+- Générer aléatoirement les règles pour une partie
+
+- Créer la base des cartes jouables
+
+-> God Tier Features :
+- Trouver un graphiste
+- Trouver un sound-designer

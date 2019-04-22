@@ -22,14 +22,12 @@ public class SelectableArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        Debug.Log("Cursor Entering " + name + " GameObject");
         if (IsAreaEmpty) {
             selectionBorder.gameObject.SetActive(true);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        Debug.Log("Cursor Exiting " + name + " GameObject");
         if (IsAreaEmpty) {
             selectionBorder.gameObject.SetActive(false);
         }

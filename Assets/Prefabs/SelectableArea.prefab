@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3739374521163717501}
   - component: {fileID: 7213434398500498672}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SelectionBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,8 +92,8 @@ GameObject:
   - component: {fileID: 2154642668085556575}
   - component: {fileID: 2114987704812483915}
   - component: {fileID: 3392618617007716479}
-  m_Layer: 0
-  m_Name: CardPosition
+  m_Layer: 8
+  m_Name: SelectableArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,7 +172,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -211,4 +211,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5e3f698e02ceb43acb62c944a42f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  borderline: {fileID: 7213434398500498672}
+  selectionBorder: {fileID: 7213434398500498672}

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using TMPro;
-using static CardData;
+using System.Collections;
 
-public class Card : MonoBehaviour
+public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
@@ -20,8 +21,8 @@ public class Card : MonoBehaviour
     [SerializeField] private Color playerTwoColor = default(Color);
 
     [Header("Card Datas")]
-    [SerializeField] private CardData datas;
-    public CardData Datas {
+    [SerializeField] private CardDatas datas;
+    public CardDatas Datas {
         get {
             return datas;
         }
@@ -33,7 +34,12 @@ public class Card : MonoBehaviour
         }
     }
 
-    private int playerOwner = 0;
+    public PlayerNumber PlayerOwner { get; set; }
+
+    private float zDistanceToCamera = 0;
+    private bool isDragged = false;
+
+    private Vector3 beforeDragPosition = Vector3.zero;
 
     private void Start() {
         UpdateView();
@@ -50,8 +56,29 @@ public class Card : MonoBehaviour
         }
     }
 
+    public void OnPointerDown(PointerEventData eventData) {
+        isDragged = true;
+
+        beforeDragPosition = transform.localPosition;
+        zDistanceToCamera = Mathf.Abs(beforeDragPosition.z - Camera.main.transform.position.z);
+
+        StartCoroutine(DragUpdate());
+    }
+
+    public void OnPointerUp(PointerEventData eventData) {
+        isDragged = false;
+        transform.localPosition = beforeDragPosition;
+    }
+
+    private IEnumerator DragUpdate() {
+        while (isDragged) {
+            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
+            yield return null;
+        }
+    }
+
     private void UpdateView() {
-        cardBackground.color = playerOwner == 0 ? playerOneColor : playerTwoColor;
+        cardBackground.color = PlayerOwner == 0 ? playerOneColor : playerTwoColor;
 
         if (datas != null) {
             cardImage.sprite = datas.SpriteImage;
