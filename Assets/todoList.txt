@@ -6,9 +6,10 @@ Todo List
 - Highlight de la zone quand la souris passe dessus - DONE
 - Spawn des cartes pour les deux joueurs - DONE
 - Tirage aléatoire des cartes pour les deux joueurs - DONE
+- Drag'n Drop d'une carte dans une case - DONE
 
-- Drag'n Drop d'une carte dans une case - IN PROGRESS
-- Test si une carte en retourne une autre
+- Test si une carte en retourne une autre - IN PROGRESS
+- Faire le tour par tour
 
 - Définir la règle "Plus"
 - Définir la règle "Same"

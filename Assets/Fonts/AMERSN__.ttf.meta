@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ed771e9692171e044a99b81b7d05de1b
+guid: 1d9e70842c63f4c4e88440f50d552d94
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Minotaur 8x8 Monospaced
+  fontName: Amerika Sans
   fontNames:
-  - Minotaur 8x8 Monospaced
+  - Amerika Sans
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

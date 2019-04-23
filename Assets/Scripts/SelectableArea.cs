@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SelectableArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static int layerMaskId = 1 << 8;
+
+    public Action<SelectableArea> OnCardPlayed;
 
     [SerializeField] private SpriteRenderer selectionBorder = null;
 
@@ -17,8 +20,11 @@ public class SelectableArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 card = value;
                 card.transform.SetParent(transform);
                 card.transform.localPosition = Vector3.zero;
+                card.Interactable = false;
 
                 selectionBorder.gameObject.SetActive(IsAreaEmpty);
+
+                OnCardPlayed(this);
             }
         }
     }

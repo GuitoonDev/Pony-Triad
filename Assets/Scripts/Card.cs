@@ -4,7 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
+public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
@@ -46,10 +46,28 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHa
         }
     }
 
-    public PlayerNumber PlayerOwner { get; set; }
+    public bool Interactable { get; set; } = true;
+
+    private PlayerNumber playerOwner = PlayerNumber.None;
+    public PlayerNumber PlayerOwner {
+        get { return playerOwner; }
+        set {
+            playerOwner = value;
+            switch (playerOwner) {
+                case PlayerNumber.One:
+                    cardBackground.color = playerOneColor;
+                    break;
+                case PlayerNumber.Two:
+                    cardBackground.color = playerTwoColor;
+                    break;
+                default:
+                    cardBackground.color = Color.gray;
+                    break;
+            }
+        }
+    }
 
     private float zDistanceToCamera = 0;
-    private bool isDragged = false;
 
     private Vector3 beforeDragPosition = Vector3.zero;
 
@@ -71,50 +89,57 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHa
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        isDragged = true;
+        if (Interactable) {
+            beforeDragPosition = transform.localPosition;
+            zDistanceToCamera = Mathf.Abs(beforeDragPosition.z - Camera.main.transform.position.z);
 
-        beforeDragPosition = transform.localPosition;
-        zDistanceToCamera = Mathf.Abs(beforeDragPosition.z - Camera.main.transform.position.z);
-
-        transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
+            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
+        }
     }
 
     public void OnDrag(PointerEventData eventData) {
-        transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
+        if (Interactable) {
+            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
 
-        List<RaycastResult> raycastResults = new List<RaycastResult>();
-        PointerEventData pointerData = new PointerEventData(EventSystem.current);
-        pointerData.position = Input.mousePosition;
-        EventSystem.current.RaycastAll(pointerData, raycastResults);
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            PointerEventData pointerData = new PointerEventData(EventSystem.current);
+            pointerData.position = Input.mousePosition;
+            EventSystem.current.RaycastAll(pointerData, raycastResults);
 
-        foreach (RaycastResult raycastItem in raycastResults) {
-            SelectableArea hitArea = raycastItem.gameObject.GetComponent<SelectableArea>();
-            if (hitArea != null) {
-                if (currentAreaSelected != hitArea) {
-                    if (currentAreaSelected != null) {
-                        currentAreaSelected.OnPointerExit(eventData);
-                    }
-                    currentAreaSelected = hitArea;
+            SelectableArea hitArea = null;
+            foreach (RaycastResult raycastItem in raycastResults) {
+                hitArea = raycastItem.gameObject.GetComponent<SelectableArea>();
+                if (hitArea != null) {
+                    break;
+                }
+            }
+
+            if (currentAreaSelected != hitArea) {
+                if (currentAreaSelected != null) {
+                    currentAreaSelected.OnPointerExit(eventData);
+                }
+
+                currentAreaSelected = hitArea;
+
+                if (currentAreaSelected != null) {
                     currentAreaSelected.OnPointerEnter(eventData);
                 }
-                break;
             }
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData) {
-        isDragged = false;
-        transform.localPosition = beforeDragPosition;
+    public void OnPointerUp(PointerEventData eventData) {
+        if (Interactable) {
+            transform.localPosition = beforeDragPosition;
 
-        if (currentAreaSelected != null) {
-            currentAreaSelected.Card = this;
-            currentAreaSelected = null;
+            if (currentAreaSelected != null) {
+                currentAreaSelected.Card = this;
+                currentAreaSelected = null;
+            }
         }
     }
 
     private void UpdateView() {
-        cardBackground.color = PlayerOwner == 0 ? playerOneColor : playerTwoColor;
-
         if (datas != null) {
             cardImage.sprite = datas.SpriteImage;
 

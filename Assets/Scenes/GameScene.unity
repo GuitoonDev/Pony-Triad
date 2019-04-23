@@ -915,6 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4008b93e4fb27ac4aae95a740d6d8584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerId: 2
   cardPrefab: {fileID: 6015599411898284578, guid: 3142c552af5674f41b97c365a16ade96,
     type: 3}
 --- !u!1001 &1299533301
@@ -1477,7 +1478,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 39
-  orthographic: 0
+  orthographic: 1
   orthographic size: 3.6
   m_Depth: -1
   m_CullingMask:
@@ -1580,6 +1581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4008b93e4fb27ac4aae95a740d6d8584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerId: 1
   cardPrefab: {fileID: 6015599411898284578, guid: 3142c552af5674f41b97c365a16ade96,
     type: 3}
 --- !u!1 &1861544648
@@ -1626,22 +1628,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsList: {fileID: 11400000, guid: 7f67b4f510890f243924879c471acee8, type: 2}
-  playerOneScore: {fileID: 326822809}
+  playerOneScoreText: {fileID: 326822809}
   playerOneCardsHand: {fileID: 1666211576}
-  playerTwoScore: {fileID: 1406906357}
+  playerTwoScoreText: {fileID: 1406906357}
   playerTwoCardsHand: {fileID: 1296013085}
-  areasList:
-  - name: Vertical List
+  verticalListableAreasList:
+  - name: 
     items:
     - {fileID: 8581750113473899105}
     - {fileID: 1396483469}
     - {fileID: 22573082}
-  - name: Vertical List
+  - name: 
     items:
     - {fileID: 618802128}
     - {fileID: 1328859099}
     - {fileID: 1196182770}
-  - name: Vertical List
+  - name: 
     items:
     - {fileID: 309408677}
     - {fileID: 525820253}
