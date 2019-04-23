@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
-using System.Collections;
+using System.Collections.Generic;
 
-public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+[RequireComponent(typeof(SpriteRenderer))]
+public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
 {
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
@@ -34,12 +35,25 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
+    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer SpriteRenderer {
+        get {
+            if (spriteRenderer == null) {
+                spriteRenderer = GetComponent<SpriteRenderer>();
+            }
+
+            return spriteRenderer;
+        }
+    }
+
     public PlayerNumber PlayerOwner { get; set; }
 
     private float zDistanceToCamera = 0;
     private bool isDragged = false;
 
     private Vector3 beforeDragPosition = Vector3.zero;
+
+    private SelectableArea currentAreaSelected = null;
 
     private void Start() {
         UpdateView();
@@ -62,18 +76,39 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         beforeDragPosition = transform.localPosition;
         zDistanceToCamera = Mathf.Abs(beforeDragPosition.z - Camera.main.transform.position.z);
 
-        StartCoroutine(DragUpdate());
+        transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
     }
 
-    public void OnPointerUp(PointerEventData eventData) {
+    public void OnDrag(PointerEventData eventData) {
+        transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
+
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+        pointerData.position = Input.mousePosition;
+        EventSystem.current.RaycastAll(pointerData, raycastResults);
+
+        foreach (RaycastResult raycastItem in raycastResults) {
+            SelectableArea hitArea = raycastItem.gameObject.GetComponent<SelectableArea>();
+            if (hitArea != null) {
+                if (currentAreaSelected != hitArea) {
+                    if (currentAreaSelected != null) {
+                        currentAreaSelected.OnPointerExit(eventData);
+                    }
+                    currentAreaSelected = hitArea;
+                    currentAreaSelected.OnPointerEnter(eventData);
+                }
+                break;
+            }
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData) {
         isDragged = false;
         transform.localPosition = beforeDragPosition;
-    }
 
-    private IEnumerator DragUpdate() {
-        while (isDragged) {
-            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
-            yield return null;
+        if (currentAreaSelected != null) {
+            currentAreaSelected.Card = this;
+            currentAreaSelected = null;
         }
     }
 

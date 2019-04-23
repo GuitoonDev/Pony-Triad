@@ -4,10 +4,10 @@ Todo List
 - Créer Carte Prefab - DONE
 - Créer plateau 3x3 - DONE
 - Highlight de la zone quand la souris passe dessus - DONE
+- Spawn des cartes pour les deux joueurs - DONE
+- Tirage aléatoire des cartes pour les deux joueurs - DONE
 
-- Spawn des cartes pour les deux joueurs
-- Tirage aléatoire des cartes pour les deux joueurs
-- Drag'n Drop d'une carte dans une case
+- Drag'n Drop d'une carte dans une case - IN PROGRESS
 - Test si une carte en retourne une autre
 
 - Définir la règle "Plus"
