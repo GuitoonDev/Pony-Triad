@@ -153,7 +153,7 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
     }
 
     public bool IsLooseBattle(CardDirection _targetDirection, CardPower _powerToCompare, PlayerNumber _opponentPlayer) {
-        bool isPlayerOwnerChanged = (cardPowersByDirection[_targetDirection] < _powerToCompare);
+        bool isPlayerOwnerChanged = (playerOwner != _opponentPlayer && cardPowersByDirection[_targetDirection] < _powerToCompare);
         if (isPlayerOwnerChanged) {
             Debug.LogWarning("This card change his player's owner");
             PlayerOwner = _opponentPlayer;
