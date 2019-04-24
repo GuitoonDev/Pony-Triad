@@ -30,6 +30,8 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
         set {
             if (datas != value) {
                 datas = value;
+
+                UpdatePowers();
                 UpdateView();
             }
         }
@@ -52,20 +54,26 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
     public PlayerNumber PlayerOwner {
         get { return playerOwner; }
         set {
-            playerOwner = value;
-            switch (playerOwner) {
-                case PlayerNumber.One:
-                    cardBackground.color = playerOneColor;
-                    break;
-                case PlayerNumber.Two:
-                    cardBackground.color = playerTwoColor;
-                    break;
-                default:
-                    cardBackground.color = Color.gray;
-                    break;
+            if (playerOwner != value) {
+                // TODO rotation card animation
+
+                playerOwner = value;
+                switch (playerOwner) {
+                    case PlayerNumber.One:
+                        cardBackground.color = playerOneColor;
+                        break;
+                    case PlayerNumber.Two:
+                        cardBackground.color = playerTwoColor;
+                        break;
+                    default:
+                        cardBackground.color = Color.gray;
+                        break;
+                }
             }
         }
     }
+
+    private Dictionary<CardDirection, CardPower> cardPowersByDirection = new Dictionary<CardDirection, CardPower>();
 
     private float zDistanceToCamera = 0;
 
@@ -73,19 +81,8 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
 
     private SelectableArea currentAreaSelected = null;
 
-    private void Start() {
-        UpdateView();
-    }
-
-    private void OnValidate() {
-        UpdateView();
-    }
-
-    private void Update() {
-        bool isVersoSide = transform.rotation.eulerAngles.y > 90 && transform.rotation.eulerAngles.y < 270;
-        if (cardVerso.gameObject.activeSelf != isVersoSide) {
-            cardVerso.gameObject.SetActive(isVersoSide);
-        }
+    public CardPower GetPowerByDirection(CardDirection _targetDirection) {
+        return cardPowersByDirection[_targetDirection];
     }
 
     public void OnPointerDown(PointerEventData eventData) {
@@ -136,6 +133,41 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
                 currentAreaSelected.Card = this;
                 currentAreaSelected = null;
             }
+        }
+    }
+
+    private void OnValidate() {
+        UpdateView();
+    }
+
+    private void Start() {
+        UpdatePowers();
+        UpdateView();
+    }
+
+    private void Update() {
+        bool isVersoSide = transform.rotation.eulerAngles.y > 90 && transform.rotation.eulerAngles.y < 270;
+        if (cardVerso.gameObject.activeSelf != isVersoSide) {
+            cardVerso.gameObject.SetActive(isVersoSide);
+        }
+    }
+
+    public bool IsLooseBattle(CardDirection _targetDirection, CardPower _powerToCompare, PlayerNumber _opponentPlayer) {
+        bool isPlayerOwnerChanged = (cardPowersByDirection[_targetDirection] < _powerToCompare);
+        if (isPlayerOwnerChanged) {
+            Debug.LogWarning("This card change his player's owner");
+            PlayerOwner = _opponentPlayer;
+        }
+
+        return isPlayerOwnerChanged;
+    }
+
+    private void UpdatePowers() {
+        if (datas != null) {
+            cardPowersByDirection[CardDirection.Up] = datas.PowerUp;
+            cardPowersByDirection[CardDirection.Down] = datas.PowerDown;
+            cardPowersByDirection[CardDirection.Left] = datas.PowerLeft;
+            cardPowersByDirection[CardDirection.Right] = datas.PowerRight;
         }
     }
 

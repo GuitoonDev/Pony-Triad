@@ -23,7 +23,22 @@ public class GameManager : MonoBehaviour
     private SelectableArea[,] selectableAreasList = new SelectableArea[3, 3];
 
     private int currentPlayerOneScore = 0;
+    private int CurrentPlayerOneScore {
+        get { return currentPlayerOneScore; }
+        set {
+            currentPlayerOneScore = value;
+            playerOneScoreText.text = currentPlayerOneScore.ToString();
+        }
+    }
+
     private int currentPlayerTwoScore = 0;
+    private int CurrentPlayerTwoScore {
+        get { return currentPlayerTwoScore; }
+        set {
+            currentPlayerTwoScore = value;
+            playerTwoScoreText.text = currentPlayerTwoScore.ToString();
+        }
+    }
 
     private int cardPlayedCount = 0;
 
@@ -33,65 +48,85 @@ public class GameManager : MonoBehaviour
             playerCards[i] = cardsList.GetRandomCard();
         }
         playerOneCardsHand.Init(playerCards);
-        currentPlayerOneScore = cardsPerPlayer;
-        playerOneScoreText.text = currentPlayerOneScore.ToString();
+        CurrentPlayerOneScore = cardsPerPlayer;
 
         playerCards = new CardDatas[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsList.GetRandomCard();
         }
         playerTwoCardsHand.Init(playerCards);
-        currentPlayerTwoScore = cardsPerPlayer;
-        playerTwoScoreText.text = currentPlayerTwoScore.ToString();
+        CurrentPlayerTwoScore = cardsPerPlayer;
 
         for (int positionX = 0; positionX < selectableAreasList.GetLength(0); positionX++) {
             for (int positionY = 0; positionY < selectableAreasList.GetLength(1); positionY++) {
                 SelectableArea newSelectableArea = verticalListableAreasList[positionX][positionY];
-                newSelectableArea.OnCardPlayed += CheckNeighbourCardsPower;
+                newSelectableArea.OnCardPlayed += UpdateCardsOwners;
                 newSelectableArea.BoardCoordinates = new Vector2Int(positionX, positionY);
                 selectableAreasList[positionX, positionY] = newSelectableArea;
             }
         }
     }
 
-    private void CheckNeighbourCardsPower(SelectableArea _selectableArea) {
+    private void UpdateCardsOwners(SelectableArea _selectableArea) {
         Debug.LogWarningFormat("Card played coordinates : {0}", _selectableArea.BoardCoordinates);
+
+        cardPlayedCount++;
+
+        int cardsWon = 0;
 
         int leftPosition = _selectableArea.BoardCoordinates.x - 1;
         int rightPosition = _selectableArea.BoardCoordinates.x + 1;
         int upPosition = _selectableArea.BoardCoordinates.y - 1;
         int downPosition = _selectableArea.BoardCoordinates.y + 1;
 
-        int cardsWon = 0;
-
-        bool isPlayedCardSuperior;
-        Card cardToCompare = selectableAreasList[leftPosition, _selectableArea.BoardCoordinates.y].Card;
-        bool isCardExists = (leftPosition >= 0 && cardToCompare != null);
-        if (isCardExists) {
-            isPlayedCardSuperior = (cardToCompare.Datas.PowerRight < _selectableArea.Card.Datas.PowerLeft);
-            if (isPlayedCardSuperior) {
+        if (leftPosition >= 0) {
+            Card cardToCompare = selectableAreasList[leftPosition, _selectableArea.BoardCoordinates.y].Card;
+            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Right, _selectableArea.Card.GetPowerByDirection(CardDirection.Left), _selectableArea.Card.PlayerOwner));
+            if (isCardWon) {
                 cardsWon++;
-                cardToCompare.PlayerOwner = _selectableArea.Card.PlayerOwner;
             }
         }
 
         if (rightPosition < selectableAreasList.GetLength(0)) {
-
+            Card cardToCompare = selectableAreasList[rightPosition, _selectableArea.BoardCoordinates.y].Card;
+            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Left, _selectableArea.Card.GetPowerByDirection(CardDirection.Right), _selectableArea.Card.PlayerOwner));
+            if (isCardWon) {
+                cardsWon++;
+            }
         }
 
         if (upPosition >= 0) {
-
+            Card cardToCompare = selectableAreasList[_selectableArea.BoardCoordinates.x, upPosition].Card;
+            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Down, _selectableArea.Card.GetPowerByDirection(CardDirection.Up), _selectableArea.Card.PlayerOwner));
+            if (isCardWon) {
+                cardsWon++;
+            }
         }
 
         if (downPosition < selectableAreasList.GetLength(1)) {
+            Card cardToCompare = selectableAreasList[_selectableArea.BoardCoordinates.x, downPosition].Card;
+            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Up, _selectableArea.Card.GetPowerByDirection(CardDirection.Down), _selectableArea.Card.PlayerOwner));
+            if (isCardWon) {
+                cardsWon++;
+            }
+        }
 
+        switch (_selectableArea.Card.PlayerOwner) {
+            case PlayerNumber.One:
+                CurrentPlayerOneScore += cardsWon;
+                CurrentPlayerTwoScore -= cardsWon;
+                break;
+
+            case PlayerNumber.Two:
+                CurrentPlayerTwoScore += cardsWon;
+                CurrentPlayerOneScore -= cardsWon;
+                break;
         }
 
         CheckEndGame();
     }
 
     private void CheckEndGame() {
-        cardPlayedCount++;
         if (cardPlayedCount == selectableAreasList.GetLength(0) * selectableAreasList.GetLength(1)) {
             Debug.Log("End of the game");
             if (currentPlayerOneScore > currentPlayerTwoScore) {

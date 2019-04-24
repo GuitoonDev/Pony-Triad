@@ -11,8 +11,8 @@ public class CardList : ScriptableObject
         return cardDatasList[randomCardIndex];
     }
 
-    public CardDatas[] GetRandomCard(int _cardNumber) {
-        CardDatas[] cardsPicked = new CardDatas[_cardNumber];
+    public CardDatas[] GetRandomCard(int _cardToDrawNumber) {
+        CardDatas[] cardsPicked = new CardDatas[_cardToDrawNumber];
 
         for (int i = 0; i < cardsPicked.Length; i++) {
             int randomCardIndex = Random.Range(0, cardDatasList.Length);
