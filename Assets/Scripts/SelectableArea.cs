@@ -29,6 +29,8 @@ public class SelectableArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
     }
 
+    public Vector2Int BoardCoordinates { get; set; }
+
     public bool IsAreaEmpty {
         get { return card == null; }
     }
