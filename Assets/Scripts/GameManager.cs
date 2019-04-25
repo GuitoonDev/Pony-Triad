@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using TMPro;
-using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     [Header("Field Areas")]
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
 
-    private SelectableArea[,] selectableAreasList = new SelectableArea[3, 3];
 
     private int currentPlayerOneScore = 0;
     private int CurrentPlayerOneScore {
@@ -40,22 +39,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private PlayerNumber currentPlayer = PlayerNumber.None;
+    private PlayerNumber CurrentPlayer {
+        get {
+            if (currentPlayer == PlayerNumber.None) {
+                currentPlayer = Random.Range(0f, 1f) < 0.5 ? PlayerNumber.One : PlayerNumber.Two;
+            }
+            return currentPlayer;
+        }
+        set {
+            if (currentPlayer != value && value != PlayerNumber.None) {
+                cardHandByPlayer[currentPlayer].Enable(false);
+                currentPlayer = value;
+                cardHandByPlayer[currentPlayer].Enable(true);
+            }
+        }
+    }
+
+    private SelectableArea[,] selectableAreasList = new SelectableArea[3, 3];
+    private Dictionary<PlayerNumber, CardsHand> cardHandByPlayer = new Dictionary<PlayerNumber, CardsHand>();
+
     private int cardPlayedCount = 0;
 
     private void Start() {
+        bool handEnabled;
+
         CardDatas[] playerCards = new CardDatas[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsList.GetRandomCard();
         }
-        playerOneCardsHand.Init(playerCards);
+        handEnabled = (CurrentPlayer == PlayerNumber.One);
+        playerOneCardsHand.Init(playerCards, handEnabled);
         CurrentPlayerOneScore = cardsPerPlayer;
+
+        cardHandByPlayer[PlayerNumber.One] = playerOneCardsHand;
 
         playerCards = new CardDatas[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsList.GetRandomCard();
         }
-        playerTwoCardsHand.Init(playerCards);
+        handEnabled = (CurrentPlayer == PlayerNumber.Two);
+        playerTwoCardsHand.Init(playerCards, handEnabled);
         CurrentPlayerTwoScore = cardsPerPlayer;
+
+        cardHandByPlayer[PlayerNumber.Two] = playerTwoCardsHand;
 
         for (int positionX = 0; positionX < selectableAreasList.GetLength(0); positionX++) {
             for (int positionY = 0; positionY < selectableAreasList.GetLength(1); positionY++) {
@@ -68,8 +95,6 @@ public class GameManager : MonoBehaviour
     }
 
     private void UpdateCardsOwners(SelectableArea _selectableArea) {
-        Debug.LogWarningFormat("Card played coordinates : {0}", _selectableArea.BoardCoordinates);
-
         cardPlayedCount++;
 
         int cardsWon = 0;
@@ -123,21 +148,33 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        CheckEndGame();
+        bool isGameOver = (cardPlayedCount == selectableAreasList.GetLength(0) * selectableAreasList.GetLength(1));
+        if (isGameOver) {
+            CheckWinner();
+        }
+        else {
+            switch (CurrentPlayer) {
+                case PlayerNumber.One:
+                    CurrentPlayer = PlayerNumber.Two;
+                    break;
+
+                case PlayerNumber.Two:
+                    CurrentPlayer = PlayerNumber.One;
+                    break;
+            }
+        }
     }
 
-    private void CheckEndGame() {
-        if (cardPlayedCount == selectableAreasList.GetLength(0) * selectableAreasList.GetLength(1)) {
-            Debug.Log("End of the game");
-            if (currentPlayerOneScore > currentPlayerTwoScore) {
-                Debug.Log("Player One wins !");
-            }
-            else if (currentPlayerOneScore < currentPlayerTwoScore) {
-                Debug.Log("Player Two wins !");
-            }
-            else {
-                Debug.Log("Draw game !");
-            }
+    private void CheckWinner() {
+        Debug.LogWarning("End of the game");
+        if (currentPlayerOneScore > currentPlayerTwoScore) {
+            Debug.LogWarning("Player One wins !");
+        }
+        else if (currentPlayerOneScore < currentPlayerTwoScore) {
+            Debug.LogWarning("Player Two wins !");
+        }
+        else {
+            Debug.LogWarning("Draw game !");
         }
     }
 
