@@ -8,10 +8,15 @@ Todo List
 - Tirage aléatoire des cartes pour les deux joueurs - DONE
 - Drag'n Drop d'une carte dans une case - DONE
 - Test si une carte en retourne une autre - DONE
+- Faire le tour par tour - DONE
 
-- Faire le tour par tour
 - Fermer la boucle de gameplay
+- Afficher le tirage du joueur au début du jeu
+- Montrer qui est le joueur actif
+- Faire l'animation de retournement de carte par direction
+- Ne lancer le prochain tour qu'une fois toutes les animations résolues
 
+- Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"
 - Définir la règle "Same"
 - Gérer les situations de Combo
@@ -22,6 +27,8 @@ Todo List
 - Générer aléatoirement les règles pour une partie
 
 - Créer la base des cartes jouables
+
+- Créer un main menu
 
 -> God Tier Features :
 - Trouver un graphiste
