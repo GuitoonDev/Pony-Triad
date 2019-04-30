@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
+using System;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
@@ -16,6 +17,9 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
     [SerializeField] private SpriteRenderer cardImage = null;
     [SerializeField] private SpriteRenderer cardVerso = null;
     [SerializeField] private SpriteRenderer cardBackground = null;
+
+    [Header("Animations")]
+    [SerializeField] private Animator animator = null;
 
     [Header("Player Colors")]
     [SerializeField] private Color playerOneColor = default(Color);
@@ -55,8 +59,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
         get { return playerOwner; }
         set {
             if (playerOwner != value) {
-                // TODO rotation card animation
-
                 playerOwner = value;
                 switch (playerOwner) {
                     case PlayerNumber.One:
@@ -69,9 +71,13 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
                         cardBackground.color = Color.gray;
                         break;
                 }
+
+                newPlayerOwner = playerOwner;
             }
         }
     }
+
+    private PlayerNumber newPlayerOwner = PlayerNumber.None;
 
     private Dictionary<CardDirection, CardPower> cardPowersByDirection = new Dictionary<CardDirection, CardPower>();
 
@@ -156,10 +162,17 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
         bool isPlayerOwnerChanged = (playerOwner != _opponentPlayer && cardPowersByDirection[_targetDirection] < _powerToCompare);
         if (isPlayerOwnerChanged) {
             Debug.LogWarning("This card change his player's owner");
-            PlayerOwner = _opponentPlayer;
+            newPlayerOwner = _opponentPlayer;
+
+            StartRotationAnimation(_targetDirection);
         }
 
         return isPlayerOwnerChanged;
+    }
+
+    private void StartRotationAnimation(CardDirection _targetDirection) {
+        string formattedRotationTrigger = string.Format("Rotate{0}", _targetDirection.ToString());
+        animator.SetTrigger(formattedRotationTrigger);
     }
 
     private void UpdatePowers() {
@@ -187,5 +200,10 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
 
     private string FormatPower(CardPower _power) {
         return _power == CardPower.Ace ? "A" : _power.ToString("d");
+    }
+
+    // Animation Event Functions
+    private void UpdatePlayerOwner() {
+        PlayerOwner = newPlayerOwner;
     }
 }

@@ -10,7 +10,7 @@ Todo List
 - Test si une carte en retourne une autre - DONE
 - Faire le tour par tour - DONE
 
-- Faire l'animation de retournement de carte par direction - In progress
+- Faire l'animation de retournement de carte par direction - IN PROGRESS
 - Fermer la boucle de gameplay
 - Afficher le tirage du joueur au début du jeu
 - Montrer qui est le joueur actif
