@@ -7,6 +7,7 @@ public class CardsHand : MonoBehaviour
 {
     [SerializeField] private PlayerNumber playerId = PlayerNumber.None;
     [SerializeField] private Card cardPrefab = null;
+    [SerializeField] private SpriteRenderer currentTurnArrow = null;
 
     private List<Card> _cardList;
 
@@ -39,6 +40,8 @@ public class CardsHand : MonoBehaviour
         foreach (Card cardItem in _cardList) {
             cardItem.Interactable = _enabled;
         }
+
+        currentTurnArrow.gameObject.SetActive(_enabled);
 
         SortingGroup.sortingOrder = _enabled ? 2 : 1;
     }

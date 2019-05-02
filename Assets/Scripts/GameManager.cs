@@ -39,19 +39,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private PlayerNumber lastPlayer = PlayerNumber.None;
     private PlayerNumber currentPlayer = PlayerNumber.None;
     private PlayerNumber CurrentPlayer {
         get {
-            if (currentPlayer == PlayerNumber.None) {
-                currentPlayer = Random.Range(0f, 1f) < 0.5 ? PlayerNumber.One : PlayerNumber.Two;
-            }
-
             return currentPlayer;
         }
         set {
             if (currentPlayer != value && value != PlayerNumber.None) {
-                cardHandByPlayer[currentPlayer].Enable(false);
+                if (currentPlayer != PlayerNumber.None) {
+                    cardHandByPlayer[currentPlayer].Enable(false);
+                }
+
                 currentPlayer = value;
+
                 cardHandByPlayer[currentPlayer].Enable(true);
             }
         }
@@ -60,6 +61,8 @@ public class GameManager : MonoBehaviour
     private SelectableArea[,] selectableAreasList = new SelectableArea[3, 3];
     private Dictionary<PlayerNumber, CardsHand> cardHandByPlayer = new Dictionary<PlayerNumber, CardsHand>();
 
+    private int cardsAnimationFinishedCount = 0;
+    private int cardsWonCount = 0;
     private int cardPlayedCount = 0;
 
     private void Start() {
@@ -88,14 +91,18 @@ public class GameManager : MonoBehaviour
         for (int positionX = 0; positionX < selectableAreasList.GetLength(0); positionX++) {
             for (int positionY = 0; positionY < selectableAreasList.GetLength(1); positionY++) {
                 SelectableArea newSelectableArea = verticalListableAreasList[positionX][positionY];
-                newSelectableArea.OnCardPlayed += UpdateCardsOwners;
+                newSelectableArea.OnCardPlayed += UpdateCardsOwnersPhase;
+                newSelectableArea.OnCardAnimationFinished += CardAnimationFinished;
                 newSelectableArea.BoardCoordinates = new Vector2Int(positionX, positionY);
                 selectableAreasList[positionX, positionY] = newSelectableArea;
             }
         }
+
+        lastPlayer = CurrentPlayer = Random.Range(0f, 1f) < 0.5 ? PlayerNumber.One : PlayerNumber.Two;
+        cardHandByPlayer[CurrentPlayer].Enable(true);
     }
 
-    private void UpdateCardsOwners(SelectableArea _selectableArea) {
+    private void UpdateCardsOwnersPhase(SelectableArea _selectableArea) {
         cardPlayedCount++;
 
         int cardsWon = 0;
@@ -139,17 +146,34 @@ public class GameManager : MonoBehaviour
 
         cardHandByPlayer[CurrentPlayer].RemoveCard(_selectableArea.Card);
 
-        switch (_selectableArea.Card.PlayerOwner) {
+        cardsWonCount = cardsWon;
+        if (cardsWonCount == 0) {
+            BetweenTurnPhase();
+        }
+    }
+
+    private void CardAnimationFinished(Card _cardTarget) {
+        cardsAnimationFinishedCount++;
+
+        if (cardsAnimationFinishedCount == cardsWonCount) {
+            BetweenTurnPhase();
+        }
+    }
+
+    private void BetweenTurnPhase() {
+        switch (CurrentPlayer) {
             case PlayerNumber.One:
-                CurrentPlayerOneScore += cardsWon;
-                CurrentPlayerTwoScore -= cardsWon;
+                CurrentPlayerOneScore += cardsWonCount;
+                CurrentPlayerTwoScore -= cardsWonCount;
                 break;
 
             case PlayerNumber.Two:
-                CurrentPlayerTwoScore += cardsWon;
-                CurrentPlayerOneScore -= cardsWon;
+                CurrentPlayerTwoScore += cardsWonCount;
+                CurrentPlayerOneScore -= cardsWonCount;
                 break;
         }
+
+        cardsAnimationFinishedCount = cardsWonCount = 0;
 
         bool isGameOver = (cardPlayedCount == selectableAreasList.GetLength(0) * selectableAreasList.GetLength(1));
         if (isGameOver) {

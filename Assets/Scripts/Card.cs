@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -7,6 +8,8 @@ using TMPro;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
+    public Action<Card> OnCardAnimationFinished;
+
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
     [SerializeField] private TextMeshPro powerDownText = null;
@@ -15,7 +18,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
 
     [Header("Visuals")]
     [SerializeField] private SpriteRenderer cardImage = null;
-    [SerializeField] private SpriteRenderer cardVerso = null;
     [SerializeField] private SpriteRenderer cardBackground = null;
 
     [Header("Player Colors")]
@@ -206,5 +208,11 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
     // Animation Event Functions
     private void UpdatePlayerOwner() {
         PlayerOwner = newPlayerOwner;
+    }
+
+    private void RotationAnimationFinished() {
+        if (OnCardAnimationFinished != null) {
+            OnCardAnimationFinished(this);
+        }
     }
 }
