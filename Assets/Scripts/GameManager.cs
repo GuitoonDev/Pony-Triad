@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
             if (currentPlayer == PlayerNumber.None) {
                 currentPlayer = Random.Range(0f, 1f) < 0.5 ? PlayerNumber.One : PlayerNumber.Two;
             }
+
             return currentPlayer;
         }
         set {
@@ -135,6 +136,8 @@ public class GameManager : MonoBehaviour
                 cardsWon++;
             }
         }
+
+        cardHandByPlayer[CurrentPlayer].RemoveCard(_selectableArea.Card);
 
         switch (_selectableArea.Card.PlayerOwner) {
             case PlayerNumber.One:

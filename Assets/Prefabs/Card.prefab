@@ -806,7 +806,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4537281172148064965}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1229,7 +1229,6 @@ MonoBehaviour:
   cardImage: {fileID: 523175270395616747}
   cardVerso: {fileID: 6074851373071165269}
   cardBackground: {fileID: 8424154959491658634}
-  animator: {fileID: 0}
   playerOneColor: {r: 0.36912602, g: 0.912886, b: 0.990566, a: 1}
   playerTwoColor: {r: 1, g: 0.5424528, b: 0.62757796, a: 1}
   datas: {fileID: 11400000, guid: 3b6dfa7946af1a547be0e7d5d9f03ae1, type: 2}

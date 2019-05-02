@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
-using System.Collections.Generic;
-using System;
 
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
 public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
@@ -17,9 +17,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
     [SerializeField] private SpriteRenderer cardImage = null;
     [SerializeField] private SpriteRenderer cardVerso = null;
     [SerializeField] private SpriteRenderer cardBackground = null;
-
-    [Header("Animations")]
-    [SerializeField] private Animator animator = null;
 
     [Header("Player Colors")]
     [SerializeField] private Color playerOneColor = default(Color);
@@ -38,6 +35,17 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
                 UpdatePowers();
                 UpdateView();
             }
+        }
+    }
+
+    private Animator animator;
+    private Animator Animator {
+        get {
+            if (animator == null) {
+                animator = GetComponent<Animator>();
+            }
+
+            return animator;
         }
     }
 
@@ -151,13 +159,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
         UpdateView();
     }
 
-    private void Update() {
-        bool isVersoSide = transform.rotation.eulerAngles.y > 90 && transform.rotation.eulerAngles.y < 270;
-        if (cardVerso.gameObject.activeSelf != isVersoSide) {
-            cardVerso.gameObject.SetActive(isVersoSide);
-        }
-    }
-
     public bool IsLooseBattle(CardDirection _targetDirection, CardPower _powerToCompare, PlayerNumber _opponentPlayer) {
         bool isPlayerOwnerChanged = (playerOwner != _opponentPlayer && cardPowersByDirection[_targetDirection] < _powerToCompare);
         if (isPlayerOwnerChanged) {
@@ -172,7 +173,7 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
 
     private void StartRotationAnimation(CardDirection _targetDirection) {
         string formattedRotationTrigger = string.Format("Rotate{0}", _targetDirection.ToString());
-        animator.SetTrigger(formattedRotationTrigger);
+        Animator.SetTrigger(formattedRotationTrigger);
     }
 
     private void UpdatePowers() {
