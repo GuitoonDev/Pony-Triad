@@ -14,8 +14,8 @@ Todo List
 - Ne lancer le prochain tour qu'une fois toutes les animations résolues - DONE
 
 - Afficher le tirage du joueur au début du jeu - IN PROGRESS
-- Fermer la boucle de gameplay
 - Rajouter des animations à l'ouverture du jeu (Arrivée et retournement)
+- Fermer la boucle de gameplay
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"
