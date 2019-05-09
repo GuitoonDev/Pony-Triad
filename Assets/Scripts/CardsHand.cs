@@ -1,15 +1,21 @@
-﻿using UnityEngine;
-using UnityEngine.Rendering;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Rendering;
+using DG.Tweening;
 
 [RequireComponent(typeof(SortingGroup))]
 public class CardsHand : MonoBehaviour
 {
+    public Action OnHandReady;
+
     [SerializeField] private PlayerNumber playerId = PlayerNumber.None;
     [SerializeField] private Card cardPrefab = null;
     [SerializeField] private SpriteRenderer currentTurnArrow = null;
 
-    private List<Card> _cardList;
+    private List<Card> cardList = null;
+
+    private int cardsDrawFinishedCount = 0;
 
     private SortingGroup sortingGroup;
     public SortingGroup SortingGroup {
@@ -23,21 +29,26 @@ public class CardsHand : MonoBehaviour
     }
 
     public void Init(CardDatas[] _cardDatasList, bool _enabled) {
-        _cardList = new List<Card>();
+        cardList = new List<Card>();
 
-        for (int i = 0; i < _cardDatasList.Length; i++) {
+        for (int cardAnimationsFinishedCount = 0; cardAnimationsFinishedCount < _cardDatasList.Length; cardAnimationsFinishedCount++) {
             Card newCard = Instantiate(cardPrefab, transform);
-            newCard.Datas = _cardDatasList[i];
+            newCard.Datas = _cardDatasList[cardAnimationsFinishedCount];
             newCard.PlayerOwner = playerId;
             newCard.Interactable = _enabled;
-            newCard.transform.localPosition = new Vector3(0, i * (-newCard.SpriteRenderer.bounds.size.y * 0.5f), (_cardDatasList.Length - i) * 0.001f);
 
-            _cardList.Add(newCard);
+            float endPosition = cardAnimationsFinishedCount * (-newCard.SpriteRenderer.bounds.size.y * 0.5f);
+            newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_cardDatasList.Length - cardAnimationsFinishedCount) * 0.001f);
+            newCard.transform.DOLocalMoveY(endPosition, 0.35f, false)
+                .SetDelay((_cardDatasList.Length - cardAnimationsFinishedCount) * 0.095f)
+                .OnComplete(CardAnimationFinished);
+
+            cardList.Add(newCard);
         }
     }
 
     public void Enable(bool _enabled) {
-        foreach (Card cardItem in _cardList) {
+        foreach (Card cardItem in cardList) {
             cardItem.Interactable = _enabled;
         }
 
@@ -47,6 +58,14 @@ public class CardsHand : MonoBehaviour
     }
 
     public void RemoveCard(Card _card) {
-        _cardList.Remove(_card);
+        cardList.Remove(_card);
+    }
+
+    private void CardAnimationFinished() {
+        cardsDrawFinishedCount++;
+
+        if (cardsDrawFinishedCount >= cardList.Count && OnHandReady != null) {
+            OnHandReady();
+        }
     }
 }

@@ -64,19 +64,19 @@ public class GameManager : MonoBehaviour
     private SelectableArea[,] selectableAreasList = new SelectableArea[3, 3];
     private Dictionary<PlayerNumber, CardsHand> cardHandByPlayer = new Dictionary<PlayerNumber, CardsHand>();
 
-    private int cardsAnimationFinishedCount = 0;
-    private int cardsWonCount = 0;
+    private int handsReadyCount = 0;
     private int cardPlayedCount = 0;
+    private int cardsRotationFinishedCount = 0;
+    private int cardsWonCount = 0;
 
     private void Start() {
-        bool handEnabled;
-
         CardDatas[] playerCards = new CardDatas[cardsPerPlayer];
+
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsList.GetRandomCard();
         }
-        handEnabled = (CurrentPlayer == PlayerNumber.One);
-        playerOneCardsHand.Init(playerCards, handEnabled);
+        playerOneCardsHand.OnHandReady += PlayerHandReady;
+        playerOneCardsHand.Init(playerCards, false);
         CurrentPlayerOneScore = cardsPerPlayer;
 
         cardHandByPlayer[PlayerNumber.One] = playerOneCardsHand;
@@ -85,8 +85,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsList.GetRandomCard();
         }
-        handEnabled = (CurrentPlayer == PlayerNumber.Two);
-        playerTwoCardsHand.Init(playerCards, handEnabled);
+        playerOneCardsHand.OnHandReady += PlayerHandReady;
+        playerTwoCardsHand.Init(playerCards, false);
         CurrentPlayerTwoScore = cardsPerPlayer;
 
         cardHandByPlayer[PlayerNumber.Two] = playerTwoCardsHand;
@@ -102,12 +102,20 @@ public class GameManager : MonoBehaviour
         }
 
         lastPlayer = Random.Range(0, 2) < 1 ? PlayerNumber.One : PlayerNumber.Two;
-
-        randomArrow.OnAnimationComplete += DisplayFirstPlayerArrow;
-        randomArrow.StartAnimation((int) lastPlayer);
     }
 
-    public void DisplayFirstPlayerArrow() {
+    private void PlayerHandReady() {
+        handsReadyCount++;
+
+        if (handsReadyCount >= cardHandByPlayer.Count) {
+            randomArrow.OnAnimationComplete += DisplayFirstPlayerArrow;
+            randomArrow.StartAnimation((int) lastPlayer);
+        }
+    }
+
+    private void DisplayFirstPlayerArrow() {
+        randomArrow.OnAnimationComplete -= DisplayFirstPlayerArrow;
+
         CurrentPlayer = lastPlayer;
         cardHandByPlayer[CurrentPlayer].Enable(true);
     }
@@ -163,9 +171,9 @@ public class GameManager : MonoBehaviour
     }
 
     private void CardAnimationFinished(Card _cardTarget) {
-        cardsAnimationFinishedCount++;
+        cardsRotationFinishedCount++;
 
-        if (cardsAnimationFinishedCount == cardsWonCount) {
+        if (cardsRotationFinishedCount == cardsWonCount) {
             BetweenTurnPhase();
         }
     }
@@ -183,7 +191,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        cardsAnimationFinishedCount = cardsWonCount = 0;
+        cardsRotationFinishedCount = cardsWonCount = 0;
 
         bool isGameOver = (cardPlayedCount == selectableAreasList.GetLength(0) * selectableAreasList.GetLength(1));
         if (isGameOver) {

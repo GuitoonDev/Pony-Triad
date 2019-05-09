@@ -13,9 +13,9 @@ Todo List
 - Montrer qui est le joueur actif - DONE
 - Ne lancer le prochain tour qu'une fois toutes les animations résolues - DONE
 - Afficher le tirage du joueur au début du jeu - DONE
+- Rajouter des animations à l'ouverture du jeu (arrivée) - DONE
 
-- Rajouter des animations à l'ouverture du jeu (arrivée et retournement) - IN PROGRESS
-- Fermer la boucle de gameplay
+- Fermer la boucle de gameplay - IN PROGRESS
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"
