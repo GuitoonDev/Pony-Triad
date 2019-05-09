@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour
 {
     private readonly int cardsPerPlayer = 5;
 
-    [Header("Cards List")]
-    [SerializeField] private CardList cardsList = null;
+    [Header("Random Arrow")]
+    [SerializeField] private RandomArrow randomArrow = null;
 
     [Header("Player One")]
     [SerializeField] private TextMeshPro playerOneScoreText = null;
@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Field Areas")]
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
+
+    [Header("Cards List")]
+    [SerializeField] private CardList cardsList = null;
 
 
     private int currentPlayerOneScore = 0;
@@ -98,7 +101,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        lastPlayer = CurrentPlayer = Random.Range(0f, 1f) < 0.5 ? PlayerNumber.One : PlayerNumber.Two;
+        lastPlayer = Random.Range(0, 2) < 1 ? PlayerNumber.One : PlayerNumber.Two;
+
+        randomArrow.OnAnimationComplete += DisplayFirstPlayerArrow;
+        randomArrow.StartAnimation((int) lastPlayer);
+    }
+
+    public void DisplayFirstPlayerArrow() {
+        CurrentPlayer = lastPlayer;
         cardHandByPlayer[CurrentPlayer].Enable(true);
     }
 

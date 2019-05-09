@@ -1789,7 +1789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a962e20708fff9e4ab0984ec6af515dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsList: {fileID: 11400000, guid: 7f67b4f510890f243924879c471acee8, type: 2}
+  randomArrow: {fileID: 1948792562}
   playerOneScoreText: {fileID: 326822809}
   playerOneCardsHand: {fileID: 1666211576}
   playerTwoScoreText: {fileID: 1406906357}
@@ -1810,6 +1810,7 @@ MonoBehaviour:
     - {fileID: 309408677}
     - {fileID: 525820253}
     - {fileID: 1299533303}
+  cardsList: {fileID: 11400000, guid: 7f67b4f510890f243924879c471acee8, type: 2}
 --- !u!1 &1883288129
 GameObject:
   m_ObjectHideFlags: 0
@@ -1879,13 +1880,14 @@ GameObject:
   - component: {fileID: 1948792560}
   - component: {fileID: 1948792559}
   - component: {fileID: 1948792561}
+  - component: {fileID: 1948792562}
   m_Layer: 0
-  m_Name: Arrow
+  m_Name: RandomArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1948792559
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1967,6 +1969,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1948792562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948792558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2f3237623c74b488b9165f48bfd5cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1964497570
 GameObject:
   m_ObjectHideFlags: 0
