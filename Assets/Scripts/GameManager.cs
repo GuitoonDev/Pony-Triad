@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Field Areas")]
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
+
+    [Header("UI Canvas")]
+    [SerializeField] private Canvas uiCanvas = null;
+    [SerializeField] private TextMeshProUGUI winText = null;
 
     [Header("Cards List")]
     [SerializeField] private CardList cardsList = null;
@@ -57,6 +62,11 @@ public class GameManager : MonoBehaviour
                 currentPlayer = value;
 
                 cardHandByPlayer[currentPlayer].Enable(true);
+            }
+            else if (value == PlayerNumber.None) {
+                foreach (CardsHand handItem in cardHandByPlayer.Values) {
+                    handItem.Enable(false);
+                }
             }
         }
     }
@@ -211,17 +221,26 @@ public class GameManager : MonoBehaviour
     }
 
     private void CheckWinner() {
-        Debug.LogWarning("End of the game");
+        CurrentPlayer = PlayerNumber.None;
+
+        uiCanvas.gameObject.SetActive(true);
+
         if (currentPlayerOneScore > currentPlayerTwoScore) {
-            Debug.LogWarning("Player One wins !");
+            winText.text = "<color=\"blue\">Blue</color> wins !";
         }
         else if (currentPlayerOneScore < currentPlayerTwoScore) {
-            Debug.LogWarning("Player Two wins !");
+            winText.text = "<color=\"red\">Red</color> wins !";
         }
         else {
-            Debug.LogWarning("Draw game !");
+            winText.text = "<color=\"green\">Draw</color> !";
         }
     }
+
+    #region UI Methods
+    public void SelectNewGame() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    #endregion
 
     [System.Serializable]
     public class VerticalListableAreas

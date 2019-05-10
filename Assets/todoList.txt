@@ -14,8 +14,9 @@ Todo List
 - Ne lancer le prochain tour qu'une fois toutes les animations résolues - DONE
 - Afficher le tirage du joueur au début du jeu - DONE
 - Rajouter des animations à l'ouverture du jeu (arrivée) - DONE
+- Fermer la boucle de gameplay - DONE
 
-- Fermer la boucle de gameplay - IN PROGRESS
+- Créer la base des cartes jouables - IN PROGRESS
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"
@@ -26,8 +27,6 @@ Todo List
 - Définir la règle "Battle"
 
 - Générer aléatoirement les règles pour une partie
-
-- Créer la base des cartes jouables
 
 - Créer un main menu
 
