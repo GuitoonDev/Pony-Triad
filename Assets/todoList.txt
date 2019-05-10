@@ -17,6 +17,7 @@ Todo List
 - Fermer la boucle de gameplay - DONE
 
 - Créer la base des cartes jouables - IN PROGRESS
+- Ajouter des sons
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"
