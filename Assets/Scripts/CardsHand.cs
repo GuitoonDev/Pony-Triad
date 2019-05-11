@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using DG.Tweening;
+using Audio;
 
 [RequireComponent(typeof(SortingGroup))]
 public class CardsHand : MonoBehaviour
@@ -12,6 +13,9 @@ public class CardsHand : MonoBehaviour
     [SerializeField] private PlayerNumber playerId = PlayerNumber.None;
     [SerializeField] private Card cardPrefab = null;
     [SerializeField] private SpriteRenderer currentTurnArrow = null;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip drawCardSound = null;
 
     private List<Card> cardList = null;
 
@@ -41,6 +45,9 @@ public class CardsHand : MonoBehaviour
             newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_cardDatasList.Length - cardAnimationsFinishedCount) * 0.001f);
             newCard.transform.DOLocalMoveY(endPosition, 0.35f, false)
                 .SetDelay((_cardDatasList.Length - cardAnimationsFinishedCount) * 0.095f)
+                .OnStart(() => {
+                    AudioManager.Instance.PlaySound(drawCardSound);
+                })
                 .OnComplete(CardAnimationFinished);
 
             cardList.Add(newCard);

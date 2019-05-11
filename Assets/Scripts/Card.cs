@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using Audio;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     public Action<Card> OnCardAnimationFinished;
+
+    [SerializeField] private Transform rotationRoot = null;
 
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
@@ -23,6 +26,10 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
     [Header("Player Colors")]
     [SerializeField] private Color playerOneColor = default(Color);
     [SerializeField] private Color playerTwoColor = default(Color);
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip selectCardSound = null;
+    [SerializeField] private AudioClip turnCardSound = null;
 
     [Header("Card Datas")]
     [SerializeField] private CardDatas datas;
@@ -101,12 +108,28 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
         return cardPowersByDirection[_targetDirection];
     }
 
+    public void OnPointerEnter(PointerEventData eventData) {
+        if (Interactable) {
+            Animator.SetInteger("OverPlayer", int.Parse(PlayerOwner.ToString("d")));
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        if (Interactable) {
+            Animator.SetInteger("OverPlayer", 0);
+        }
+    }
+
     public void OnPointerDown(PointerEventData eventData) {
         if (Interactable) {
+            Animator.SetInteger("OverPlayer", 0);
+
             beforeDragPosition = transform.localPosition;
             zDistanceToCamera = Mathf.Abs(beforeDragPosition.z - Camera.main.transform.position.z);
 
             transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistanceToCamera));
+
+            AudioManager.Instance.PlaySound(selectCardSound);
         }
     }
 
@@ -143,12 +166,16 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
 
     public void OnPointerUp(PointerEventData eventData) {
         if (Interactable) {
+            Animator.SetInteger("OverPlayer", 0);
+
             transform.localPosition = beforeDragPosition;
 
             if (currentAreaSelected != null) {
                 currentAreaSelected.Card = this;
                 currentAreaSelected = null;
             }
+
+            AudioManager.Instance.PlaySound(selectCardSound);
         }
     }
 
@@ -166,6 +193,8 @@ public class Card : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUp
         if (isPlayerOwnerChanged) {
             newPlayerOwner = _opponentPlayer;
             StartRotationAnimation(_targetDirection);
+
+            AudioManager.Instance.PlaySound(turnCardSound);
         }
 
         return isPlayerOwnerChanged;

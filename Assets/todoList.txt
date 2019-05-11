@@ -15,9 +15,10 @@ Todo List
 - Afficher le tirage du joueur au début du jeu - DONE
 - Rajouter des animations à l'ouverture du jeu (arrivée) - DONE
 - Fermer la boucle de gameplay - DONE
+- Ajouter des sons - DONE
+- Décaler la carte au mouse over - DONE
 
 - Créer la base des cartes jouables - IN PROGRESS
-- Ajouter des sons
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"

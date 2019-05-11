@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -112,6 +113,8 @@ public class GameManager : MonoBehaviour
         }
 
         lastPlayer = Random.Range(0, 2) < 1 ? PlayerNumber.One : PlayerNumber.Two;
+
+        AudioManager.Instance.PlayGameMusic();
     }
 
     private void PlayerHandReady() {
@@ -227,9 +230,11 @@ public class GameManager : MonoBehaviour
 
         if (currentPlayerOneScore > currentPlayerTwoScore) {
             winText.text = "<color=\"blue\">Blue</color> wins !";
+            AudioManager.Instance.PlayVictoryMusic();
         }
         else if (currentPlayerOneScore < currentPlayerTwoScore) {
             winText.text = "<color=\"red\">Red</color> wins !";
+            AudioManager.Instance.PlayVictoryMusic();
         }
         else {
             winText.text = "<color=\"green\">Draw</color> !";
@@ -251,5 +256,4 @@ public class GameManager : MonoBehaviour
 
         public SelectableArea this[int _index] => items[_index];
     }
-
 }

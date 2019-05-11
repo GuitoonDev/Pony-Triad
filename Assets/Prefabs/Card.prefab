@@ -1222,15 +1222,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e823d959d1cda4294b2471af2ff5cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationRoot: {fileID: 6069187536868971060}
   powerUpText: {fileID: 6739963613799028115}
   powerDownText: {fileID: 6184509204011387860}
   powerLeftText: {fileID: 8986394779821737710}
   powerRightText: {fileID: 4469490398297570700}
   cardImage: {fileID: 523175270395616747}
-  cardVerso: {fileID: 6074851373071165269}
   cardBackground: {fileID: 8424154959491658634}
   playerOneColor: {r: 0.36912602, g: 0.912886, b: 0.990566, a: 1}
   playerTwoColor: {r: 1, g: 0.5424528, b: 0.62757796, a: 1}
+  selectCardSound: {fileID: 8300000, guid: c560480515662744f9bbcd8ddb709f75, type: 3}
+  turnCardSound: {fileID: 8300000, guid: 3502257c420d5224f8435aa516736a91, type: 3}
   datas: {fileID: 11400000, guid: 3b6dfa7946af1a547be0e7d5d9f03ae1, type: 2}
 --- !u!1 &7811748528919406741
 GameObject:
