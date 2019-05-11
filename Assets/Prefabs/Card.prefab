@@ -951,7 +951,7 @@ GameObject:
   - component: {fileID: 6069187536868971060}
   - component: {fileID: 7076568198636561729}
   m_Layer: 9
-  m_Name: Rotation.Root
+  m_Name: Animation.Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

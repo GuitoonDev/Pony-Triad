@@ -41,7 +41,7 @@ public class CardsHand : MonoBehaviour
             newCard.PlayerOwner = playerId;
             newCard.Interactable = _enabled;
 
-            float endPosition = cardAnimationsFinishedCount * (-newCard.SpriteRenderer.bounds.size.y * 0.5f);
+            float endPosition = cardAnimationsFinishedCount * (-newCard.SpriteRenderer.bounds.size.y * 0.525f);
             newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_cardDatasList.Length - cardAnimationsFinishedCount) * 0.001f);
             newCard.transform.DOLocalMoveY(endPosition, 0.35f, false)
                 .SetDelay((_cardDatasList.Length - cardAnimationsFinishedCount) * 0.095f)
