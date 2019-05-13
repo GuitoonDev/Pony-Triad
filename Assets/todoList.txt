@@ -18,7 +18,8 @@ Todo List
 - Ajouter des sons - DONE
 - Décaler la carte au mouse over - DONE
 
-- Créer la base des cartes jouables - IN PROGRESS
+- Changer le système audio pour ajouter des pistes SFX (normalement 5) et une piste de musique - IN PROGRESS
+- Créer la base des cartes jouables
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"

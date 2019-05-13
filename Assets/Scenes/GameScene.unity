@@ -1057,17 +1057,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameMusic:
-    delayAtIntroEnd: -0.25
-    volume: 0.1
     introMusic: {fileID: 8300000, guid: 01b328fc68b83e44bafd6c8c03d67619, type: 3}
     loopMusic: {fileID: 8300000, guid: c8160e7d38d475440b7bb8418767dc8c, type: 3}
   victoryMusic:
-    delayAtIntroEnd: 0
-    volume: 0.1
     introMusic: {fileID: 8300000, guid: 5263cd5d80d3665489e168db7671994b, type: 3}
     loopMusic: {fileID: 8300000, guid: 7f257119c31aeeb4f9be6692c604cc1f, type: 3}
-  soundEffectPlayerPrefab: {fileID: 2129601463224004394, guid: 1474d8017cc7a5f4ca8ce86ea49c868b,
-    type: 3}
 --- !u!4 &625838783
 Transform:
   m_ObjectHideFlags: 0
@@ -1094,9 +1088,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -12,9 +12,6 @@ namespace Audio
         [SerializeField] private PlayableMusic gameMusic = null;
         [SerializeField] private PlayableMusic victoryMusic = null;
 
-        [Header("Sound Effects Prefab")]
-        [SerializeField] private SoundEffectPlayer soundEffectPlayerPrefab = null;
-
         private AudioSource musicAudioSource = null;
         private AudioSource MusicAudioSource {
             get {
@@ -42,66 +39,38 @@ namespace Audio
         }
 
         public void PlayGameMusic() {
-            if (currentMusic != gameMusic) {
-                MusicAudioSource.Stop();
-
-                currentMusic = gameMusic;
-
-                MusicAudioSource.volume = currentMusic.Volume;
-
-                if (currentMusic.IntroMusic != null) {
-                    PlayerIntroMusic();
-                }
-                else if (currentMusic.LoopMusic != null) {
-                    PlayerLoopMusic();
-                }
-            }
+            PlayMusic(gameMusic);
         }
 
         public void PlayVictoryMusic() {
-            if (currentMusic != victoryMusic) {
+            PlayMusic(victoryMusic);
+        }
+
+        private void PlayMusic(PlayableMusic _playableMusic) {
+            if (currentMusic != _playableMusic) {
                 MusicAudioSource.Stop();
 
-                currentMusic = victoryMusic;
+                currentMusic = _playableMusic;
 
-                MusicAudioSource.volume = currentMusic.Volume;
+                MusicAudioSource.clip = currentMusic.LoopMusic;
 
                 if (currentMusic.IntroMusic != null) {
-                    PlayerIntroMusic();
+                    MusicAudioSource.PlayOneShot(currentMusic.IntroMusic);
+                    MusicAudioSource.PlayScheduled(AudioSettings.dspTime + currentMusic.IntroMusic.length);
                 }
                 else if (currentMusic.LoopMusic != null) {
-                    PlayerLoopMusic();
+                    MusicAudioSource.Play();
                 }
             }
+
         }
 
         public void PlaySound(AudioClip _audioClip) {
-            SoundEffectPlayer newSoundEffect = Instantiate(soundEffectPlayerPrefab, transform, false);
-            newSoundEffect.PlayAudioClip(_audioClip);
-        }
+            // TODO Faire un système de pistes de SFX !!!
+            AudioSource.PlayClipAtPoint(_audioClip, Camera.main.transform.position);
 
-        private void PlayerIntroMusic() {
-            MusicAudioSource.PlayOneShot(currentMusic.IntroMusic);
-
-            if (waitForEndIntroMusicCoroutine != null) {
-                StopCoroutine(waitForEndIntroMusicCoroutine);
-            }
-            waitForEndIntroMusicCoroutine = StartCoroutine(WaitForEndIntroMusic());
-        }
-
-        private void PlayerLoopMusic() {
-            MusicAudioSource.clip = currentMusic.LoopMusic;
-            MusicAudioSource.loop = true;
-            MusicAudioSource.Play();
-        }
-
-        private IEnumerator WaitForEndIntroMusic() {
-            yield return new WaitForSeconds(currentMusic.IntroMusic.length + currentMusic.DelayAtIntroEnd);
-            if (currentMusic.LoopMusic != null) {
-                PlayerLoopMusic();
-            }
-
-            waitForEndIntroMusicCoroutine = null;
+            // SoundEffectPlayer newSoundEffect = Instantiate(soundEffectPlayerPrefab, transform, false);
+            // newSoundEffect.PlayAudioClip(_audioClip);
         }
     }
 }
