@@ -17,9 +17,9 @@ Todo List
 - Fermer la boucle de gameplay - DONE
 - Ajouter des sons - DONE
 - Décaler la carte au mouse over - DONE
+- Changer le système audio pour ajouter des pistes SFX (normalement 5) et une piste de musique - DONE
 
-- Changer le système audio pour ajouter des pistes SFX (normalement 5) et une piste de musique - IN PROGRESS
-- Créer la base des cartes jouables
+- Créer la base des cartes jouables - IN PROGRESS
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"

@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas uiCanvas = null;
     [SerializeField] private TextMeshProUGUI winText = null;
 
-    [Header("Cards List")]
-    [SerializeField] private CardList cardsList = null;
+    [Header("Cards Lists")]
+    [SerializeField] private CardList[] cardsListArray = null;
 
 
     private int currentPlayerOneScore = 0;
@@ -81,25 +81,30 @@ public class GameManager : MonoBehaviour
     private int cardsWonCount = 0;
 
     private void Start() {
-        CardDatas[] playerCards = new CardDatas[cardsPerPlayer];
-
-        for (int i = 0; i < playerCards.Length; i++) {
-            playerCards[i] = cardsList.GetRandomCard();
+        int[] randomCardLevelArray = new int[5];
+        for (int i = 0; i < randomCardLevelArray.Length; i++) {
+            randomCardLevelArray[i] = Random.Range(0, cardsListArray.Length - 1);
         }
+
+        CardDatas[] playerCards = new CardDatas[cardsPerPlayer];
+        for (int i = 0; i < playerCards.Length; i++) {
+            playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
+        }
+        playerCards.Shuffle();
         playerOneCardsHand.OnHandReady += PlayerHandReady;
         playerOneCardsHand.Init(playerCards, false);
         CurrentPlayerOneScore = cardsPerPlayer;
 
-        cardHandByPlayer[PlayerNumber.One] = playerOneCardsHand;
-
         playerCards = new CardDatas[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
-            playerCards[i] = cardsList.GetRandomCard();
+            playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
         }
+        playerCards.Shuffle();
         playerOneCardsHand.OnHandReady += PlayerHandReady;
         playerTwoCardsHand.Init(playerCards, false);
         CurrentPlayerTwoScore = cardsPerPlayer;
 
+        cardHandByPlayer[PlayerNumber.One] = playerOneCardsHand;
         cardHandByPlayer[PlayerNumber.Two] = playerTwoCardsHand;
 
         for (int positionX = 0; positionX < selectableAreasList.GetLength(0); positionX++) {

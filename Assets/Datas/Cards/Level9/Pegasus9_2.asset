@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fb462da9a188f43984e8b1e68e71f5, type: 3}
-  m_Name: CardList
+  m_Script: {fileID: 11500000, guid: 92f9d62ee7542ef448115488ee9bffc3, type: 3}
+  m_Name: Pegasus9_2
   m_EditorClassIdentifier: 
-  cardDatasList:
-  - {fileID: 11400000, guid: 3b6dfa7946af1a547be0e7d5d9f03ae1, type: 2}
+  spriteImage: {fileID: 21300000, guid: 0fcd9090922634a4b8e0babe3290cc9e, type: 3}
+  powerUp: 8
+  powerDown: 10
+  powerLeft: 4
+  powerRight: 4

@@ -11,7 +11,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 {
     public Action<Card> OnCardAnimationFinished;
 
-    [SerializeField] private Transform rotationRoot = null;
+    [SerializeField] private Transform transformRoot = null;
 
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;

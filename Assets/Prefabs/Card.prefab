@@ -951,7 +951,7 @@ GameObject:
   - component: {fileID: 6069187536868971060}
   - component: {fileID: 7076568198636561729}
   m_Layer: 9
-  m_Name: Animation.Root
+  m_Name: Transform.Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1222,7 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e823d959d1cda4294b2471af2ff5cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationRoot: {fileID: 6069187536868971060}
+  transformRoot: {fileID: 6069187536868971060}
   powerUpText: {fileID: 6739963613799028115}
   powerDownText: {fileID: 6184509204011387860}
   powerLeftText: {fileID: 8986394779821737710}

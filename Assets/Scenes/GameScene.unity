@@ -2255,7 +2255,17 @@ MonoBehaviour:
     - {fileID: 1299533303}
   uiCanvas: {fileID: 1204614515}
   winText: {fileID: 1776763209}
-  cardsList: {fileID: 11400000, guid: 7f67b4f510890f243924879c471acee8, type: 2}
+  cardsListArray:
+  - {fileID: 11400000, guid: 7f67b4f510890f243924879c471acee8, type: 2}
+  - {fileID: 11400000, guid: 5d868e3ab5eb7964b8a33dee47d0e60b, type: 2}
+  - {fileID: 11400000, guid: 26e16fce871826340a62e2b0f76f0fba, type: 2}
+  - {fileID: 11400000, guid: 79cf9c7a43c0fce43afe1d931ba6ab2b, type: 2}
+  - {fileID: 11400000, guid: 236e0f7590eb214409119649530e4398, type: 2}
+  - {fileID: 11400000, guid: 8d55144bf7d2f714e90dff44f5313a6d, type: 2}
+  - {fileID: 11400000, guid: db63e29bcfe488f48835338887783e16, type: 2}
+  - {fileID: 11400000, guid: 6266c669e370cd14f9d98b48c68850e0, type: 2}
+  - {fileID: 11400000, guid: 18f79b90af4a26444b506baf63fe1efd, type: 2}
+  - {fileID: 11400000, guid: 34e52d8e0309d324ca8896eeb4025cf1, type: 2}
 --- !u!1 &1883288129
 GameObject:
   m_ObjectHideFlags: 0
