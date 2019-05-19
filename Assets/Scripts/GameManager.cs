@@ -181,6 +181,7 @@ public class GameManager : MonoBehaviour
         }
 
         cardHandByPlayer[CurrentPlayer].RemoveCard(_selectableArea.Card);
+        cardHandByPlayer[CurrentPlayer].Enable(false);
 
         cardsWonCount = cardsWon;
         if (cardsWonCount == 0) {
