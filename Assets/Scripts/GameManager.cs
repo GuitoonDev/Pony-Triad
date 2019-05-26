@@ -1,12 +1,29 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 using Audio;
 
 public class GameManager : MonoBehaviour
 {
+    [System.Flags]
+    enum GameRules
+    {
+        None = 0,
+
+        Open = 1 << 0,
+
+        Plus = 1 << 1,
+        Same = 1 << 2,
+
+        Borderless = 1 << 3,
+        AceWalls = 1 << 4,
+
+        Battle = 1 << 5,
+    }
+
     private readonly int cardsPerPlayer = 5;
+    [SerializeField] private GameRules gameRules = default(GameRules);
     [SerializeField] private string mainMenuSceneName = null;
 
     [Header("Random Arrow")]

@@ -2874,6 +2874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a962e20708fff9e4ab0984ec6af515dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameRules: 0
   mainMenuSceneName: MainMenu
   randomArrow: {fileID: 1948792562}
   playerOneScoreText: {fileID: 326822809}
