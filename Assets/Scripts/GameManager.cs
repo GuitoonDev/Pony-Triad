@@ -7,6 +7,7 @@ using Audio;
 public class GameManager : MonoBehaviour
 {
     private readonly int cardsPerPlayer = 5;
+    [SerializeField] private string mainMenuSceneName = null;
 
     [Header("Random Arrow")]
     [SerializeField] private RandomArrow randomArrow = null;
@@ -235,11 +236,11 @@ public class GameManager : MonoBehaviour
         uiCanvas.gameObject.SetActive(true);
 
         if (currentPlayerOneScore > currentPlayerTwoScore) {
-            winText.text = "<color=\"blue\">Blue</color> wins !";
+            winText.text = "<color=\"blue\">Blue</color>\nwins !";
             AudioManager.Instance.PlayVictoryMusic();
         }
         else if (currentPlayerOneScore < currentPlayerTwoScore) {
-            winText.text = "<color=\"red\">Red</color> wins !";
+            winText.text = "<color=\"red\">Red</color>\nwins !";
             AudioManager.Instance.PlayVictoryMusic();
         }
         else {
@@ -250,6 +251,10 @@ public class GameManager : MonoBehaviour
     #region UI Methods
     public void SelectNewGame() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void SelectMainMenu() {
+        SceneManager.LoadScene(mainMenuSceneName);
     }
     #endregion
 
