@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 69de903fcc776d848801977bd73b663e
+guid: 831e3b95632b7bb4095f812118c5883f
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Deutsch Gothic
+  fontName: Crimson Text
   fontNames:
-  - Deutsch Gothic
+  - Crimson Text
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

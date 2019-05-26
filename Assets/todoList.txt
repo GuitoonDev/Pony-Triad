@@ -19,9 +19,11 @@ Todo List
 - Décaler la carte au mouse over - DONE
 - Changer le système audio pour ajouter des pistes SFX (normalement 5) et une piste de musique - DONE
 - Créer la base des cartes jouables - DONE
+- Créer un main menu - DONE
 
 - Trouver une police pour l'écran de resultat - IN PROGRESS
-- Créer le système de gestion de règles - IN PROGRESS
+
+- Créer le système de gestion de règles
 
 - Définir la règle "Open" (jeux visibles)
 - Définir la règle "Plus"
@@ -33,7 +35,8 @@ Todo List
 
 - Générer aléatoirement les règles pour une partie
 
-- Créer un main menu
+- Créer un menu d'Options
+- Créer un menu de Crédits
 
 -> God Tier Features :
 - Trouver un graphiste

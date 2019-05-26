@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1d9e70842c63f4c4e88440f50d552d94
+guid: ca8d1cfedf58e984592cb45a4ea3f60a
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Amerika Sans
+  fontName: Eagle Lake
   fontNames:
-  - Amerika Sans
+  - Eagle Lake
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
