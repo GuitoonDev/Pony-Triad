@@ -11,8 +11,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 {
     public Action<Card> OnCardAnimationFinished;
 
-    [SerializeField] private Transform transformRoot = null;
-
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
     [SerializeField] private TextMeshPro powerDownText = null;
@@ -21,6 +19,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     [Header("Visuals")]
     [SerializeField] private SpriteRenderer cardImage = null;
+    [SerializeField] private SpriteRenderer cardVerso = null;
     [SerializeField] private SpriteRenderer cardBackground = null;
 
     [Header("Player Colors")]
@@ -69,7 +68,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    public bool Interactable { get; set; } = true;
+    public bool Hidden {
+        set {
+            Animator.SetBool("Hidden", !Interactable);
+        }
+    }
+
+    public bool Interactable { get; set; }
 
     private PlayerNumber playerOwner = PlayerNumber.None;
     public PlayerNumber PlayerOwner {

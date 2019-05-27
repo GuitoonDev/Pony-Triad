@@ -6,21 +6,7 @@ using Audio;
 
 public class GameManager : MonoBehaviour
 {
-    [System.Flags]
-    enum GameRules
-    {
-        None = 0,
-
-        Open = 1 << 0,
-
-        Plus = 1 << 1,
-        Same = 1 << 2,
-
-        Borderless = 1 << 3,
-        AceWalls = 1 << 4,
-
-        Battle = 1 << 5,
-    }
+    public static GameManager Instance { get; private set; }
 
     private readonly int cardsPerPlayer = 5;
 
@@ -29,7 +15,6 @@ public class GameManager : MonoBehaviour
     [Space]
 
     [SerializeField] [EnumFlag("Game Rules")] private GameRules gameRules = default(GameRules);
-
 
     [Space]
 
@@ -52,7 +37,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Cards Lists")]
     [SerializeField] private CardList[] cardsListArray = null;
-
 
     private int currentPlayerOneScore = 0;
     private int CurrentPlayerOneScore {
@@ -103,6 +87,10 @@ public class GameManager : MonoBehaviour
     private int cardPlayedCount = 0;
     private int cardsRotationFinishedCount = 0;
     private int cardsWonCount = 0;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     private void Start() {
         int[] randomCardLevelArray = new int[5];
@@ -271,6 +259,10 @@ public class GameManager : MonoBehaviour
         else {
             winText.text = "<color=\"green\">Draw</color> !";
         }
+    }
+
+    public bool HasRuleSet(GameRules rulesToTest) {
+        return gameRules.HasFlag(rulesToTest);
     }
 
     #region UI Methods

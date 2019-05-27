@@ -22,11 +22,10 @@ Todo List
 - Créer un main menu - DONE
 - Trouver une police pour l'écran de resultat - DONE
 - Ajouter un SFX sur les boutons - DONE
+- Créer le système de gestion de règles - DONE
+- Définir la règle "Open" (jeux visibles) - DONE
 
-- Créer le système de gestion de règles - IN PROGRESS
-
-- Définir la règle "Open" (jeux visibles)
-- Définir la règle "Plus"
+- Définir la règle "Plus" - IN PROGRESS
 - Définir la règle "Same"
 - Gérer les situations de Combo
 - Définir la règle "Borderless"
