@@ -23,10 +23,16 @@ public class GameManager : MonoBehaviour
     }
 
     private readonly int cardsPerPlayer = 5;
-    [SerializeField] private GameRules gameRules = default(GameRules);
+
     [SerializeField] private string mainMenuSceneName = null;
 
-    [Header("Random Arrow")]
+    [Space]
+
+    [SerializeField] [EnumFlag("Game Rules")] private GameRules gameRules = default(GameRules);
+
+
+    [Space]
+
     [SerializeField] private RandomArrow randomArrow = null;
 
     [Header("Player One")]
@@ -40,7 +46,7 @@ public class GameManager : MonoBehaviour
     [Header("Field Areas")]
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
 
-    [Header("UI Canvas")]
+    [Header("Canvas Elements")]
     [SerializeField] private Canvas uiCanvas = null;
     [SerializeField] private TextMeshProUGUI winText = null;
 
@@ -253,10 +259,12 @@ public class GameManager : MonoBehaviour
         uiCanvas.gameObject.SetActive(true);
 
         if (currentPlayerOneScore > currentPlayerTwoScore) {
+            // See ColorUtility.ToHtmlStringRGB
             winText.text = "<color=\"blue\">Blue</color>\nwins !";
             AudioManager.Instance.PlayVictoryMusic();
         }
         else if (currentPlayerOneScore < currentPlayerTwoScore) {
+            // See ColorUtility.ToHtmlStringRGB
             winText.text = "<color=\"red\">Red</color>\nwins !";
             AudioManager.Instance.PlayVictoryMusic();
         }
