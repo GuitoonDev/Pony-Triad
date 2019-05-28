@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Space]
 
-    [SerializeField] [EnumFlag("Game Rules")] private GameRules gameRules = default(GameRules);
+    [SerializeField] [EnumFlag("Active Game Rules")] private GameRules activeGameRules = default(GameRules);
 
     [Space]
 
@@ -88,6 +88,9 @@ public class GameManager : MonoBehaviour
     private int cardsRotationFinishedCount = 0;
     private int cardsWonCount = 0;
 
+    private List<CardWon> _sameCardsWon = new List<CardWon>();
+    private Dictionary<int, List<CardWon>> _plusCardsWon = new Dictionary<int, List<CardWon>>();
+
     private void Awake() {
         Instance = this;
     }
@@ -150,52 +153,125 @@ public class GameManager : MonoBehaviour
         cardHandByPlayer[CurrentPlayer].Enable(true);
     }
 
-    private void UpdateCardsOwnersPhase(SelectableArea _selectableArea) {
+    private void UpdateCardsOwnersPhase(SelectableArea _playedCardArea, bool _isCombo) {
         cardPlayedCount++;
 
         int cardsWon = 0;
 
-        int leftPosition = _selectableArea.BoardCoordinates.x - 1;
-        int rightPosition = _selectableArea.BoardCoordinates.x + 1;
-        int upPosition = _selectableArea.BoardCoordinates.y - 1;
-        int downPosition = _selectableArea.BoardCoordinates.y + 1;
+        int leftPosition = _playedCardArea.BoardCoordinates.x - 1;
+        int rightPosition = _playedCardArea.BoardCoordinates.x + 1;
+        int upPosition = _playedCardArea.BoardCoordinates.y - 1;
+        int downPosition = _playedCardArea.BoardCoordinates.y + 1;
 
         if (leftPosition >= 0) {
-            Card cardToCompare = selectableAreasList[leftPosition, _selectableArea.BoardCoordinates.y].Card;
-            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Right, _selectableArea.Card.GetPowerByDirection(CardDirection.Left), _selectableArea.Card.PlayerOwner));
-            if (isCardWon) {
-                cardsWon++;
+            Card cardToCompare = selectableAreasList[leftPosition, _playedCardArea.BoardCoordinates.y].Card;
+
+            if (cardToCompare != null) {
+                int powerDiff = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Left)) - ((int) cardToCompare.GetPowerByDirection(CardDirection.Right));
+
+                int powerAdd = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Left)) + ((int) cardToCompare.GetPowerByDirection(CardDirection.Right));
+
+                List<CardWon> cardsWonList;
+                if (!_plusCardsWon.TryGetValue(powerAdd, out cardsWonList)) {
+                    cardsWonList = new List<CardWon>();
+                }
+
+                cardsWonList.Add(new CardWon() {
+                    direction = CardDirection.Right,
+                    card = cardToCompare
+                });
+
+                _plusCardsWon[powerAdd] = cardsWonList;
+
+                if (powerDiff > 0) {
+                    cardToCompare.ChangePlayerOwner(CardDirection.Right, _playedCardArea.Card.PlayerOwner);
+                    cardsWon++;
+                }
+                else if (powerDiff == 0) {
+                    _sameCardsWon.Add(new CardWon() {
+                        direction = CardDirection.Right,
+                        card = cardToCompare
+                    });
+                }
             }
         }
 
         if (rightPosition < selectableAreasList.GetLength(0)) {
-            Card cardToCompare = selectableAreasList[rightPosition, _selectableArea.BoardCoordinates.y].Card;
-            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Left, _selectableArea.Card.GetPowerByDirection(CardDirection.Right), _selectableArea.Card.PlayerOwner));
-            if (isCardWon) {
-                cardsWon++;
+            Card cardToCompare = selectableAreasList[rightPosition, _playedCardArea.BoardCoordinates.y].Card;
+
+            if (cardToCompare != null) {
+                int powerDiff = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Right)) - ((int) cardToCompare.GetPowerByDirection(CardDirection.Left));
+
+                int powerAdd = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Right)) + ((int) cardToCompare.GetPowerByDirection(CardDirection.Left));
+
+                if (powerDiff > 0) {
+                    cardToCompare.ChangePlayerOwner(CardDirection.Left, _playedCardArea.Card.PlayerOwner);
+                    cardsWon++;
+                }
+                else if (powerDiff == 0) {
+                    _sameCardsWon.Add(new CardWon() {
+                        direction = CardDirection.Left,
+                        card = cardToCompare
+                    });
+                }
             }
         }
 
         if (upPosition >= 0) {
-            Card cardToCompare = selectableAreasList[_selectableArea.BoardCoordinates.x, upPosition].Card;
-            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Down, _selectableArea.Card.GetPowerByDirection(CardDirection.Up), _selectableArea.Card.PlayerOwner));
-            if (isCardWon) {
-                cardsWon++;
+            Card cardToCompare = selectableAreasList[_playedCardArea.BoardCoordinates.x, upPosition].Card;
+
+            if (cardToCompare != null) {
+                int powerDiff = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Up)) - ((int) cardToCompare.GetPowerByDirection(CardDirection.Down));
+
+                int powerAdd = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Up)) + ((int) cardToCompare.GetPowerByDirection(CardDirection.Down));
+
+                if (powerDiff > 0) {
+                    cardToCompare.ChangePlayerOwner(CardDirection.Down, _playedCardArea.Card.PlayerOwner);
+                    cardsWon++;
+                }
+                else if (powerDiff == 0) {
+                    _sameCardsWon.Add(new CardWon() {
+                        direction = CardDirection.Down,
+                        card = cardToCompare
+                    });
+                }
             }
         }
 
         if (downPosition < selectableAreasList.GetLength(1)) {
-            Card cardToCompare = selectableAreasList[_selectableArea.BoardCoordinates.x, downPosition].Card;
-            bool isCardWon = (cardToCompare != null && cardToCompare.IsLooseBattle(CardDirection.Up, _selectableArea.Card.GetPowerByDirection(CardDirection.Down), _selectableArea.Card.PlayerOwner));
-            if (isCardWon) {
-                cardsWon++;
+            Card cardToCompare = selectableAreasList[_playedCardArea.BoardCoordinates.x, downPosition].Card;
+
+            if (cardToCompare != null) {
+                int powerDiff = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Down)) - ((int) cardToCompare.GetPowerByDirection(CardDirection.Up));
+
+                int powerAdd = ((int) _playedCardArea.Card.GetPowerByDirection(CardDirection.Down)) + ((int) cardToCompare.GetPowerByDirection(CardDirection.Up));
+
+                if (powerDiff > 0) {
+                    cardToCompare.ChangePlayerOwner(CardDirection.Up, _playedCardArea.Card.PlayerOwner);
+                    cardsWon++;
+                }
+                else if (powerDiff == 0) {
+                    _sameCardsWon.Add(new CardWon() {
+                        direction = CardDirection.Up,
+                        card = cardToCompare
+                    });
+                }
             }
         }
 
-        cardHandByPlayer[CurrentPlayer].RemoveCard(_selectableArea.Card);
+        cardHandByPlayer[CurrentPlayer].RemoveCard(_playedCardArea.Card);
         cardHandByPlayer[CurrentPlayer].Enable(false);
 
         cardsWonCount = cardsWon;
+
+        if (activeGameRules.HasFlag(GameRules.Same) && _sameCardsWon.Count > 1) {
+            cardsWonCount += _sameCardsWon.Count;
+
+            foreach (CardWon cardWonItem in _sameCardsWon) {
+                cardWonItem.card.ChangePlayerOwner(cardWonItem.direction, _playedCardArea.Card.PlayerOwner);
+            }
+        }
+
         if (cardsWonCount == 0) {
             BetweenTurnPhase();
         }
@@ -210,6 +286,11 @@ public class GameManager : MonoBehaviour
     }
 
     private void BetweenTurnPhase() {
+        _sameCardsWon.Clear();
+        _plusCardsWon.Clear();
+
+        cardsRotationFinishedCount = cardsWonCount = 0;
+
         switch (CurrentPlayer) {
             case PlayerNumber.One:
                 CurrentPlayerOneScore += cardsWonCount;
@@ -221,8 +302,6 @@ public class GameManager : MonoBehaviour
                 CurrentPlayerOneScore -= cardsWonCount;
                 break;
         }
-
-        cardsRotationFinishedCount = cardsWonCount = 0;
 
         bool isGameOver = (cardPlayedCount == selectableAreasList.GetLength(0) * selectableAreasList.GetLength(1));
         if (isGameOver) {
@@ -262,7 +341,7 @@ public class GameManager : MonoBehaviour
     }
 
     public bool HasRuleSet(GameRules rulesToTest) {
-        return gameRules.HasFlag(rulesToTest);
+        return activeGameRules.HasFlag(rulesToTest);
     }
 
     #region UI Methods

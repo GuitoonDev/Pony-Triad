@@ -19,7 +19,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     [Header("Visuals")]
     [SerializeField] private SpriteRenderer cardImage = null;
-    [SerializeField] private SpriteRenderer cardVerso = null;
     [SerializeField] private SpriteRenderer cardBackground = null;
 
     [Header("Player Colors")]
@@ -115,19 +114,19 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", int.Parse(PlayerOwner.ToString("d")));
+            Animator.SetInteger("OverPlayer", (int) PlayerOwner);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", 0);
+            Animator.SetInteger("OverPlayer", (int) PlayerNumber.None);
         }
     }
 
     public void OnPointerDown(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", 0);
+            Animator.SetInteger("OverPlayer", (int) PlayerNumber.None);
 
             beforeDragPosition = transform.localPosition;
             zDistanceToCamera = Mathf.Abs(beforeDragPosition.z - Camera.main.transform.position.z);
@@ -171,7 +170,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerUp(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", 0);
+            Animator.SetInteger("OverPlayer", (int) PlayerNumber.None);
 
             transform.localPosition = beforeDragPosition;
 
@@ -193,16 +192,23 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         UpdateView();
     }
 
-    public bool IsLooseBattle(CardDirection _targetDirection, CardPower _powerToCompare, PlayerNumber _opponentPlayer) {
-        bool isPlayerOwnerChanged = (playerOwner != _opponentPlayer && cardPowersByDirection[_targetDirection] < _powerToCompare);
-        if (isPlayerOwnerChanged) {
-            newPlayerOwner = _opponentPlayer;
-            StartRotationAnimation(_targetDirection);
+    // public bool IsLooseBattle(CardDirection _targetDirection, CardPower _powerToCompare, PlayerNumber _opponentPlayer) {
+    //     bool isPlayerOwnerChanged = (playerOwner != _opponentPlayer && cardPowersByDirection[_targetDirection] < _powerToCompare);
+    //     if (isPlayerOwnerChanged) {
+    //         newPlayerOwner = _opponentPlayer;
+    //         StartRotationAnimation(_targetDirection);
 
-            AudioManager.Instance.PlaySound(turnCardSound);
-        }
+    //         AudioManager.Instance.PlaySound(turnCardSound);
+    //     }
 
-        return isPlayerOwnerChanged;
+    //     return isPlayerOwnerChanged;
+    // }
+
+    public void ChangePlayerOwner(CardDirection _targetDirection, PlayerNumber _newPlayerOwner) {
+        newPlayerOwner = _newPlayerOwner;
+        StartRotationAnimation(_targetDirection);
+
+        AudioManager.Instance.PlaySound(turnCardSound);
     }
 
     private void StartRotationAnimation(CardDirection _targetDirection) {

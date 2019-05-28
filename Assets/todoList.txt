@@ -24,9 +24,11 @@ Todo List
 - Ajouter un SFX sur les boutons - DONE
 - Créer le système de gestion de règles - DONE
 - Définir la règle "Open" (jeux visibles) - DONE
+- Définir la règle "Same" - DONE
 
-- Définir la règle "Plus" - IN PROGRESS
-- Définir la règle "Same"
+- Gérer l'affichage de la règle utilisée - IN PROGRESS
+
+- Définir la règle "Plus"
 - Gérer les situations de Combo
 - Définir la règle "Borderless"
 - Définir la règle "Ace Walls"

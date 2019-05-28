@@ -5,8 +5,8 @@ public enum GameRules
 
     Open = 1 << 0,
 
-    Plus = 1 << 1,
-    Same = 1 << 2,
+    Same = 1 << 1,
+    Plus = 1 << 2,
 
     Borderless = 1 << 3,
     AceWalls = 1 << 4,

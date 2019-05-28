@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class SelectableArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Action<Card> OnCardAnimationFinished;
-    public Action<SelectableArea> OnCardPlayed;
+    public Action<SelectableArea, bool> OnCardPlayed;
 
     [SerializeField] private SpriteRenderer selectionBorder = null;
 
@@ -25,7 +25,7 @@ public class SelectableArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
                 selectionBorder.gameObject.SetActive(IsAreaEmpty);
 
-                OnCardPlayed(this);
+                OnCardPlayed(this, false);
             }
         }
     }
