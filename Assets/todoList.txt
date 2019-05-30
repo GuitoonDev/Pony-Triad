@@ -26,6 +26,14 @@ Todo List
 - Définir la règle "Open" (jeux visibles) - DONE
 - Définir la règle "Same" - DONE
 
+- Gérer le flow d'une carte posée (Règles + Combo) - IN PROGRESS
+Cartes retournées par ordre de priorité :
+- Same
+- Plus
+- Normal
+
+
+
 - Gérer l'affichage de la règle utilisée - IN PROGRESS
 
 - Définir la règle "Plus"

@@ -1,5 +1,6 @@
 public struct CardWon
 {
-    public CardDirection direction;
     public Card card;
+    public CardDirection direction;
+    public PlayerNumber newPlayerOwner;
 }

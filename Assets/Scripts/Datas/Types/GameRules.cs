@@ -1,5 +1,5 @@
 [System.Flags]
-public enum GameRules
+public enum GameRule
 {
     None = 0,
 
@@ -9,7 +9,10 @@ public enum GameRules
     Plus = 1 << 2,
 
     Borderless = 1 << 3,
-    AceWalls = 1 << 4,
+    SameAceWalls = 1 << 4,
 
     Battle = 1 << 5,
+
+    Random = 1 << 6,
+    Reversed = 1 << 7
 }

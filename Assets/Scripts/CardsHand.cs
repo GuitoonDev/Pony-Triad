@@ -1,18 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using DG.Tweening;
 using Audio;
+using UnityEngine.Events;
+using TMPro;
 
 [RequireComponent(typeof(SortingGroup))]
 public class CardsHand : MonoBehaviour
 {
-    public Action OnHandReady;
+    public UnityAction<CardsHand> OnHandReady;
 
     [SerializeField] private PlayerNumber playerId = PlayerNumber.None;
     [SerializeField] private Card cardPrefab = null;
+    [SerializeField] private TextMeshPro playerScoreText = null;
     [SerializeField] private SpriteRenderer currentTurnArrow = null;
+
+    [Header("Player Colors")]
+    [SerializeField] private PlayersColorsList playersColorsList = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip drawCardSound = null;
@@ -32,23 +37,42 @@ public class CardsHand : MonoBehaviour
         }
     }
 
+    private int currentPlayerScore = 0;
+    public int CurrentPlayerScore {
+        get { return currentPlayerScore; }
+        set {
+            currentPlayerScore = value;
+            playerScoreText.text = currentPlayerScore.ToString();
+        }
+    }
+
+    public bool Ready { get; private set; }
+
+    private void Start() {
+        playerScoreText.color = playersColorsList.GetPlayerColor(playerId).Color;
+    }
+
     public void Init(CardDatas[] _cardDatasList, bool _enabled) {
         cardList = new List<Card>();
 
-        for (int cardAnimationsFinishedCount = 0; cardAnimationsFinishedCount < _cardDatasList.Length; cardAnimationsFinishedCount++) {
+        _cardDatasList.Shuffle();
+
+        CurrentPlayerScore = _cardDatasList.Length;
+
+        for (int cardIndex = 0; cardIndex < _cardDatasList.Length; cardIndex++) {
             Card newCard = Instantiate(cardPrefab, transform);
-            newCard.Datas = _cardDatasList[cardAnimationsFinishedCount];
+            newCard.Datas = _cardDatasList[cardIndex];
             newCard.PlayerOwner = playerId;
             newCard.Interactable = _enabled;
 
-            if (!GameManager.Instance.HasRuleSet(GameRules.Open)) {
+            if (!GameManager.Instance.HasRuleSet(GameRule.Open)) {
                 newCard.Hidden = true;
             }
 
-            float endPosition = cardAnimationsFinishedCount * (-newCard.SpriteRenderer.bounds.size.y * 0.525f);
-            newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_cardDatasList.Length - cardAnimationsFinishedCount) * 0.001f);
+            float endPosition = cardIndex * (-newCard.SpriteRenderer.bounds.size.y * 0.525f);
+            newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_cardDatasList.Length - cardIndex) * 0.001f);
             newCard.transform.DOLocalMoveY(endPosition, 0.35f, false)
-                .SetDelay((_cardDatasList.Length - cardAnimationsFinishedCount) * 0.095f)
+                .SetDelay((_cardDatasList.Length - cardIndex) * 0.095f)
                 .OnStart(() => {
                     AudioManager.Instance.PlaySound(drawCardSound);
                 })
@@ -62,7 +86,7 @@ public class CardsHand : MonoBehaviour
         foreach (Card cardItem in cardList) {
             cardItem.Interactable = _enabled;
 
-            if (!GameManager.Instance.HasRuleSet(GameRules.Open)) {
+            if (!GameManager.Instance.HasRuleSet(GameRule.Open)) {
                 cardItem.Hidden = true;
             }
         }
@@ -76,11 +100,14 @@ public class CardsHand : MonoBehaviour
         cardList.Remove(_card);
     }
 
+    #region Animation Event Functions
     private void CardAnimationFinished() {
         cardsDrawFinishedCount++;
 
         if (cardsDrawFinishedCount >= cardList.Count && OnHandReady != null) {
-            OnHandReady();
+            Ready = true;
+            OnHandReady(this);
         }
     }
+    #endregion
 }

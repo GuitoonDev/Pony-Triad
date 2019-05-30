@@ -1,11 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
 public class RandomArrow : MonoBehaviour
 {
-    public Action OnAnimationComplete;
+    public UnityAction OnAnimationComplete;
 
     private Animator animator;
     private Animator Animator {
@@ -29,9 +29,9 @@ public class RandomArrow : MonoBehaviour
         }
     }
 
-    public void StartAnimation(int _playerId) {
+    public void StartAnimation(PlayerNumber _playerId) {
         gameObject.SetActive(true);
-        Animator.SetTrigger(string.Format("SelectPlayer_{0}", _playerId));
+        Animator.SetTrigger(string.Format("SelectPlayer_{0}", (int) _playerId));
 
         AudioSource.Play();
     }

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using Audio;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
 public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    public Action<Card> OnCardAnimationFinished;
+    public UnityAction<Card> OnCardAnimationFinished;
 
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
@@ -22,8 +22,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] private SpriteRenderer cardBackground = null;
 
     [Header("Player Colors")]
-    [SerializeField] private Color playerOneColor = default(Color);
-    [SerializeField] private Color playerTwoColor = default(Color);
+    [SerializeField] private PlayersColorsList playersColorsList = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip selectCardSound = null;
@@ -81,19 +80,9 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         set {
             if (playerOwner != value) {
                 playerOwner = value;
-                switch (playerOwner) {
-                    case PlayerNumber.One:
-                        cardBackground.color = playerOneColor;
-                        break;
-                    case PlayerNumber.Two:
-                        cardBackground.color = playerTwoColor;
-                        break;
-                    default:
-                        cardBackground.color = Color.gray;
-                        break;
-                }
-
                 newPlayerOwner = playerOwner;
+
+                cardBackground.color = playersColorsList.GetPlayerColor(playerOwner).Color;
             }
         }
     }
@@ -106,10 +95,28 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     private Vector3 beforeDragPosition = Vector3.zero;
 
-    private SelectableArea currentAreaSelected = null;
+    private CardBoardArea currentAreaSelected = null;
 
     public CardPower GetPowerByDirection(CardDirection _targetDirection) {
         return cardPowersByDirection[_targetDirection];
+    }
+
+    private void Start() {
+        UpdatePowers();
+        UpdateView();
+    }
+
+    private void OnValidate() {
+        UpdateView();
+    }
+
+    public void ChangePlayerOwner(CardDirection _targetDirection, PlayerNumber _newPlayerOwner) {
+        if (newPlayerOwner != _newPlayerOwner) {
+            newPlayerOwner = _newPlayerOwner;
+            StartRotationAnimation(_targetDirection);
+
+            AudioManager.Instance.PlaySound(turnCardSound);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -146,9 +153,9 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             pointerData.position = Input.mousePosition;
             EventSystem.current.RaycastAll(pointerData, raycastResults);
 
-            SelectableArea hitArea = null;
+            CardBoardArea hitArea = null;
             foreach (RaycastResult raycastItem in raycastResults) {
-                hitArea = raycastItem.gameObject.GetComponent<SelectableArea>();
+                hitArea = raycastItem.gameObject.GetComponent<CardBoardArea>();
                 if (hitArea != null) {
                     break;
                 }
@@ -183,34 +190,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    private void OnValidate() {
-        UpdateView();
-    }
-
-    private void Start() {
-        UpdatePowers();
-        UpdateView();
-    }
-
-    // public bool IsLooseBattle(CardDirection _targetDirection, CardPower _powerToCompare, PlayerNumber _opponentPlayer) {
-    //     bool isPlayerOwnerChanged = (playerOwner != _opponentPlayer && cardPowersByDirection[_targetDirection] < _powerToCompare);
-    //     if (isPlayerOwnerChanged) {
-    //         newPlayerOwner = _opponentPlayer;
-    //         StartRotationAnimation(_targetDirection);
-
-    //         AudioManager.Instance.PlaySound(turnCardSound);
-    //     }
-
-    //     return isPlayerOwnerChanged;
-    // }
-
-    public void ChangePlayerOwner(CardDirection _targetDirection, PlayerNumber _newPlayerOwner) {
-        newPlayerOwner = _newPlayerOwner;
-        StartRotationAnimation(_targetDirection);
-
-        AudioManager.Instance.PlaySound(turnCardSound);
-    }
-
     private void StartRotationAnimation(CardDirection _targetDirection) {
         string formattedRotationTrigger = string.Format("Rotate{0}", _targetDirection.ToString());
         Animator.SetTrigger(formattedRotationTrigger);
@@ -243,7 +222,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         return _power == CardPower.Ace ? "A" : _power.ToString("d");
     }
 
-    // Animation Event Functions
+    #region Animation Event Functions
     private void UpdatePlayerOwner() {
         PlayerOwner = newPlayerOwner;
     }
@@ -253,4 +232,5 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             OnCardAnimationFinished(this);
         }
     }
+    #endregion
 }
