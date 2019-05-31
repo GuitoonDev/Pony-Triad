@@ -25,16 +25,10 @@ Todo List
 - Créer le système de gestion de règles - DONE
 - Définir la règle "Open" (jeux visibles) - DONE
 - Définir la règle "Same" - DONE
-
-- Gérer le flow d'une carte posée (Règles + Combo) - IN PROGRESS
-Cartes retournées par ordre de priorité :
-- Same
-- Plus
-- Normal
-
-
+- Gérer le flow d'une carte posée (Règles + Combo) - DONE
 
 - Gérer l'affichage de la règle utilisée - IN PROGRESS
+- BUG : définir la couleur du player score au Start de la CardsHand
 
 - Définir la règle "Plus"
 - Gérer les situations de Combo

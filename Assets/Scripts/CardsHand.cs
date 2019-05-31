@@ -49,7 +49,11 @@ public class CardsHand : MonoBehaviour
     public bool Ready { get; private set; }
 
     private void Start() {
-        playerScoreText.color = playersColorsList.GetPlayerColor(playerId).Color;
+        Debug.LogWarningFormat("CardsHand::Start -> playersColorsList.GetColorByPlayer(playerId) : {0}", playersColorsList.GetColorByPlayer(playerId).ToString("F5"));
+
+        TMP_ColorGradient newColorGradient = playerScoreText.colorGradientPreset;
+        newColorGradient.bottomLeft = newColorGradient.bottomRight = playersColorsList.GetColorByPlayer(playerId);
+        playerScoreText.colorGradientPreset = newColorGradient;
     }
 
     public void Init(CardDatas[] _cardDatasList, bool _enabled) {
