@@ -14,7 +14,7 @@ public class PlayersColorsList : ScriptableObject
     }
 
     [SerializeField] private PlayerColor[] playerColorList = null;
-    public PlayerColor GetPlayerColor(PlayerNumber _player) {
+    public Color GetColorByPlayer(PlayerNumber _player) {
         PlayerColor playerColorValue = null;
         for (int i = 0; playerColorValue == null && i < playerColorList.Length; i++) {
             if (playerColorList[i].Player == _player) {
@@ -22,6 +22,6 @@ public class PlayersColorsList : ScriptableObject
             }
         }
 
-        return playerColorValue;
+        return playerColorValue.Color;
     }
 }

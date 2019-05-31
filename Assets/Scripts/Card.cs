@@ -30,6 +30,9 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     [Header("Card Datas")]
     [SerializeField] private CardDatas datas;
+
+    public bool Interactable { get; set; }
+
     public CardDatas Datas {
         get {
             return datas;
@@ -41,17 +44,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
                 UpdatePowers();
                 UpdateView();
             }
-        }
-    }
-
-    private Animator animator;
-    private Animator Animator {
-        get {
-            if (animator == null) {
-                animator = GetComponent<Animator>();
-            }
-
-            return animator;
         }
     }
 
@@ -72,7 +64,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    public bool Interactable { get; set; }
 
     private PlayerNumber playerOwner = PlayerNumber.None;
     public PlayerNumber PlayerOwner {
@@ -82,10 +73,23 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
                 playerOwner = value;
                 newPlayerOwner = playerOwner;
 
-                cardBackground.color = playersColorsList.GetPlayerColor(playerOwner).Color;
+                cardBackground.color = playersColorsList.GetColorByPlayer(playerOwner);
             }
         }
     }
+
+    private Animator animator;
+    private Animator Animator {
+        get {
+            if (animator == null) {
+                animator = GetComponent<Animator>();
+            }
+
+            return animator;
+        }
+    }
+    private int shineTriggerId;
+    private int overPlayerIntId;
 
     private PlayerNumber newPlayerOwner = PlayerNumber.None;
 
@@ -102,12 +106,19 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
 
     private void Start() {
+        shineTriggerId = Animator.StringToHash("Shine");
+        overPlayerIntId = Animator.StringToHash("OverPlayer");
+
         UpdatePowers();
         UpdateView();
     }
 
     private void OnValidate() {
         UpdateView();
+    }
+
+    public void StartShinyAnimation() {
+        Animator.SetTrigger(shineTriggerId);
     }
 
     public void ChangePlayerOwner(CardDirection _targetDirection, PlayerNumber _newPlayerOwner) {
@@ -121,19 +132,19 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", (int) PlayerOwner);
+            Animator.SetInteger(overPlayerIntId, (int) PlayerOwner);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", (int) PlayerNumber.None);
+            Animator.SetInteger(overPlayerIntId, (int) PlayerNumber.None);
         }
     }
 
     public void OnPointerDown(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", (int) PlayerNumber.None);
+            Animator.SetInteger(overPlayerIntId, (int) PlayerNumber.None);
 
             beforeDragPosition = transform.localPosition;
             zDistanceToCamera = Mathf.Abs(beforeDragPosition.z - Camera.main.transform.position.z);
@@ -177,7 +188,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerUp(PointerEventData eventData) {
         if (Interactable) {
-            Animator.SetInteger("OverPlayer", (int) PlayerNumber.None);
+            Animator.SetInteger(overPlayerIntId, (int) PlayerNumber.None);
 
             transform.localPosition = beforeDragPosition;
 

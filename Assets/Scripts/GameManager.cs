@@ -2,11 +2,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using Audio;
-using AnimatorStateMachineLibrary;
 
 [RequireComponent(typeof(Animator))]
-public class GameManager : MonoBehaviour
+public partial class GameManager : MonoBehaviour
 {
     [System.Serializable]
     public class VerticalListableAreas
@@ -37,6 +35,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Two")]
     [SerializeField] private CardsHand playerTwoCardsHand = null;
+
+    [Header("Eng Game Colors")]
+    [SerializeField] private Color drawColor = default(Color);
+    [SerializeField] private PlayersColorsList playersColorsList = null;
 
     [Header("Field Areas")]
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
@@ -74,25 +76,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Animator animator;
-    private Animator Animator {
-        get {
-            if (animator == null) {
-                animator = GetComponent<Animator>();
-            }
-            return animator;
-        }
-    }
-
     private CardBoardArea[,] selectableAreasList = new CardBoardArea[3, 3];
     private Dictionary<PlayerNumber, CardsHand> cardHandByPlayer = new Dictionary<PlayerNumber, CardsHand>();
-
-    private int cardPlayedCount = 0;
-    private int cardsRotateCount = 0;
-    private int cardsRotationFinishedCount = 0;
-    private int cardsWonCount = 0;
-
-    private bool isComboEnabled;
 
     private CardBoardArea playedCardBoardArea = null;
     private Dictionary<CardDirection, CardBoardArea> playedCardOpponentCardAreasByDirection = null;
@@ -103,7 +88,7 @@ public class GameManager : MonoBehaviour
         return activeGameRules.HasFlag(_rulesToTest);
     }
 
-    public CardDirection GetOppositeDirection(CardDirection _targetDirection) {
+    private CardDirection GetOppositeDirection(CardDirection _targetDirection) {
         CardDirection _oppositeDirection = CardDirection.Up;
         switch (_targetDirection) {
             case CardDirection.Up:
@@ -155,247 +140,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-    }
-
-    [StateEnterMethod("Base Layer.Intro")]
-    private void IntroState() {
-        int[] randomCardLevelArray = new int[5];
-        for (int i = 0; i < randomCardLevelArray.Length; i++) {
-            randomCardLevelArray[i] = Random.Range(0, cardsListArray.Length - 1);
-        }
-
-        CardDatas[] playerCards = new CardDatas[cardsPerPlayer];
-        for (int i = 0; i < playerCards.Length; i++) {
-            playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
-        }
-        playerOneCardsHand.Init(playerCards, false);
-        playerOneCardsHand.OnHandReady += PlayerHandReady;
-
-        playerCards = new CardDatas[cardsPerPlayer];
-        for (int i = 0; i < playerCards.Length; i++) {
-            playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
-        }
-        playerTwoCardsHand.Init(playerCards, false);
-        playerOneCardsHand.OnHandReady += PlayerHandReady;
-
-        cardHandByPlayer[PlayerNumber.One] = playerOneCardsHand;
-        cardHandByPlayer[PlayerNumber.Two] = playerTwoCardsHand;
-
-        for (int positionX = 0; positionX < selectableAreasList.GetLength(0); positionX++) {
-            for (int positionY = 0; positionY < selectableAreasList.GetLength(1); positionY++) {
-                CardBoardArea newSelectableArea = verticalListableAreasList[positionX][positionY];
-                newSelectableArea.OnCardPlayed += PlayedCardPhase;
-                newSelectableArea.OnCardAnimationFinished += CardAnimationFinished;
-                newSelectableArea.BoardCoordinates = new Vector2Int(positionX, positionY);
-                selectableAreasList[positionX, positionY] = newSelectableArea;
-            }
-        }
-
-        currentPlayer = Random.Range(0, 2) < 1 ? PlayerNumber.One : PlayerNumber.Two;
-
-        AudioManager.Instance.PlayGameMusic();
-    }
-    private void PlayerHandReady(CardsHand _cardHandReady) {
-        _cardHandReady.OnHandReady -= PlayerHandReady;
-
-        bool isAllCardHandsReady = true;
-        foreach (CardsHand cardsHandItem in cardHandByPlayer.Values) {
-            isAllCardHandsReady = cardsHandItem.Ready;
-            if (isAllCardHandsReady == false) {
-                break;
-            }
-        }
-
-        if (isAllCardHandsReady) {
-            randomArrow.OnAnimationComplete += BeginGame;
-            randomArrow.StartAnimation(currentPlayer);
-        }
-    }
-
-    private void BeginGame() {
-        randomArrow.OnAnimationComplete -= BeginGame;
-        Animator.SetTrigger("NextState");
-    }
-
-    [StateEnterMethod("Base Layer.PickCard")]
-    private void PickCardState() {
-        switch (CurrentPlayer) {
-            case PlayerNumber.One:
-                CurrentPlayer = PlayerNumber.Two;
-                break;
-
-            case PlayerNumber.Two:
-                CurrentPlayer = PlayerNumber.One;
-                break;
-        }
-    }
-
-    private void PlayedCardPhase(CardBoardArea _playedCardArea) {
-        cardPlayedCount++;
-
-        cardHandByPlayer[CurrentPlayer].RemoveCard(_playedCardArea.Card);
-        cardHandByPlayer[CurrentPlayer].Enable(false);
-
-        playedCardBoardArea = _playedCardArea;
-        playedCardOpponentCardAreasByDirection = GetCardAreasAround(_playedCardArea);
-
-        // if (!isComboUpdate && activeGameRules.HasFlag(GameRule.Plus)) {
-        //     foreach (List<CardWon> plusCardsValuesItem in plusCardsValuesList.Values) {
-        //         if (plusCardsValuesItem.Count > 1) {
-        //             plusCardsWonList.AddRange(plusCardsValuesItem);
-        //         }
-        //     }
-        // }
-
-        Animator.SetTrigger("NextState");
-    }
-
-
-    [StateEnterMethod("Base Layer.SameRule")]
-    private void SameRuleState() {
-        if (activeGameRules.HasFlag(GameRule.Same)) {
-            cardsWonList.Clear();
-
-            foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardByDirectionItem in playedCardOpponentCardAreasByDirection) {
-                CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardByDirectionItem.Key);
-                int powerDiff = ((int) playedCardBoardArea.Card.GetPowerByDirection(opponentCardByDirectionItem.Key)) - ((int) opponentCardByDirectionItem.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
-
-                if (powerDiff == 0 && opponentCardByDirectionItem.Value.Card.PlayerOwner != playedCardBoardArea.Card.PlayerOwner) {
-                    cardsWonCount++;
-                    cardsWonList.Add(new CardWon() {
-                        card = opponentCardByDirectionItem.Value.Card,
-                        direction = opponentCardOppositeDirection,
-                        newPlayerOwner = playedCardBoardArea.Card.PlayerOwner,
-                    });
-                }
-            }
-
-            if (cardsWonList.Count > 1) {
-                ProcessWonCardsList();
-                isComboEnabled = true;
-            }
-            else {
-                Animator.SetTrigger("NextState");
-            }
-        }
-        else {
-            Animator.SetTrigger("NextState");
-        }
-    }
-
-
-    [StateEnterMethod("Base Layer.PlusRule")]
-    private void PlusRuleState() {
-        if (activeGameRules.HasFlag(GameRule.Same)) {
-            cardsWonList.Clear();
-
-            // TODO plus rule
-            Animator.SetTrigger("NextState");
-        }
-        else {
-            Animator.SetTrigger("NextState");
-        }
-    }
-
-
-    [StateEnterMethod("Base Layer.Fight")]
-    private void FightState() {
-        cardsWonList.Clear();
-    }
-
-    private void ProcessComboFightsPhase() {
-
-    }
-
-    private List<CardWon> CardFight(CardBoardArea _targetCardBoardArea) {
-        List<CardWon> cardsWonInFight = new List<CardWon>();
-
-        Dictionary<CardDirection, CardBoardArea> opponentCardBoardAreas = GetCardAreasAround(_targetCardBoardArea);
-
-        foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreaItem in opponentCardBoardAreas) {
-
-        }
-
-        return cardsWonInFight;
-    }
-
-    private void ProcessWonCardsList() {
-        foreach (CardWon cardWonItem in cardsWonList) {
-            cardWonItem.card.ChangePlayerOwner(cardWonItem.direction, cardWonItem.newPlayerOwner);
-        }
-    }
-
-    private void CardsWonAnimationStart(List<CardWon> _cardsWonList) {
-        cardsRotationFinishedCount = 0;
-        foreach (CardWon cardWonItem in _cardsWonList) {
-            cardWonItem.card.ChangePlayerOwner(cardWonItem.direction, cardWonItem.newPlayerOwner);
-            cardsRotateCount++;
-            cardsWonCount++;
-        }
-        _cardsWonList.Clear();
-    }
-
-    private void CardAnimationFinished(CardBoardArea _cardTarget) {
-        cardsRotationFinishedCount++;
-        if (cardsRotationFinishedCount == cardsRotateCount) {
-            cardsRotationFinishedCount = 0;
-            ProcessWonCardsList();
-        }
-    }
-
-    private void BetweenTurnPhase() {
-        isComboEnabled = false;
-        playedCardOpponentCardAreasByDirection.Clear();
-
-        switch (CurrentPlayer) {
-            case PlayerNumber.One:
-                cardHandByPlayer[PlayerNumber.One].CurrentPlayerScore += cardsWonCount;
-                cardHandByPlayer[PlayerNumber.Two].CurrentPlayerScore -= cardsWonCount;
-                break;
-
-            case PlayerNumber.Two:
-                cardHandByPlayer[PlayerNumber.Two].CurrentPlayerScore += cardsWonCount;
-                cardHandByPlayer[PlayerNumber.One].CurrentPlayerScore -= cardsWonCount;
-                break;
-        }
-
-        cardsWonCount = 0;
-
-        bool isGameOver = (cardPlayedCount == selectableAreasList.GetLength(0) * selectableAreasList.GetLength(1));
-        if (isGameOver) {
-            CheckWinner();
-        }
-        else {
-            switch (CurrentPlayer) {
-                case PlayerNumber.One:
-                    CurrentPlayer = PlayerNumber.Two;
-                    break;
-
-                case PlayerNumber.Two:
-                    CurrentPlayer = PlayerNumber.One;
-                    break;
-            }
-        }
-    }
-
-    private void CheckWinner() {
-        CurrentPlayer = PlayerNumber.None;
-
-        uiCanvas.gameObject.SetActive(true);
-
-        if (cardHandByPlayer[PlayerNumber.One].CurrentPlayerScore > cardHandByPlayer[PlayerNumber.Two].CurrentPlayerScore) {
-            // See ColorUtility.ToHtmlStringRGB
-            winText.text = "<color=\"blue\">Blue</color>\nwins !";
-            AudioManager.Instance.PlayVictoryMusic();
-        }
-        else if (cardHandByPlayer[PlayerNumber.One].CurrentPlayerScore < cardHandByPlayer[PlayerNumber.Two].CurrentPlayerScore) {
-            // See ColorUtility.ToHtmlStringRGB
-            winText.text = "<color=\"red\">Red</color>\nwins !";
-            AudioManager.Instance.PlayVictoryMusic();
-        }
-        else {
-            winText.text = "<color=\"green\">Draw</color> !";
-        }
     }
 
     #region UI Methods
