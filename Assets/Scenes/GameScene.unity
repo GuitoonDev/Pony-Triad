@@ -725,7 +725,7 @@ MonoBehaviour:
   m_material: {fileID: 0}
   m_sharedMaterial: {fileID: 0}
   m_isDefaultMaterial: 0
-  m_padding: 2.12
+  m_padding: 0
   m_canvasRenderer: {fileID: 983574165}
   m_TextComponent: {fileID: 1776763209}
   m_materialReferenceIndex: 1
@@ -997,12 +997,12 @@ GameObject:
   - component: {fileID: 1106621243}
   - component: {fileID: 1106621242}
   m_Layer: 0
-  m_Name: Background.Image
+  m_Name: PlayerWin.Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1106621241
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1013,7 +1013,9 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1776763208}
+  - {fileID: 1424562761}
   m_Father: {fileID: 1204614516}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1164,7 +1166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1204614514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1215,8 +1217,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1106621241}
-  - {fileID: 1776763208}
-  - {fileID: 1424562761}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1546,12 +1546,12 @@ RectTransform:
   m_Children:
   - {fileID: 914850275}
   - {fileID: 667711895}
-  m_Father: {fileID: 1204614516}
-  m_RootOrder: 2
+  m_Father: {fileID: 1106621241}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.0000071526, y: 110.1}
+  m_AnchoredPosition: {x: 0, y: 110.100006}
   m_SizeDelta: {x: 200.7, y: 127.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1424562762
@@ -2012,13 +2012,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1776763207}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 983574166}
-  m_Father: {fileID: 1204614516}
-  m_RootOrder: 1
+  m_Father: {fileID: 1106621241}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2125,11 +2125,11 @@ MonoBehaviour:
     lineCount: 2
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -2220,9 +2220,13 @@ MonoBehaviour:
     - {fileID: 525820253}
     - {fileID: 1299533303}
   uiCanvas: {fileID: 1204614515}
-  sameRuleTextPrefab: {fileID: 0}
-  plusRuleTextPrefab: {fileID: 0}
-  comboRuleTextPrefab: {fileID: 0}
+  sameRuleTextPrefab: {fileID: 8966797324652465887, guid: a92700abeb9c1974990cd9005d8755b7,
+    type: 3}
+  plusRuleTextPrefab: {fileID: 1273412886176255368, guid: d24ae228960098241891768f2ea39f6e,
+    type: 3}
+  comboRuleTextPrefab: {fileID: 8565651699367000185, guid: bbcfd88ecd66d514296236947ea8c551,
+    type: 3}
+  winScreen: {fileID: 1106621242}
   winText: {fileID: 1776763209}
   cardsListArray:
   - {fileID: 11400000, guid: 7f67b4f510890f243924879c471acee8, type: 2}

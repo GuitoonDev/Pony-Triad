@@ -134,8 +134,8 @@ public partial class GameManager : MonoBehaviour
             foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
                 CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreas.Key);
 
-                int powerDiff = ((int) playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key)) - ((int) opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
-                if (powerDiff == 0) {
+                bool isSamePower = (playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key) == opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
+                if (isSamePower) {
                     cardsWonList.Add(new CardWon(opponentCardBoardAreas.Value, opponentCardOppositeDirection, playedCardBoardArea.Card.PlayerOwner));
                 }
             }
@@ -148,9 +148,7 @@ public partial class GameManager : MonoBehaviour
                 }
 
                 SpecialRuleText sameRuleText = Instantiate(sameRuleTextPrefab, uiCanvas.transform);
-                sameRuleText.OnAnimationFinished += () => {
-                    ProcessWonCardsList();
-                };
+                sameRuleText.OnAnimationFinished += ProcessWonCardsList;
             }
             else {
                 AnimatorFSM.SetTrigger(nextStateTriggerId);
@@ -169,17 +167,41 @@ public partial class GameManager : MonoBehaviour
         isComboEnabled = false;
         cardsWonList.Clear();
         if (activeGameRules.HasFlag(GameRule.Same)) {
+            Dictionary<int, List<CardWon>> cardWonByAddPowers = new Dictionary<int, List<CardWon>>();
 
-            // TODO plus rule
-            // if (!isComboUpdate && activeGameRules.HasFlag(GameRule.Plus)) {
-            //     foreach (List<CardWon> plusCardsValuesItem in plusCardsValuesList.Values) {
-            //         if (plusCardsValuesItem.Count > 1) {
-            //             plusCardsWonList.AddRange(plusCardsValuesItem);
-            //         }
-            //     }
-            // }
+            foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
+                CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreas.Key);
 
-            AnimatorFSM.SetTrigger(nextStateTriggerId);
+                int powerAdd = ((int) playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key)) + ((int) opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
+
+                List<CardWon> powerAddCardWonList;
+                if (!cardWonByAddPowers.TryGetValue(powerAdd, out powerAddCardWonList)) {
+                    powerAddCardWonList = new List<CardWon>();
+                    cardWonByAddPowers[powerAdd] = powerAddCardWonList;
+                }
+
+                powerAddCardWonList.Add(new CardWon(opponentCardBoardAreas.Value, opponentCardOppositeDirection, playedCardBoardArea.Card.PlayerOwner));
+            }
+
+            foreach (List<CardWon> cardWonByAddPowerItem in cardWonByAddPowers.Values) {
+                if (cardWonByAddPowerItem.Count > 1) {
+                    cardsWonList.AddRange(cardWonByAddPowerItem);
+                }
+            }
+
+            if (cardsWonList.Count > 1) {
+                isComboEnabled = true;
+
+                foreach (CardWon cardWonItem in cardsWonList) {
+                    cardWonItem.cardBoardArea.Card.StartShinyAnimation();
+                }
+
+                SpecialRuleText plusRuleText = Instantiate(plusRuleTextPrefab, uiCanvas.transform);
+                plusRuleText.OnAnimationFinished += ProcessWonCardsList;
+            }
+            else {
+                AnimatorFSM.SetTrigger(nextStateTriggerId);
+            }
         }
         else {
             AnimatorFSM.SetTrigger(nextStateTriggerId);
@@ -216,9 +238,7 @@ public partial class GameManager : MonoBehaviour
             isComboEnabled = true;
 
             SpecialRuleText comboRuleText = Instantiate(comboRuleTextPrefab, uiCanvas.transform);
-            comboRuleText.OnAnimationFinished += () => {
-                ProcessWonCardsList();
-            };
+            comboRuleText.OnAnimationFinished += ProcessWonCardsList;
         }
         else {
             AnimatorFSM.SetTrigger(nextStateTriggerId);
@@ -307,7 +327,7 @@ public partial class GameManager : MonoBehaviour
 
         CurrentPlayer = PlayerNumber.None;
 
-        uiCanvas.gameObject.SetActive(true);
+        winScreen.gameObject.SetActive(true);
 
         if (cardHandByPlayer[PlayerNumber.One].CurrentPlayerScore > cardHandByPlayer[PlayerNumber.Two].CurrentPlayerScore) {
             winText.text = string.Format("<#{0}>Blue</color>\nwins !", ColorUtility.ToHtmlStringRGB(playersColorsList.GetColorByPlayer(PlayerNumber.One)));

@@ -1,27 +1,27 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayersColorsList", menuName = "ProtoTriad/PlayersColorsList")]
 public class PlayersColorsList : ScriptableObject
 {
-    [System.Serializable]
-    public class PlayerColor
-    {
-        [SerializeField] private PlayerNumber player = default(PlayerNumber);
-        public PlayerNumber Player => player;
+    [SerializeField] private Color nonePlayerColor = default(Color);
+    [SerializeField] private Color playerOneColor = default(Color);
+    [SerializeField] private Color playerTwoColor = default(Color);
 
-        [SerializeField] private Color color = default(Color);
-        public Color Color => color;
+    private Dictionary<PlayerNumber, Color> colorByPlayer = null;
+
+    public Color GetColorByPlayer(PlayerNumber _targetPlayer) {
+        if (colorByPlayer == null) {
+            PopulateColorListByPlayer(out colorByPlayer);
+        }
+        return colorByPlayer[_targetPlayer];
     }
 
-    [SerializeField] private PlayerColor[] playerColorList = null;
-    public Color GetColorByPlayer(PlayerNumber _player) {
-        PlayerColor playerColorValue = null;
-        for (int i = 0; playerColorValue == null && i < playerColorList.Length; i++) {
-            if (playerColorList[i].Player == _player) {
-                playerColorValue = playerColorList[i];
-            }
-        }
+    private void PopulateColorListByPlayer(out Dictionary<PlayerNumber, Color> _colorByPlayer) {
+        _colorByPlayer = new Dictionary<PlayerNumber, Color>();
 
-        return playerColorValue.Color;
+        _colorByPlayer[PlayerNumber.None] = nonePlayerColor;
+        _colorByPlayer[PlayerNumber.One] = playerOneColor;
+        _colorByPlayer[PlayerNumber.Two] = playerTwoColor;
     }
 }

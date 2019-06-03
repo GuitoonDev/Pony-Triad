@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
 public partial class GameManager : MonoBehaviour
@@ -48,6 +49,7 @@ public partial class GameManager : MonoBehaviour
     [SerializeField] private SpecialRuleText sameRuleTextPrefab = null;
     [SerializeField] private SpecialRuleText plusRuleTextPrefab = null;
     [SerializeField] private SpecialRuleText comboRuleTextPrefab = null;
+    [SerializeField] private Image winScreen = null;
     [SerializeField] private TextMeshProUGUI winText = null;
 
     [Header("Cards Lists")]

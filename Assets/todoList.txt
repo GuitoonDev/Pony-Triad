@@ -26,12 +26,12 @@ Todo List
 - Définir la règle "Open" (jeux visibles) - DONE
 - Définir la règle "Same" - DONE
 - Gérer le flow d'une carte posée (Règles + Combo) - DONE
+- Gérer l'affichage de la règle utilisée - DONE
+- Définir la règle "Plus" - DONE
+- Gérer les situations de Combo - DONE
 
-- Gérer l'affichage de la règle utilisée - IN PROGRESS
-- BUG : définir la couleur du player score au Start de la CardsHand
+- Gérer les cas limites des règles Plus, Same et des Combos - IN PROGRESS
 
-- Définir la règle "Plus"
-- Gérer les situations de Combo
 - Définir la règle "Borderless"
 - Définir la règle "Ace Walls"
 - Définir la règle "Battle"

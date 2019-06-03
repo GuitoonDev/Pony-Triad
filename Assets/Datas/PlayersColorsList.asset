@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e951e6a99ff5a49892735c4b600767, type: 3}
   m_Name: PlayersColorsList
   m_EditorClassIdentifier: 
-  playerColorList:
-  - player: 0
-    color: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
-  - player: 1
-    color: {r: 0.36912602, g: 0.912886, b: 0.990566, a: 1}
-  - player: 2
-    color: {r: 1, g: 0.5424528, b: 0.62757796, a: 1}
+  nonePlayerColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
+  playerOneColor: {r: 0.36912602, g: 0.912886, b: 0.990566, a: 1}
+  playerTwoColor: {r: 1, g: 0.5424528, b: 0.62757796, a: 1}

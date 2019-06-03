@@ -51,9 +51,9 @@ public class CardsHand : MonoBehaviour
     private void Start() {
         Debug.LogWarningFormat("CardsHand::Start -> playersColorsList.GetColorByPlayer(playerId) : {0}", playersColorsList.GetColorByPlayer(playerId).ToString("F5"));
 
-        TMP_ColorGradient newColorGradient = playerScoreText.colorGradientPreset;
+        VertexGradient newColorGradient = playerScoreText.colorGradient;
         newColorGradient.bottomLeft = newColorGradient.bottomRight = playersColorsList.GetColorByPlayer(playerId);
-        playerScoreText.colorGradientPreset = newColorGradient;
+        playerScoreText.colorGradient = newColorGradient;
     }
 
     public void Init(CardDatas[] _cardDatasList, bool _enabled) {

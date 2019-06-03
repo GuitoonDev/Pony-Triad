@@ -6,7 +6,7 @@ public class SpecialRuleText : MonoBehaviour
     public UnityAction OnAnimationFinished;
 
     private void Start() {
-        Destroy(gameObject, 2);
+        Destroy(gameObject, 1);
     }
 
     private void OnDestroy() {
