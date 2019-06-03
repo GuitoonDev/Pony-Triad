@@ -165,7 +165,10 @@ public partial class GameManager : MonoBehaviour
         Debug.Log("GameManager::PlusRuleState");
 
         isComboEnabled = false;
+
+        List<CardWon> cardsWonInSameState = new List<CardWon>(cardsWonList);
         cardsWonList.Clear();
+
         if (activeGameRules.HasFlag(GameRule.Same)) {
             Dictionary<int, List<CardWon>> cardWonByAddPowers = new Dictionary<int, List<CardWon>>();
 
@@ -189,7 +192,19 @@ public partial class GameManager : MonoBehaviour
                 }
             }
 
-            if (cardsWonList.Count > 1) {
+            // bool isEqualSameWonCards = false;
+            // if (cardsWonInSameState.Count > 0) {
+            //     isEqualSameWonCards = true;
+            //     foreach (CardWon cardWonItem in cardsWonList) {
+            //         foreach (CardWon cardWonInSameStateItem in cardsWonInSameState) {
+            //             if (cardWonInSameStateItem.direction == cardWonItem.direction) {
+            //                 cardsWonInSameState.Remove(cardWonInSameStateItem);
+            //             }
+            //         }
+            //     }
+            // }
+
+            if (/* !isEqualSameWonCards && */ cardsWonList.Count > 1) {
                 isComboEnabled = true;
 
                 foreach (CardWon cardWonItem in cardsWonList) {
@@ -215,9 +230,10 @@ public partial class GameManager : MonoBehaviour
         isComboEnabled = false;
         cardsWonList.Clear();
 
-        cardsWonList.AddRange(CardFight(playedCardBoardArea));
+        List<CardWon> cardsWonInFight = CardFight(playedCardBoardArea);
 
-        if (cardsWonList.Count > 0) {
+        if (cardsWonInFight.Count > 0) {
+            cardsWonList = cardsWonInFight;
             ProcessWonCardsList();
         }
         else {
@@ -230,15 +246,17 @@ public partial class GameManager : MonoBehaviour
         List<CardWon> comboCardsList = new List<CardWon>(cardsWonList);
         cardsWonList.Clear();
 
+        List<CardWon> cardsWonInFight = new List<CardWon>();
         foreach (CardWon comboCardItem in comboCardsList) {
-            cardsWonList.AddRange(CardFight(comboCardItem.cardBoardArea));
+            cardsWonInFight.AddRange(CardFight(comboCardItem.cardBoardArea));
         }
 
-        if (cardsWonList.Count > 0) {
+        if (cardsWonInFight.Count > 0) {
             isComboEnabled = true;
 
+            cardsWonList = cardsWonInFight;
             SpecialRuleText comboRuleText = Instantiate(comboRuleTextPrefab, uiCanvas.transform);
-            comboRuleText.OnAnimationFinished += ProcessWonCardsList;
+            ProcessWonCardsList();
         }
         else {
             AnimatorFSM.SetTrigger(nextStateTriggerId);
@@ -253,7 +271,7 @@ public partial class GameManager : MonoBehaviour
             CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreaItem.Key);
 
             int powerDiff = ((int) _targetCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreaItem.Key)) - ((int) opponentCardBoardAreaItem.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
-            if (powerDiff > 0) {
+            if (powerDiff > 0 && opponentCardBoardAreaItem.Value.Card.PlayerOwner != _targetCardBoardArea.Card.PlayerOwner) {
                 cardsWonInFight.Add(new CardWon(opponentCardBoardAreaItem.Value, opponentCardOppositeDirection, playedCardBoardArea.Card.PlayerOwner));
             }
         }
@@ -265,6 +283,7 @@ public partial class GameManager : MonoBehaviour
         cardsRotationFinishedCount = 0;
         foreach (CardWon cardWonItem in cardsWonList) {
             if (cardWonItem.cardBoardArea.Card.PlayerOwner != playedCardBoardArea.Card.PlayerOwner) {
+                Debug.LogFormat("Card won : " + cardWonItem.cardBoardArea.name + "," + cardWonItem.cardBoardArea.transform.parent.name);
                 cardWonItem.cardBoardArea.Card.ChangePlayerOwner(cardWonItem.direction, cardWonItem.newPlayerOwner);
                 cardsRotateCount++;
                 cardsWonCount++;
@@ -275,8 +294,6 @@ public partial class GameManager : MonoBehaviour
     private void CardAnimationFinished(CardBoardArea _cardTarget) {
         cardsRotationFinishedCount++;
 
-        Debug.LogFormat("CardAnimationFinished:: cardsRotationFinishedCount : {0}, cardsRotateCount : {1}", cardsRotationFinishedCount, cardsRotateCount);
-
         if (cardsRotationFinishedCount == cardsRotateCount) {
             cardsRotationFinishedCount = 0;
             cardsRotateCount = 0;
@@ -285,7 +302,6 @@ public partial class GameManager : MonoBehaviour
                 ProcessComboFightPhase();
             }
             else {
-                Debug.Log("CardAnimationFinished::NextState");
                 AnimatorFSM.SetTrigger(nextStateTriggerId);
             }
         }

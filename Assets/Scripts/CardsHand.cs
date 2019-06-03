@@ -49,17 +49,14 @@ public class CardsHand : MonoBehaviour
     public bool Ready { get; private set; }
 
     private void Start() {
-        Debug.LogWarningFormat("CardsHand::Start -> playersColorsList.GetColorByPlayer(playerId) : {0}", playersColorsList.GetColorByPlayer(playerId).ToString("F5"));
-
         VertexGradient newColorGradient = playerScoreText.colorGradient;
         newColorGradient.bottomLeft = newColorGradient.bottomRight = playersColorsList.GetColorByPlayer(playerId);
         playerScoreText.colorGradient = newColorGradient;
     }
 
     public void Init(CardDatas[] _cardDatasList, bool _enabled) {
-        cardList = new List<Card>();
-
         _cardDatasList.Shuffle();
+        cardList = new List<Card>();
 
         CurrentPlayerScore = _cardDatasList.Length;
 
