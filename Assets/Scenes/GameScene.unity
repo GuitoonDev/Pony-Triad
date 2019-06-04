@@ -2197,7 +2197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuSceneName: MainMenu
-  activeGameRules: 3
+  activeGameRules: 41
   randomArrow: {fileID: 1948792562}
   playerOneCardsHand: {fileID: 1666211576}
   playerTwoCardsHand: {fileID: 532235720}

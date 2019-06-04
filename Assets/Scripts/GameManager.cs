@@ -123,22 +123,30 @@ public partial class GameManager : MonoBehaviour
         int upPosition = _targetCardBoardArea.BoardCoordinates.y - 1;
         int downPosition = _targetCardBoardArea.BoardCoordinates.y + 1;
 
+        if (activeGameRules.HasFlag(GameRule.Borderless)) {
+            if (leftPosition < 0) {
+                leftPosition = selectableAreasList.GetLength(0) - 1;
+            }
+            if (rightPosition >= selectableAreasList.GetLength(0)) {
+                rightPosition = 0;
+            }
+            if (upPosition < 0) {
+                upPosition = selectableAreasList.GetLength(1) - 1;
+            }
+            if (downPosition >= selectableAreasList.GetLength(1)) {
+                downPosition = 0;
+            }
+        }
+
         if (leftPosition >= 0 && !selectableAreasList[leftPosition, _targetCardBoardArea.BoardCoordinates.y].IsEmpty) {
             cardBoardAreasAround[CardDirection.Left] = selectableAreasList[leftPosition, _targetCardBoardArea.BoardCoordinates.y];
         }
-        // else if (activeGameRules.HasFlag(GameRule.Borderless)) {
-        //     leftPosition = selectableAreasList.GetLength(0) - 1;
-        // }
-        // cardBoardAreasAround[CardDirection.Left] = selectableAreasList[leftPosition, _targetCardBoardArea.BoardCoordinates.y];
-
         if (rightPosition < selectableAreasList.GetLength(0) && !selectableAreasList[rightPosition, _targetCardBoardArea.BoardCoordinates.y].IsEmpty) {
             cardBoardAreasAround[CardDirection.Right] = selectableAreasList[rightPosition, _targetCardBoardArea.BoardCoordinates.y];
         }
-
         if (upPosition >= 0 && !selectableAreasList[_targetCardBoardArea.BoardCoordinates.x, upPosition].IsEmpty) {
             cardBoardAreasAround[CardDirection.Up] = selectableAreasList[_targetCardBoardArea.BoardCoordinates.x, upPosition];
         }
-
         if (downPosition < selectableAreasList.GetLength(1) && !selectableAreasList[_targetCardBoardArea.BoardCoordinates.x, downPosition].IsEmpty) {
             cardBoardAreasAround[CardDirection.Down] = selectableAreasList[_targetCardBoardArea.BoardCoordinates.x, downPosition];
         }

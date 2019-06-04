@@ -272,8 +272,19 @@ public partial class GameManager : MonoBehaviour
             CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreaItem.Key);
 
             int powerDiff = ((int) _targetCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreaItem.Key)) - ((int) opponentCardBoardAreaItem.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
-            if (powerDiff > 0 && opponentCardBoardAreaItem.Value.Card.PlayerOwner != _targetCardBoardArea.Card.PlayerOwner) {
-                cardsWonInFight.Add(new CardBoardAreaWon(opponentCardBoardAreaItem.Value, opponentCardOppositeDirection));
+
+            if (opponentCardBoardAreaItem.Value.Card.PlayerOwner != _targetCardBoardArea.Card.PlayerOwner) {
+                bool isTargetCardWon;
+                if (activeGameRules.HasFlag(GameRule.Reversed)) {
+                    isTargetCardWon = powerDiff < 0;
+                }
+                else {
+                    isTargetCardWon = powerDiff > 0;
+                }
+
+                if (isTargetCardWon) {
+                    cardsWonInFight.Add(new CardBoardAreaWon(opponentCardBoardAreaItem.Value, opponentCardOppositeDirection));
+                }
             }
         }
 

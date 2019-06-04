@@ -9,10 +9,11 @@ public enum GameRule
     Plus = 1 << 2,
 
     Borderless = 1 << 3,
-    SameAceWalls = 1 << 4,
+    SameWalls = 1 << 4,
 
-    Battle = 1 << 5,
+    Reversed = 1 << 5,
 
     Random = 1 << 6,
-    Reversed = 1 << 7
+
+    Deathmatch = 1 << 7,
 }

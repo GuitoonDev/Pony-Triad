@@ -30,11 +30,10 @@ Todo List
 - Définir la règle "Plus" - DONE
 - Gérer les situations de Combo - DONE
 - Gérer les cas limites des règles Plus, Same et des Combos - DONE
+- Définir la règle "Borderless" - DONE
 
-- Définir la règle "Borderless"
-
-- Définir la règle "Ace Walls"
-- Définir la règle "Battle"
+- Définir la règle "Same Walls" - IN PROGRESS
+- Définir la règle "Deathmatch"
 
 - Générer aléatoirement les règles pour une partie
 
