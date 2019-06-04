@@ -136,14 +136,16 @@ public partial class GameManager : MonoBehaviour
 
                 bool isSamePower = (playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key) == opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
                 if (isSamePower) {
-                    cardsWonList.Add(new CardWon(opponentCardBoardAreas.Value, opponentCardOppositeDirection, playedCardBoardArea.Card.PlayerOwner));
+                    cardsWonList.Add(new CardBoardAreaWon(opponentCardBoardAreas.Value, opponentCardOppositeDirection));
                 }
             }
 
             if (cardsWonList.Count > 1) {
                 isComboEnabled = true;
 
-                foreach (CardWon cardWonItem in cardsWonList) {
+                sameRuleCardsWonList.AddRange(cardsWonList);
+
+                foreach (CardBoardAreaWon cardWonItem in cardsWonList) {
                     cardWonItem.cardBoardArea.Card.StartShinyAnimation();
                 }
 
@@ -165,49 +167,46 @@ public partial class GameManager : MonoBehaviour
         Debug.Log("GameManager::PlusRuleState");
 
         isComboEnabled = false;
-
-        List<CardWon> cardsWonInSameState = new List<CardWon>(cardsWonList);
         cardsWonList.Clear();
 
         if (activeGameRules.HasFlag(GameRule.Same)) {
-            Dictionary<int, List<CardWon>> cardWonByAddPowers = new Dictionary<int, List<CardWon>>();
+            Dictionary<int, List<CardBoardAreaWon>> cardWonByAddPowers = new Dictionary<int, List<CardBoardAreaWon>>();
 
             foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
                 CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreas.Key);
 
                 int powerAdd = ((int) playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key)) + ((int) opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
 
-                List<CardWon> powerAddCardWonList;
+                List<CardBoardAreaWon> powerAddCardWonList;
                 if (!cardWonByAddPowers.TryGetValue(powerAdd, out powerAddCardWonList)) {
-                    powerAddCardWonList = new List<CardWon>();
+                    powerAddCardWonList = new List<CardBoardAreaWon>();
                     cardWonByAddPowers[powerAdd] = powerAddCardWonList;
                 }
 
-                powerAddCardWonList.Add(new CardWon(opponentCardBoardAreas.Value, opponentCardOppositeDirection, playedCardBoardArea.Card.PlayerOwner));
+                powerAddCardWonList.Add(new CardBoardAreaWon(opponentCardBoardAreas.Value, opponentCardOppositeDirection));
             }
 
-            foreach (List<CardWon> cardWonByAddPowerItem in cardWonByAddPowers.Values) {
+            foreach (List<CardBoardAreaWon> cardWonByAddPowerItem in cardWonByAddPowers.Values) {
                 if (cardWonByAddPowerItem.Count > 1) {
                     cardsWonList.AddRange(cardWonByAddPowerItem);
                 }
             }
 
-            // bool isEqualSameWonCards = false;
-            // if (cardsWonInSameState.Count > 0) {
-            //     isEqualSameWonCards = true;
-            //     foreach (CardWon cardWonItem in cardsWonList) {
-            //         foreach (CardWon cardWonInSameStateItem in cardsWonInSameState) {
-            //             if (cardWonInSameStateItem.direction == cardWonItem.direction) {
-            //                 cardsWonInSameState.Remove(cardWonInSameStateItem);
-            //             }
-            //         }
-            //     }
-            // }
+            bool isEqualSameWonCards = false;
+            if (cardsWonList.Count != 0 && sameRuleCardsWonList.Count == cardsWonList.Count) {
+                isEqualSameWonCards = true;
+                foreach (CardBoardAreaWon cardWonItem in cardsWonList) {
+                    if (!sameRuleCardsWonList.Contains(cardWonItem)) {
+                        isEqualSameWonCards = false;
+                        break;
+                    }
+                }
+            }
 
-            if (/* !isEqualSameWonCards && */ cardsWonList.Count > 1) {
+            if (!isEqualSameWonCards && cardsWonList.Count > 1) {
                 isComboEnabled = true;
 
-                foreach (CardWon cardWonItem in cardsWonList) {
+                foreach (CardBoardAreaWon cardWonItem in cardsWonList) {
                     cardWonItem.cardBoardArea.Card.StartShinyAnimation();
                 }
 
@@ -221,6 +220,8 @@ public partial class GameManager : MonoBehaviour
         else {
             AnimatorFSM.SetTrigger(nextStateTriggerId);
         }
+
+        sameRuleCardsWonList.Clear();
     }
 
     [StateEnterMethod("Base Layer.Fight")]
@@ -230,7 +231,7 @@ public partial class GameManager : MonoBehaviour
         isComboEnabled = false;
         cardsWonList.Clear();
 
-        List<CardWon> cardsWonInFight = CardFight(playedCardBoardArea);
+        List<CardBoardAreaWon> cardsWonInFight = CardFight(playedCardBoardArea);
 
         if (cardsWonInFight.Count > 0) {
             cardsWonList = cardsWonInFight;
@@ -243,11 +244,11 @@ public partial class GameManager : MonoBehaviour
 
     private void ProcessComboFightPhase() {
         isComboEnabled = false;
-        List<CardWon> comboCardsList = new List<CardWon>(cardsWonList);
+        List<CardBoardAreaWon> comboCardsList = new List<CardBoardAreaWon>(cardsWonList);
         cardsWonList.Clear();
 
-        List<CardWon> cardsWonInFight = new List<CardWon>();
-        foreach (CardWon comboCardItem in comboCardsList) {
+        List<CardBoardAreaWon> cardsWonInFight = new List<CardBoardAreaWon>();
+        foreach (CardBoardAreaWon comboCardItem in comboCardsList) {
             cardsWonInFight.AddRange(CardFight(comboCardItem.cardBoardArea));
         }
 
@@ -263,8 +264,8 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
-    private List<CardWon> CardFight(CardBoardArea _targetCardBoardArea) {
-        List<CardWon> cardsWonInFight = new List<CardWon>();
+    private List<CardBoardAreaWon> CardFight(CardBoardArea _targetCardBoardArea) {
+        List<CardBoardAreaWon> cardsWonInFight = new List<CardBoardAreaWon>();
 
         Dictionary<CardDirection, CardBoardArea> opponentCardBoardAreas = GetCardAreasAround(_targetCardBoardArea);
         foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreaItem in opponentCardBoardAreas) {
@@ -272,7 +273,7 @@ public partial class GameManager : MonoBehaviour
 
             int powerDiff = ((int) _targetCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreaItem.Key)) - ((int) opponentCardBoardAreaItem.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
             if (powerDiff > 0 && opponentCardBoardAreaItem.Value.Card.PlayerOwner != _targetCardBoardArea.Card.PlayerOwner) {
-                cardsWonInFight.Add(new CardWon(opponentCardBoardAreaItem.Value, opponentCardOppositeDirection, playedCardBoardArea.Card.PlayerOwner));
+                cardsWonInFight.Add(new CardBoardAreaWon(opponentCardBoardAreaItem.Value, opponentCardOppositeDirection));
             }
         }
 
@@ -281,10 +282,10 @@ public partial class GameManager : MonoBehaviour
 
     private void ProcessWonCardsList() {
         cardsRotationFinishedCount = 0;
-        foreach (CardWon cardWonItem in cardsWonList) {
+        foreach (CardBoardAreaWon cardWonItem in cardsWonList) {
             if (cardWonItem.cardBoardArea.Card.PlayerOwner != playedCardBoardArea.Card.PlayerOwner) {
                 Debug.LogFormat("Card won : " + cardWonItem.cardBoardArea.name + "," + cardWonItem.cardBoardArea.transform.parent.name);
-                cardWonItem.cardBoardArea.Card.ChangePlayerOwner(cardWonItem.direction, cardWonItem.newPlayerOwner);
+                cardWonItem.cardBoardArea.Card.ChangePlayerOwner(cardWonItem.direction, CurrentPlayer);
                 cardsRotateCount++;
                 cardsWonCount++;
             }

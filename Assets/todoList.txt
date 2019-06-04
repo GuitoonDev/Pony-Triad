@@ -29,10 +29,10 @@ Todo List
 - Gérer l'affichage de la règle utilisée - DONE
 - Définir la règle "Plus" - DONE
 - Gérer les situations de Combo - DONE
-
-- Gérer les cas limites des règles Plus, Same et des Combos - IN PROGRESS
+- Gérer les cas limites des règles Plus, Same et des Combos - DONE
 
 - Définir la règle "Borderless"
+
 - Définir la règle "Ace Walls"
 - Définir la règle "Battle"
 

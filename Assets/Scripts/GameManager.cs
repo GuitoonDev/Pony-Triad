@@ -84,7 +84,9 @@ public partial class GameManager : MonoBehaviour
     private CardBoardArea playedCardBoardArea = null;
     private Dictionary<CardDirection, CardBoardArea> playedCardOpponentCardAreasByDirection = null;
 
-    private List<CardWon> cardsWonList = new List<CardWon>();
+    private List<CardBoardAreaWon> sameRuleCardsWonList = new List<CardBoardAreaWon>();
+
+    private List<CardBoardAreaWon> cardsWonList = new List<CardBoardAreaWon>();
 
     public bool HasRuleSet(GameRule _rulesToTest) {
         return activeGameRules.HasFlag(_rulesToTest);
@@ -124,6 +126,10 @@ public partial class GameManager : MonoBehaviour
         if (leftPosition >= 0 && !selectableAreasList[leftPosition, _targetCardBoardArea.BoardCoordinates.y].IsEmpty) {
             cardBoardAreasAround[CardDirection.Left] = selectableAreasList[leftPosition, _targetCardBoardArea.BoardCoordinates.y];
         }
+        // else if (activeGameRules.HasFlag(GameRule.Borderless)) {
+        //     leftPosition = selectableAreasList.GetLength(0) - 1;
+        // }
+        // cardBoardAreasAround[CardDirection.Left] = selectableAreasList[leftPosition, _targetCardBoardArea.BoardCoordinates.y];
 
         if (rightPosition < selectableAreasList.GetLength(0) && !selectableAreasList[rightPosition, _targetCardBoardArea.BoardCoordinates.y].IsEmpty) {
             cardBoardAreasAround[CardDirection.Right] = selectableAreasList[rightPosition, _targetCardBoardArea.BoardCoordinates.y];
