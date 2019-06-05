@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1fb462da9a188f43984e8b1e68e71f5, type: 3}
   m_Name: CardList6
   m_EditorClassIdentifier: 
-  cardDatasArray:
+  cardDataArray:
   - {fileID: 11400000, guid: 62736d95e81ed004a923746053960325, type: 2}
   - {fileID: 11400000, guid: 0f71388eae461424db36b60bd5c7b35c, type: 2}
   - {fileID: 11400000, guid: 8f6e4549b1b2f7f479606a9173c2ade6, type: 2}
