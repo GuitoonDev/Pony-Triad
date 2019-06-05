@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "CardData", menuName = "ProtoTriad/CardData")]
-public class CardDatas : ScriptableObject
+public class CardData : ScriptableObject
 {
     [SerializeField] private Sprite spriteImage = null;
     public Sprite SpriteImage => spriteImage;

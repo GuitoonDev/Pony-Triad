@@ -54,7 +54,7 @@ public class CardsHand : MonoBehaviour
         playerScoreText.colorGradient = newColorGradient;
     }
 
-    public void Init(CardDatas[] _cardDatasList, bool _enabled) {
+    public void Init(CardData[] _cardDatasList, bool _enabled) {
         _cardDatasList.Shuffle();
         cardList = new List<Card>();
 
@@ -62,7 +62,7 @@ public class CardsHand : MonoBehaviour
 
         for (int cardIndex = 0; cardIndex < _cardDatasList.Length; cardIndex++) {
             Card newCard = Instantiate(cardPrefab, transform);
-            newCard.Datas = _cardDatasList[cardIndex];
+            newCard.Data = _cardDatasList[cardIndex];
             newCard.PlayerOwner = playerId;
             newCard.Interactable = _enabled;
 

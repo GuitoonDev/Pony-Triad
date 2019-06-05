@@ -41,14 +41,14 @@ public partial class GameManager : MonoBehaviour
             randomCardLevelArray[i] = Random.Range(0, cardsListArray.Length - 1);
         }
 
-        CardDatas[] playerCards = new CardDatas[cardsPerPlayer];
+        CardData[] playerCards = new CardData[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
         }
         playerOneCardsHand.Init(playerCards, false);
         playerOneCardsHand.OnHandReady += PlayerHandReady;
 
-        playerCards = new CardDatas[cardsPerPlayer];
+        playerCards = new CardData[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
         }

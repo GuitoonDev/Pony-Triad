@@ -29,17 +29,17 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] private AudioClip turnCardSound = null;
 
     [Header("Card Datas")]
-    [SerializeField] private CardDatas datas;
+    [SerializeField] private CardData data;
 
     public bool Interactable { get; set; }
 
-    public CardDatas Datas {
+    public CardData Data {
         get {
-            return datas;
+            return data;
         }
         set {
-            if (datas != value) {
-                datas = value;
+            if (data != value) {
+                data = value;
 
                 UpdatePowers();
                 UpdateView();
@@ -207,22 +207,22 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
 
     private void UpdatePowers() {
-        if (datas != null) {
-            cardPowersByDirection[CardDirection.Up] = datas.PowerUp;
-            cardPowersByDirection[CardDirection.Down] = datas.PowerDown;
-            cardPowersByDirection[CardDirection.Left] = datas.PowerLeft;
-            cardPowersByDirection[CardDirection.Right] = datas.PowerRight;
+        if (data != null) {
+            cardPowersByDirection[CardDirection.Up] = data.PowerUp;
+            cardPowersByDirection[CardDirection.Down] = data.PowerDown;
+            cardPowersByDirection[CardDirection.Left] = data.PowerLeft;
+            cardPowersByDirection[CardDirection.Right] = data.PowerRight;
         }
     }
 
     private void UpdateView() {
-        if (datas != null) {
-            cardImage.sprite = datas.SpriteImage;
+        if (data != null) {
+            cardImage.sprite = data.SpriteImage;
 
-            powerUpText.text = FormatPower(datas.PowerUp);
-            powerDownText.text = FormatPower(datas.PowerDown);
-            powerLeftText.text = FormatPower(datas.PowerLeft);
-            powerRightText.text = FormatPower(datas.PowerRight);
+            powerUpText.text = FormatPower(data.PowerUp);
+            powerDownText.text = FormatPower(data.PowerDown);
+            powerLeftText.text = FormatPower(data.PowerLeft);
+            powerRightText.text = FormatPower(data.PowerRight);
         }
         else {
             Debug.LogWarning("No card datas set to update view", this);

@@ -32,7 +32,9 @@ Todo List
 - Gérer les cas limites des règles Plus, Same et des Combos - DONE
 - Définir la règle "Borderless" - DONE
 
-- Définir la règle "Same Walls" - IN PROGRESS
+- Structurer le jeu en Model-Vue-Controller - IN PROGRESS
+
+- Définir la règle "Same Walls"
 - Définir la règle "Deathmatch"
 
 - Générer aléatoirement les règles pour une partie

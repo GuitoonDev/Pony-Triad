@@ -4,15 +4,15 @@
 public class CardList : ScriptableObject
 {
     [SerializeField]
-    private CardDatas[] cardDatasArray = null;
+    private CardData[] cardDatasArray = null;
 
-    public CardDatas GetRandomCard() {
+    public CardData GetRandomCard() {
         int randomCardIndex = Random.Range(0, cardDatasArray.Length);
         return cardDatasArray[randomCardIndex];
     }
 
-    public CardDatas[] GetRandomCard(int _cardToDrawNumber) {
-        CardDatas[] cardsPicked = new CardDatas[_cardToDrawNumber];
+    public CardData[] GetRandomCard(int _cardToDrawNumber) {
+        CardData[] cardsPicked = new CardData[_cardToDrawNumber];
 
         for (int i = 0; i < cardsPicked.Length; i++) {
             int randomCardIndex = Random.Range(0, cardDatasArray.Length);
