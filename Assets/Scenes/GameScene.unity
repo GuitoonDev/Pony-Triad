@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
+  m_sendNavigationEvents: 0
   m_DragThreshold: 10
 --- !u!4 &4462979
 Transform:
@@ -176,7 +176,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &22573080
 PrefabInstance:
@@ -1957,7 +1957,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1581775356
 MonoBehaviour:
@@ -2164,7 +2164,7 @@ GameObject:
   - component: {fileID: 1861544651}
   - component: {fileID: 1861544650}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: Game.Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2182,7 +2182,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1861544650
 MonoBehaviour:
@@ -2197,7 +2197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuSceneName: MainMenu
-  activeGameRules: 41
+  activeGameRules: 15
   randomArrow: {fileID: 1948792562}
   playerOneCardsHand: {fileID: 1666211576}
   playerTwoCardsHand: {fileID: 532235720}
@@ -2219,15 +2219,6 @@ MonoBehaviour:
     - {fileID: 309408677}
     - {fileID: 525820253}
     - {fileID: 1299533303}
-  uiCanvas: {fileID: 1204614515}
-  sameRuleTextPrefab: {fileID: 8966797324652465887, guid: a92700abeb9c1974990cd9005d8755b7,
-    type: 3}
-  plusRuleTextPrefab: {fileID: 1273412886176255368, guid: d24ae228960098241891768f2ea39f6e,
-    type: 3}
-  comboRuleTextPrefab: {fileID: 8565651699367000185, guid: bbcfd88ecd66d514296236947ea8c551,
-    type: 3}
-  winScreen: {fileID: 1106621242}
-  winText: {fileID: 1776763209}
   cardsListArray:
   - {fileID: 11400000, guid: 7f67b4f510890f243924879c471acee8, type: 2}
   - {fileID: 11400000, guid: 5d868e3ab5eb7964b8a33dee47d0e60b, type: 2}
@@ -2239,6 +2230,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6266c669e370cd14f9d98b48c68850e0, type: 2}
   - {fileID: 11400000, guid: 18f79b90af4a26444b506baf63fe1efd, type: 2}
   - {fileID: 11400000, guid: 34e52d8e0309d324ca8896eeb4025cf1, type: 2}
+  uiCanvas: {fileID: 1204614515}
+  sameRuleTextPrefab: {fileID: 8966797324652465887, guid: a92700abeb9c1974990cd9005d8755b7,
+    type: 3}
+  plusRuleTextPrefab: {fileID: 1273412886176255368, guid: d24ae228960098241891768f2ea39f6e,
+    type: 3}
+  comboRuleTextPrefab: {fileID: 8565651699367000185, guid: bbcfd88ecd66d514296236947ea8c551,
+    type: 3}
+  winScreen: {fileID: 1106621242}
+  winText: {fileID: 1776763209}
 --- !u!95 &1861544651
 Animator:
   serializedVersion: 3
@@ -2285,7 +2285,7 @@ GameObject:
   - component: {fileID: 1883288130}
   - component: {fileID: 1883288132}
   m_Layer: 0
-  m_Name: CardPositions.Holder
+  m_Name: CardBoardAreas.Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2842,7 +2842,7 @@ PrefabInstance:
     - target: {fileID: 8707507735211951577, guid: 202298d88cae44b4ebe69ac35565be87,
         type: 3}
       propertyPath: m_Name
-      value: AudioManager
+      value: Audio.Manager
       objectReference: {fileID: 0}
     - target: {fileID: 8707507735211951579, guid: 202298d88cae44b4ebe69ac35565be87,
         type: 3}

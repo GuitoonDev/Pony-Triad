@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
-public partial class GameManager : MonoBehaviour
+public partial class GameController : MonoBehaviour
 {
     [System.Serializable]
     public class VerticalListableAreas
@@ -17,7 +17,7 @@ public partial class GameManager : MonoBehaviour
         public CardBoardArea this[int _index] => items[_index];
     }
 
-    public static GameManager Instance { get; private set; }
+    public static GameController Instance { get; private set; }
 
     private readonly int cardsPerPlayer = 5;
 
@@ -37,23 +37,23 @@ public partial class GameManager : MonoBehaviour
     [Header("Player Two")]
     [SerializeField] private CardsHand playerTwoCardsHand = null;
 
-    [Header("Eng Game Colors")]
+    [Header("End Game Colors")]
     [SerializeField] private Color drawColor = default(Color);
     [SerializeField] private PlayersColorsList playersColorsList = null;
 
     [Header("Field Areas")]
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
 
-    [Header("Canvas Elements")]
+    [Header("Cards Lists")]
+    [SerializeField] private CardList[] cardsListArray = null;
+
+    [Header("UI")]
     [SerializeField] private Canvas uiCanvas = null;
     [SerializeField] private SpecialRuleText sameRuleTextPrefab = null;
     [SerializeField] private SpecialRuleText plusRuleTextPrefab = null;
     [SerializeField] private SpecialRuleText comboRuleTextPrefab = null;
     [SerializeField] private Image winScreen = null;
     [SerializeField] private TextMeshProUGUI winText = null;
-
-    [Header("Cards Lists")]
-    [SerializeField] private CardList[] cardsListArray = null;
 
     private PlayerNumber currentPlayer = PlayerNumber.None;
     private PlayerNumber CurrentPlayer {

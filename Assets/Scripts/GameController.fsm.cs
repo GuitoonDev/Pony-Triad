@@ -4,7 +4,7 @@ using Audio;
 using AnimatorStateMachineLibrary;
 
 [RequireComponent(typeof(Animator))]
-public partial class GameManager : MonoBehaviour
+public partial class GameController : MonoBehaviour
 {
     private int nextStateTriggerId;
     private int gameOverTriggerId;
@@ -53,7 +53,7 @@ public partial class GameManager : MonoBehaviour
             playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
         }
         playerTwoCardsHand.Init(playerCards, false);
-        playerOneCardsHand.OnHandReady += PlayerHandReady;
+        playerTwoCardsHand.OnHandReady += PlayerHandReady;
 
         cardHandByPlayer[PlayerNumber.One] = playerOneCardsHand;
         cardHandByPlayer[PlayerNumber.Two] = playerTwoCardsHand;

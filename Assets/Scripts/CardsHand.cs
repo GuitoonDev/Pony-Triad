@@ -66,7 +66,7 @@ public class CardsHand : MonoBehaviour
             newCard.PlayerOwner = playerId;
             newCard.Interactable = _enabled;
 
-            if (!GameManager.Instance.HasRuleSet(GameRule.Open)) {
+            if (!GameController.Instance.HasRuleSet(GameRule.Open)) {
                 newCard.Hidden = true;
             }
 
@@ -87,7 +87,7 @@ public class CardsHand : MonoBehaviour
         foreach (Card cardItem in cardList) {
             cardItem.Interactable = _enabled;
 
-            if (!GameManager.Instance.HasRuleSet(GameRule.Open)) {
+            if (!GameController.Instance.HasRuleSet(GameRule.Open)) {
                 cardItem.Hidden = true;
             }
         }
