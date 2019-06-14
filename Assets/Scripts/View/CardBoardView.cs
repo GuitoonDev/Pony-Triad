@@ -2,15 +2,15 @@
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class CardBoardArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardBoardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public UnityAction<CardBoardArea> OnCardAnimationFinished;
-    public UnityAction<CardBoardArea> OnCardPlayed;
+    public UnityAction<CardBoardView> OnCardAnimationFinished;
+    public UnityAction<CardBoardView> OnCardPlayed;
 
     [SerializeField] private SpriteRenderer selectionBorder = null;
 
-    private Card card;
-    public Card Card {
+    private CardView card;
+    public CardView Card {
         get {
             return card;
         }
@@ -48,7 +48,7 @@ public class CardBoardArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    private void CardAnimationFinished(Card _cardTarget) {
+    private void CardAnimationFinished(CardView _cardTarget) {
         if (OnCardAnimationFinished != null) {
             OnCardAnimationFinished(this);
         }

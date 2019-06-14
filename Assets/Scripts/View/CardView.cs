@@ -7,9 +7,9 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    public UnityAction<Card> OnCardAnimationFinished;
+    public UnityAction<CardView> OnCardAnimationFinished;
 
     [Header("Power Texts")]
     [SerializeField] private TextMeshPro powerUpText = null;
@@ -22,18 +22,18 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] private SpriteRenderer cardBackground = null;
 
     [Header("Player Colors")]
-    [SerializeField] private PlayersColorsList playersColorsList = null;
+    [SerializeField] private PlayersColorsDefinition playersColorsList = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip selectCardSound = null;
     [SerializeField] private AudioClip turnCardSound = null;
 
     [Header("Card Datas")]
-    [SerializeField] private CardData data;
+    [SerializeField] private CardDefinition data;
 
     public bool Interactable { get; set; }
 
-    public CardData Data {
+    public CardDefinition Data {
         get {
             return data;
         }
@@ -99,7 +99,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     private Vector3 beforeDragPosition = Vector3.zero;
 
-    private CardBoardArea currentAreaSelected = null;
+    private CardBoardView currentAreaSelected = null;
 
     public CardPower GetPowerByDirection(CardDirection _targetDirection) {
         return cardPowersByDirection[_targetDirection];
@@ -164,9 +164,9 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
             pointerData.position = Input.mousePosition;
             EventSystem.current.RaycastAll(pointerData, raycastResults);
 
-            CardBoardArea hitArea = null;
+            CardBoardView hitArea = null;
             foreach (RaycastResult raycastItem in raycastResults) {
-                hitArea = raycastItem.gameObject.GetComponent<CardBoardArea>();
+                hitArea = raycastItem.gameObject.GetComponent<CardBoardView>();
                 if (hitArea != null) {
                     break;
                 }

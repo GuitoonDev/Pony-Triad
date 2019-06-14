@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayersColorsList", menuName = "ProtoTriad/PlayersColorsList")]
-public class PlayersColorsList : ScriptableObject
+public class PlayersColorsDefinition : ScriptableObject
 {
     [SerializeField] private Color nonePlayerColor = default(Color);
     [SerializeField] private Color playerOneColor = default(Color);

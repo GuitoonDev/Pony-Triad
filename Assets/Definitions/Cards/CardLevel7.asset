@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1fb462da9a188f43984e8b1e68e71f5, type: 3}
-  m_Name: CardList5
+  m_Name: CardLevel7
   m_EditorClassIdentifier: 
   cardDataArray:
-  - {fileID: 11400000, guid: 6ff874c33a9804643af52d83219536de, type: 2}
-  - {fileID: 11400000, guid: ec9a8bee60128334b8ebd241fbf05132, type: 2}
-  - {fileID: 11400000, guid: 060ba4d54962a6f499a29af3051d4318, type: 2}
-  - {fileID: 11400000, guid: 45feecb1b4cd8ad4591e1a1a31311f3c, type: 2}
+  - {fileID: 11400000, guid: 767e4ea4a769bb44282eef5c61669046, type: 2}
+  - {fileID: 11400000, guid: b91a636da713e6542aa7b57b261f9520, type: 2}
+  - {fileID: 11400000, guid: c3665dd6b4c618c4a85a3f7dd5bc6ed1, type: 2}
+  - {fileID: 11400000, guid: d9a3a0004c4239a458b805746ada8963, type: 2}

@@ -41,14 +41,14 @@ public partial class GameController : MonoBehaviour
             randomCardLevelArray[i] = Random.Range(0, cardsListArray.Length - 1);
         }
 
-        CardData[] playerCards = new CardData[cardsPerPlayer];
+        CardDefinition[] playerCards = new CardDefinition[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
         }
         playerOneCardsHand.Init(playerCards, false);
         playerOneCardsHand.OnHandReady += PlayerHandReady;
 
-        playerCards = new CardData[cardsPerPlayer];
+        playerCards = new CardDefinition[cardsPerPlayer];
         for (int i = 0; i < playerCards.Length; i++) {
             playerCards[i] = cardsListArray[randomCardLevelArray[i]].GetRandomCard();
         }
@@ -60,7 +60,7 @@ public partial class GameController : MonoBehaviour
 
         for (int positionX = 0; positionX < selectableAreasList.GetLength(0); positionX++) {
             for (int positionY = 0; positionY < selectableAreasList.GetLength(1); positionY++) {
-                CardBoardArea newSelectableArea = verticalListableAreasList[positionX][positionY];
+                CardBoardView newSelectableArea = verticalListableAreasList[positionX][positionY];
                 newSelectableArea.OnCardPlayed += CardPlayed;
                 newSelectableArea.OnCardAnimationFinished += CardAnimationFinished;
                 newSelectableArea.BoardCoordinates = new Vector2Int(positionX, positionY);
@@ -73,7 +73,7 @@ public partial class GameController : MonoBehaviour
         AudioManager.Instance.PlayGameMusic();
     }
 
-    private void PlayerHandReady(CardsHand _cardHandReady) {
+    private void PlayerHandReady(PlayerView _cardHandReady) {
         _cardHandReady.OnHandReady -= PlayerHandReady;
         handsReadyCount++;
 
@@ -111,7 +111,7 @@ public partial class GameController : MonoBehaviour
         }
     }
 
-    private void CardPlayed(CardBoardArea _playedCardArea) {
+    private void CardPlayed(CardBoardView _playedCardArea) {
         cardPlayedCount++;
 
         cardHandByPlayer[CurrentPlayer].RemoveCard(_playedCardArea.Card);
@@ -131,7 +131,7 @@ public partial class GameController : MonoBehaviour
         isComboEnabled = false;
         cardsWonList.Clear();
         if (activeGameRules.HasFlag(GameRule.Same)) {
-            foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
+            foreach (KeyValuePair<CardDirection, CardBoardView> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
                 CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreas.Key);
 
                 bool isSamePower = (playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key) == opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
@@ -172,7 +172,7 @@ public partial class GameController : MonoBehaviour
         if (activeGameRules.HasFlag(GameRule.Same)) {
             Dictionary<int, List<CardBoardAreaWon>> cardWonByAddPowers = new Dictionary<int, List<CardBoardAreaWon>>();
 
-            foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
+            foreach (KeyValuePair<CardDirection, CardBoardView> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
                 CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreas.Key);
 
                 int powerAdd = ((int) playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key)) + ((int) opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
@@ -264,11 +264,11 @@ public partial class GameController : MonoBehaviour
         }
     }
 
-    private List<CardBoardAreaWon> CardFight(CardBoardArea _targetCardBoardArea) {
+    private List<CardBoardAreaWon> CardFight(CardBoardView _targetCardBoardArea) {
         List<CardBoardAreaWon> cardsWonInFight = new List<CardBoardAreaWon>();
 
-        Dictionary<CardDirection, CardBoardArea> opponentCardBoardAreas = GetCardAreasAround(_targetCardBoardArea);
-        foreach (KeyValuePair<CardDirection, CardBoardArea> opponentCardBoardAreaItem in opponentCardBoardAreas) {
+        Dictionary<CardDirection, CardBoardView> opponentCardBoardAreas = GetCardAreasAround(_targetCardBoardArea);
+        foreach (KeyValuePair<CardDirection, CardBoardView> opponentCardBoardAreaItem in opponentCardBoardAreas) {
             CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreaItem.Key);
 
             int powerDiff = ((int) _targetCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreaItem.Key)) - ((int) opponentCardBoardAreaItem.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
@@ -303,7 +303,7 @@ public partial class GameController : MonoBehaviour
         }
     }
 
-    private void CardAnimationFinished(CardBoardArea _cardTarget) {
+    private void CardAnimationFinished(CardBoardView _cardTarget) {
         cardsRotationFinishedCount++;
 
         if (cardsRotationFinishedCount == cardsRotateCount) {

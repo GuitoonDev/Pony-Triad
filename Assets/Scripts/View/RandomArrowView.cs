@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
-public class RandomArrow : MonoBehaviour
+public class RandomArrowView : MonoBehaviour
 {
     public UnityAction OnAnimationComplete;
 
@@ -36,7 +36,7 @@ public class RandomArrow : MonoBehaviour
         AudioSource.Play();
     }
 
-    #region Animation Event methods
+    #region Animation Events Methods
     public void AnimationComplete() {
         if (OnAnimationComplete != null) {
             OnAnimationComplete();

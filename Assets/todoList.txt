@@ -30,6 +30,7 @@ Todo List
 - Définir la règle "Plus" - DONE
 - Gérer les situations de Combo - DONE
 - Gérer les cas limites des règles Plus, Same et des Combos - DONE
+- Définir la règle "Reverse" - DONE
 - Définir la règle "Borderless" - DONE
 
 - Structurer le jeu en Model-Vue-Controller - IN PROGRESS

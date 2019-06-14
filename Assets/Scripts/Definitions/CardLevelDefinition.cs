@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "CardList", menuName = "ProtoTriad/CardList")]
-public class CardList : ScriptableObject
+public class CardLevelDefinition : ScriptableObject
 {
-    [SerializeField] private CardData[] cardDataArray = null;
+    [SerializeField] private CardDefinition[] cardDataArray = null;
 
-    public CardData GetRandomCard() {
+    public CardDefinition GetRandomCard() {
         int randomCardIndex = Random.Range(0, cardDataArray.Length);
         return cardDataArray[randomCardIndex];
     }
 
-    public CardData[] GetRandomCard(int _cardToDrawNumber) {
-        CardData[] cardsPicked = new CardData[_cardToDrawNumber];
+    public CardDefinition[] GetRandomCard(int _cardToDrawNumber) {
+        CardDefinition[] cardsPicked = new CardDefinition[_cardToDrawNumber];
 
         for (int i = 0; i < cardsPicked.Length; i++) {
             int randomCardIndex = Random.Range(0, cardDataArray.Length);

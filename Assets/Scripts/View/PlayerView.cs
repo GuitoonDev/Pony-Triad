@@ -7,22 +7,22 @@ using UnityEngine.Events;
 using TMPro;
 
 [RequireComponent(typeof(SortingGroup))]
-public class CardsHand : MonoBehaviour
+public class PlayerView : MonoBehaviour
 {
-    public UnityAction<CardsHand> OnHandReady;
+    public UnityAction<PlayerView> OnHandReady;
 
     [SerializeField] private PlayerNumber playerId = PlayerNumber.None;
-    [SerializeField] private Card cardPrefab = null;
+    [SerializeField] private CardView cardPrefab = null;
     [SerializeField] private TextMeshPro playerScoreText = null;
     [SerializeField] private SpriteRenderer currentTurnArrow = null;
 
     [Header("Player Colors")]
-    [SerializeField] private PlayersColorsList playersColorsList = null;
+    [SerializeField] private PlayersColorsDefinition playersColorsList = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip drawCardSound = null;
 
-    private List<Card> cardList = null;
+    private List<CardView> cardList = null;
 
     private int cardsDrawFinishedCount = 0;
 
@@ -54,14 +54,14 @@ public class CardsHand : MonoBehaviour
         playerScoreText.colorGradient = newColorGradient;
     }
 
-    public void Init(CardData[] _cardDatasList, bool _enabled) {
+    public void Init(CardDefinition[] _cardDatasList, bool _enabled) {
         _cardDatasList.Shuffle();
-        cardList = new List<Card>();
+        cardList = new List<CardView>();
 
         CurrentPlayerScore = _cardDatasList.Length;
 
         for (int cardIndex = 0; cardIndex < _cardDatasList.Length; cardIndex++) {
-            Card newCard = Instantiate(cardPrefab, transform);
+            CardView newCard = Instantiate(cardPrefab, transform);
             newCard.Data = _cardDatasList[cardIndex];
             newCard.PlayerOwner = playerId;
             newCard.Interactable = _enabled;
@@ -84,7 +84,7 @@ public class CardsHand : MonoBehaviour
     }
 
     public void Enable(bool _enabled) {
-        foreach (Card cardItem in cardList) {
+        foreach (CardView cardItem in cardList) {
             cardItem.Interactable = _enabled;
 
             if (!GameController.Instance.HasRuleSet(GameRule.Open)) {
@@ -97,7 +97,7 @@ public class CardsHand : MonoBehaviour
         SortingGroup.sortingOrder = _enabled ? 2 : 1;
     }
 
-    public void RemoveCard(Card _card) {
+    public void RemoveCard(CardView _card) {
         cardList.Remove(_card);
     }
 
