@@ -12,10 +12,239 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Card Font SDF
   m_EditorClassIdentifier: 
-  hashCode: 861693500
+  hashCode: 1140060790
   material: {fileID: 21187359567843494}
   materialHashCode: -814149833
-  fontAssetType: 1
+  m_Version: 1.1.0
+  m_SourceFontFileGUID: 831e3b95632b7bb4095f812118c5883f
+  m_SourceFontFile_EditorRef: {fileID: 0}
+  m_SourceFontFile: {fileID: 0}
+  m_AtlasPopulationMode: 0
+  m_FaceInfo:
+    m_FamilyName: Crimson Text
+    m_StyleName: 
+    m_PointSize: 64
+    m_Scale: 1
+    m_LineHeight: 88.4375
+    m_AscentLine: 64.125
+    m_CapLine: 0
+    m_MeanLine: 0
+    m_Baseline: 0
+    m_DescentLine: -18.5625
+    m_SuperscriptOffset: 64.125
+    m_SuperscriptSize: 0.5
+    m_SubscriptOffset: -9.875
+    m_SubscriptSize: 0.5
+    m_UnderlineOffset: -9.875
+    m_UnderlineThickness: 2.9375
+    m_StrikethroughOffset: 16.568182
+    m_StrikethroughThickness: 2.9375
+    m_TabWidth: 160
+  m_GlyphTable:
+  - m_Index: 1
+    m_Metrics:
+      m_Width: 16.125
+      m_Height: 40.3125
+      m_HorizontalBearingX: 7.0625
+      m_HorizontalBearingY: 40.125
+      m_HorizontalAdvance: 30.25
+    m_GlyphRect:
+      m_X: 214
+      m_Y: 140
+      m_Width: 16
+      m_Height: 40
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 2
+    m_Metrics:
+      m_Width: 24.125
+      m_Height: 40.125
+      m_HorizontalBearingX: 3.0625
+      m_HorizontalBearingY: 40.125
+      m_HorizontalAdvance: 30.25
+    m_GlyphRect:
+      m_X: 33
+      m_Y: 353
+      m_Width: 24
+      m_Height: 40
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 3
+    m_Metrics:
+      m_Width: 23.3125
+      m_Height: 40.4375
+      m_HorizontalBearingX: 3.5
+      m_HorizontalBearingY: 40.125
+      m_HorizontalAdvance: 30.3125
+    m_GlyphRect:
+      m_X: 125
+      m_Y: 141
+      m_Width: 23
+      m_Height: 40
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 4
+    m_Metrics:
+      m_Width: 26.0625
+      m_Height: 40.6875
+      m_HorizontalBearingX: 2.0625
+      m_HorizontalBearingY: 40.3125
+      m_HorizontalAdvance: 30.125
+    m_GlyphRect:
+      m_X: 33
+      m_Y: 140
+      m_Width: 26
+      m_Height: 41
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 5
+    m_Metrics:
+      m_Width: 23.1875
+      m_Height: 40.125
+      m_HorizontalBearingX: 3.5625
+      m_HorizontalBearingY: 39.8125
+      m_HorizontalAdvance: 30.3125
+    m_GlyphRect:
+      m_X: 139
+      m_Y: 34
+      m_Width: 23
+      m_Height: 40
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 6
+    m_Metrics:
+      m_Width: 24.75
+      m_Height: 40.8125
+      m_HorizontalBearingX: 2.75
+      m_HorizontalBearingY: 40.4375
+      m_HorizontalAdvance: 30.25
+    m_GlyphRect:
+      m_X: 123
+      m_Y: 352
+      m_Width: 25
+      m_Height: 41
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 7
+    m_Metrics:
+      m_Width: 25.625
+      m_Height: 40.125
+      m_HorizontalBearingX: 2.25
+      m_HorizontalBearingY: 39.75
+      m_HorizontalAdvance: 30.1875
+    m_GlyphRect:
+      m_X: 33
+      m_Y: 247
+      m_Width: 26
+      m_Height: 40
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 8
+    m_Metrics:
+      m_Width: 23.5625
+      m_Height: 40.75
+      m_HorizontalBearingX: 3.3125
+      m_HorizontalBearingY: 40.1875
+      m_HorizontalAdvance: 30.25
+    m_GlyphRect:
+      m_X: 213
+      m_Y: 352
+      m_Width: 24
+      m_Height: 41
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 9
+    m_Metrics:
+      m_Width: 24.625
+      m_Height: 40.8125
+      m_HorizontalBearingX: 2.8125
+      m_HorizontalBearingY: 40.4375
+      m_HorizontalAdvance: 30.25
+    m_GlyphRect:
+      m_X: 124
+      m_Y: 246
+      m_Width: 25
+      m_Height: 41
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 10
+    m_Metrics:
+      m_Width: 40.375
+      m_Height: 41.625
+      m_HorizontalBearingX: 1.25
+      m_HorizontalBearingY: 41.4375
+      m_HorizontalAdvance: 42.75
+    m_GlyphRect:
+      m_X: 33
+      m_Y: 33
+      m_Width: 40
+      m_Height: 42
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 0
+    m_Metrics:
+      m_Width: 0
+      m_Height: 0
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 0
+      m_HorizontalAdvance: 12.825
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 0
+      m_Width: 0
+      m_Height: 0
+    m_Scale: 1
+    m_AtlasIndex: 0
+  m_CharacterTable:
+  - m_ElementType: 1
+    m_Unicode: 49
+    m_GlyphIndex: 1
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 50
+    m_GlyphIndex: 2
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 51
+    m_GlyphIndex: 3
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 52
+    m_GlyphIndex: 4
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 53
+    m_GlyphIndex: 5
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 54
+    m_GlyphIndex: 6
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 55
+    m_GlyphIndex: 7
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 56
+    m_GlyphIndex: 8
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 57
+    m_GlyphIndex: 9
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 65
+    m_GlyphIndex: 10
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 32
+    m_GlyphIndex: 0
+    m_Scale: 1
+  m_AtlasTextures:
+  - {fileID: 28089954701989698}
+  m_AtlasTextureIndex: 0
+  m_UsedGlyphRects: []
+  m_FreeGlyphRects: []
   m_fontInfo:
     Name: Crimson Text
     PointSize: 64
@@ -39,6 +268,10 @@ MonoBehaviour:
     AtlasWidth: 512
     AtlasHeight: 512
   atlas: {fileID: 28089954701989698}
+  m_AtlasWidth: 512
+  m_AtlasHeight: 512
+  m_AtlasPadding: 32
+  m_AtlasRenderMode: 32810
   m_glyphInfoList:
   - id: 49
     x: 214
@@ -130,23 +363,12 @@ MonoBehaviour:
     yOffset: 41.4375
     xAdvance: 42.75
     scale: 1
-  m_kerningInfo:
+  m_KerningTable:
     kerningPairs: []
-  m_kerningPair:
-    m_FirstGlyph: 0
-    m_FirstGlyphAdjustments:
-      xPlacement: 0
-      yPlacement: 0
-      xAdvance: 0
-      yAdvance: 0
-    m_SecondGlyph: 0
-    m_SecondGlyphAdjustments:
-      xPlacement: 0
-      yPlacement: 0
-      xAdvance: 0
-      yAdvance: 0
-    xOffset: 0
+  m_FontFeatureTable:
+    m_GlyphPairAdjustmentRecords: []
   fallbackFontAssets: []
+  m_FallbackFontAssetTable: []
   m_CreationSettings:
     sourceFontFileName: 
     sourceFontFileGUID: 831e3b95632b7bb4095f812118c5883f
@@ -164,6 +386,27 @@ MonoBehaviour:
     fontStyleModifier: 3
     renderMode: 7
     includeFontFeatures: 0
+  m_FontWeightTable:
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
   fontWeights:
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}

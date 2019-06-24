@@ -12,9 +12,9 @@ public partial class GameController : MonoBehaviour
     {
         [HideInInspector] public string name = "Vertical List";
 
-        [SerializeField] private CardBoardView[] items = null;
+        [SerializeField] private CardBoardPartView[] items = null;
 
-        public CardBoardView this[int _index] => items[_index];
+        public CardBoardPartView this[int _index] => items[_index];
     }
 
     public static GameController Instance { get; private set; }
@@ -78,11 +78,11 @@ public partial class GameController : MonoBehaviour
         }
     }
 
-    private CardBoardView[,] selectableAreasList = new CardBoardView[3, 3];
+    private CardBoardPartView[,] selectableAreasList = new CardBoardPartView[3, 3];
     private Dictionary<PlayerNumber, PlayerView> cardHandByPlayer = new Dictionary<PlayerNumber, PlayerView>();
 
-    private CardBoardView playedCardBoardArea = null;
-    private Dictionary<CardDirection, CardBoardView> playedCardOpponentCardAreasByDirection = null;
+    private CardBoardPartView playedCardBoardArea = null;
+    private Dictionary<CardDirection, CardBoardPartView> playedCardOpponentCardAreasByDirection = null;
 
     private List<CardBoardAreaWon> sameRuleCardsWonList = new List<CardBoardAreaWon>();
 
@@ -115,8 +115,8 @@ public partial class GameController : MonoBehaviour
         return _oppositeDirection;
     }
 
-    private Dictionary<CardDirection, CardBoardView> GetCardAreasAround(CardBoardView _targetCardBoardArea) {
-        Dictionary<CardDirection, CardBoardView> cardBoardAreasAround = new Dictionary<CardDirection, CardBoardView>();
+    private Dictionary<CardDirection, CardBoardPartView> GetCardAreasAround(CardBoardPartView _targetCardBoardArea) {
+        Dictionary<CardDirection, CardBoardPartView> cardBoardAreasAround = new Dictionary<CardDirection, CardBoardPartView>();
 
         int leftPosition = _targetCardBoardArea.BoardCoordinates.x - 1;
         int rightPosition = _targetCardBoardArea.BoardCoordinates.x + 1;

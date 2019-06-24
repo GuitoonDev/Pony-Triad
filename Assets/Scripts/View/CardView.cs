@@ -99,7 +99,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private Vector3 beforeDragPosition = Vector3.zero;
 
-    private CardBoardView currentAreaSelected = null;
+    private CardBoardPartView currentAreaSelected = null;
 
     public CardPower GetPowerByDirection(CardDirection _targetDirection) {
         return cardPowersByDirection[_targetDirection];
@@ -164,9 +164,9 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             pointerData.position = Input.mousePosition;
             EventSystem.current.RaycastAll(pointerData, raycastResults);
 
-            CardBoardView hitArea = null;
+            CardBoardPartView hitArea = null;
             foreach (RaycastResult raycastItem in raycastResults) {
-                hitArea = raycastItem.gameObject.GetComponent<CardBoardView>();
+                hitArea = raycastItem.gameObject.GetComponent<CardBoardPartView>();
                 if (hitArea != null) {
                     break;
                 }

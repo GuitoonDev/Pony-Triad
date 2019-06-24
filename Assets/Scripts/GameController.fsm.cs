@@ -60,7 +60,7 @@ public partial class GameController : MonoBehaviour
 
         for (int positionX = 0; positionX < selectableAreasList.GetLength(0); positionX++) {
             for (int positionY = 0; positionY < selectableAreasList.GetLength(1); positionY++) {
-                CardBoardView newSelectableArea = verticalListableAreasList[positionX][positionY];
+                CardBoardPartView newSelectableArea = verticalListableAreasList[positionX][positionY];
                 newSelectableArea.OnCardPlayed += CardPlayed;
                 newSelectableArea.OnCardAnimationFinished += CardAnimationFinished;
                 newSelectableArea.BoardCoordinates = new Vector2Int(positionX, positionY);
@@ -111,7 +111,7 @@ public partial class GameController : MonoBehaviour
         }
     }
 
-    private void CardPlayed(CardBoardView _playedCardArea) {
+    private void CardPlayed(CardBoardPartView _playedCardArea) {
         cardPlayedCount++;
 
         cardHandByPlayer[CurrentPlayer].RemoveCard(_playedCardArea.Card);
@@ -131,7 +131,7 @@ public partial class GameController : MonoBehaviour
         isComboEnabled = false;
         cardsWonList.Clear();
         if (activeGameRules.HasFlag(GameRule.Same)) {
-            foreach (KeyValuePair<CardDirection, CardBoardView> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
+            foreach (KeyValuePair<CardDirection, CardBoardPartView> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
                 CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreas.Key);
 
                 bool isSamePower = (playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key) == opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
@@ -172,7 +172,7 @@ public partial class GameController : MonoBehaviour
         if (activeGameRules.HasFlag(GameRule.Same)) {
             Dictionary<int, List<CardBoardAreaWon>> cardWonByAddPowers = new Dictionary<int, List<CardBoardAreaWon>>();
 
-            foreach (KeyValuePair<CardDirection, CardBoardView> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
+            foreach (KeyValuePair<CardDirection, CardBoardPartView> opponentCardBoardAreas in playedCardOpponentCardAreasByDirection) {
                 CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreas.Key);
 
                 int powerAdd = ((int) playedCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreas.Key)) + ((int) opponentCardBoardAreas.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
@@ -264,11 +264,11 @@ public partial class GameController : MonoBehaviour
         }
     }
 
-    private List<CardBoardAreaWon> CardFight(CardBoardView _targetCardBoardArea) {
+    private List<CardBoardAreaWon> CardFight(CardBoardPartView _targetCardBoardArea) {
         List<CardBoardAreaWon> cardsWonInFight = new List<CardBoardAreaWon>();
 
-        Dictionary<CardDirection, CardBoardView> opponentCardBoardAreas = GetCardAreasAround(_targetCardBoardArea);
-        foreach (KeyValuePair<CardDirection, CardBoardView> opponentCardBoardAreaItem in opponentCardBoardAreas) {
+        Dictionary<CardDirection, CardBoardPartView> opponentCardBoardAreas = GetCardAreasAround(_targetCardBoardArea);
+        foreach (KeyValuePair<CardDirection, CardBoardPartView> opponentCardBoardAreaItem in opponentCardBoardAreas) {
             CardDirection opponentCardOppositeDirection = GetOppositeDirection(opponentCardBoardAreaItem.Key);
 
             int powerDiff = ((int) _targetCardBoardArea.Card.GetPowerByDirection(opponentCardBoardAreaItem.Key)) - ((int) opponentCardBoardAreaItem.Value.Card.GetPowerByDirection(opponentCardOppositeDirection));
@@ -303,7 +303,7 @@ public partial class GameController : MonoBehaviour
         }
     }
 
-    private void CardAnimationFinished(CardBoardView _cardTarget) {
+    private void CardAnimationFinished(CardBoardPartView _cardTarget) {
         cardsRotationFinishedCount++;
 
         if (cardsRotationFinishedCount == cardsRotateCount) {

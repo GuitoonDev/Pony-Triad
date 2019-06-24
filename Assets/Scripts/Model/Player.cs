@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Player : MonoBehaviour
+﻿public class Player
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private const int PLAYER_CARDS_AT_START = 5;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Card[] cardHand;
+
+    public int score;
+
+    public PlayerNumber number;
+
+    public Player(PlayerNumber _playerNumber) {
+        cardHand = new Card[PLAYER_CARDS_AT_START];
+
+        score = PLAYER_CARDS_AT_START;
+
+        number = _playerNumber;
     }
 }

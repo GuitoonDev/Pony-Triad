@@ -1,18 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Board : MonoBehaviour
+﻿public class Board
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Card[,] cardList;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Board() {
+        cardList = new Card[3, 3];
     }
 }

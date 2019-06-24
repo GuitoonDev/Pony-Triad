@@ -1,18 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Game : MonoBehaviour
+﻿public class Game
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Player playerOne;
+    public Player playerTwo;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Board board;
+
+    public Game() {
+        playerOne = new Player(PlayerNumber.One);
+        playerTwo = new Player(PlayerNumber.Two);
+
+        board = new Board();
     }
 }

@@ -2,10 +2,10 @@
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class CardBoardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardBoardPartView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public UnityAction<CardBoardView> OnCardAnimationFinished;
-    public UnityAction<CardBoardView> OnCardPlayed;
+    public UnityAction<CardBoardPartView> OnCardAnimationFinished;
+    public UnityAction<CardBoardPartView> OnCardPlayed;
 
     [SerializeField] private SpriteRenderer selectionBorder = null;
 

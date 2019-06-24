@@ -1,18 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Card : MonoBehaviour
+public class Card
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public CardPower Up { get; private set; }
+    public CardPower Down { get; private set; }
+    public CardPower Left { get; private set; }
+    public CardPower Right { get; private set; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public Sprite Sprite { get; private set; }
+
+    public PlayerNumber PlayerOwner { get; set; }
+
+    public Card(CardDefinition _definition, PlayerNumber _playerNumber) {
+        Up = _definition.PowerUp;
+        Down = _definition.PowerDown;
+        Left = _definition.PowerLeft;
+        Right = _definition.PowerRight;
+
+        Sprite = _definition.SpriteImage;
+
+        PlayerOwner = _playerNumber;
     }
 }
