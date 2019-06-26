@@ -1,6 +1,6 @@
-﻿using Audio;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using PonyTriad.Audio;
 
 [RequireComponent(typeof(Button))]
 public class ButtonSoundEffect : MonoBehaviour

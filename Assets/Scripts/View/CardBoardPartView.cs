@@ -30,7 +30,7 @@ public class CardBoardPartView : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
     }
 
-    public Vector2Int BoardCoordinates { get; set; }
+    public Vector2Int BoardPosition { get; set; }
 
     public bool IsEmpty {
         get { return card == null; }

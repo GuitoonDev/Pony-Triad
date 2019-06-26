@@ -1,7 +1,7 @@
-﻿using Audio;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using PonyTriad.Audio;
 
 public class MainMenuManager : MonoBehaviour
 {

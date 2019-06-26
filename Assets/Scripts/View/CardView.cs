@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using TMPro;
-using Audio;
-using UnityEngine.Events;
+using PonyTriad.Model;
+using PonyTriad.Audio;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -28,25 +29,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private AudioClip selectCardSound = null;
     [SerializeField] private AudioClip turnCardSound = null;
 
-    [Header("Card Datas")]
-    [SerializeField] private CardDefinition data;
-
-    public bool Interactable { get; set; }
-
-    public CardDefinition Data {
-        get {
-            return data;
-        }
-        set {
-            if (data != value) {
-                data = value;
-
-                UpdatePowers();
-                UpdateView();
-            }
-        }
-    }
-
     private SpriteRenderer spriteRenderer;
     public SpriteRenderer SpriteRenderer {
         get {
@@ -58,17 +40,19 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    public bool Hidden {
+    private bool interactable;
+    public bool Interactable {
+        get { return interactable; }
         set {
-            Animator.SetBool("Hidden", !Interactable);
+            interactable = value;
+            Animator.SetBool("Hidden", !interactable && !isOpenRuleActive);
         }
     }
-
 
     private PlayerNumber playerOwner = PlayerNumber.None;
     public PlayerNumber PlayerOwner {
         get { return playerOwner; }
-        set {
+        private set {
             if (playerOwner != value) {
                 playerOwner = value;
                 newPlayerOwner = playerOwner;
@@ -88,8 +72,13 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             return animator;
         }
     }
+
+    public Card Model { get; private set; }
+
+
     private int shineTriggerId;
     private int overPlayerIntId;
+    private bool isOpenRuleActive;
 
     private PlayerNumber newPlayerOwner = PlayerNumber.None;
 
@@ -108,26 +97,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void Start() {
         shineTriggerId = Animator.StringToHash("Shine");
         overPlayerIntId = Animator.StringToHash("OverPlayer");
-
-        UpdatePowers();
-        UpdateView();
-    }
-
-    private void OnValidate() {
-        UpdateView();
-    }
-
-    public void StartShinyAnimation() {
-        Animator.SetTrigger(shineTriggerId);
-    }
-
-    public void ChangePlayerOwner(CardDirection _targetDirection, PlayerNumber _newPlayerOwner) {
-        if (newPlayerOwner != _newPlayerOwner) {
-            newPlayerOwner = _newPlayerOwner;
-            StartRotationAnimation(_targetDirection);
-
-            AudioManager.Instance.PlaySound(turnCardSound);
-        }
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -201,31 +170,33 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    private void StartRotationAnimation(CardDirection _targetDirection) {
-        string formattedRotationTrigger = string.Format("Rotate{0}", _targetDirection.ToString());
-        Animator.SetTrigger(formattedRotationTrigger);
+    public void Init(Card _cardModel, bool _isOpenRuleActive) {
+        Model = _cardModel;
+
+        isOpenRuleActive = _isOpenRuleActive;
+
+        cardImage.sprite = _cardModel.Sprite;
+
+        PlayerOwner = _cardModel.PlayerOwner;
+
+        powerUpText.text = FormatPower(_cardModel.PowerUp);
+        powerDownText.text = FormatPower(_cardModel.PowerDown);
+        powerLeftText.text = FormatPower(_cardModel.PowerLeft);
+        powerRightText.text = FormatPower(_cardModel.PowerRight);
     }
 
-    private void UpdatePowers() {
-        if (data != null) {
-            cardPowersByDirection[CardDirection.Up] = data.PowerUp;
-            cardPowersByDirection[CardDirection.Down] = data.PowerDown;
-            cardPowersByDirection[CardDirection.Left] = data.PowerLeft;
-            cardPowersByDirection[CardDirection.Right] = data.PowerRight;
-        }
+    public void StartShinyAnimation() {
+        Animator.SetTrigger(shineTriggerId);
     }
 
-    private void UpdateView() {
-        if (data != null) {
-            cardImage.sprite = data.SpriteImage;
+    public void ChangePlayerOwner(CardDirection _targetDirection, PlayerNumber _newPlayerOwner) {
+        if (newPlayerOwner != _newPlayerOwner) {
+            newPlayerOwner = _newPlayerOwner;
 
-            powerUpText.text = FormatPower(data.PowerUp);
-            powerDownText.text = FormatPower(data.PowerDown);
-            powerLeftText.text = FormatPower(data.PowerLeft);
-            powerRightText.text = FormatPower(data.PowerRight);
-        }
-        else {
-            Debug.LogWarning("No card datas set to update view", this);
+            string formattedRotationTrigger = string.Format("Rotate{0}", _targetDirection.ToString());
+            Animator.SetTrigger(formattedRotationTrigger);
+
+            AudioManager.Instance.PlaySound(turnCardSound);
         }
     }
 

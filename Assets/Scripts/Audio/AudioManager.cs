@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Audio
+namespace PonyTriad.Audio
 {
     public class AudioManager : MonoBehaviour
     {

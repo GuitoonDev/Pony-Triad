@@ -449,7 +449,7 @@ PrefabInstance:
     - target: {fileID: 1401779888878131200, guid: b481e6a2f0506cd468c8c965e9ae409a,
         type: 3}
       propertyPath: m_Name
-      value: PlayerTwo.CardsHand
+      value: PlayerTwo.View
       objectReference: {fileID: 0}
     - target: {fileID: 1401779888878131203, guid: b481e6a2f0506cd468c8c965e9ae409a,
         type: 3}
@@ -2199,10 +2199,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuSceneName: MainMenu
-  activeGameRules: 15
+  activeGameRules: 23
   randomArrow: {fileID: 1948792562}
-  playerOneCardsHand: {fileID: 1666211576}
-  playerTwoCardsHand: {fileID: 532235720}
+  playerOneView: {fileID: 1666211576}
+  playerTwoView: {fileID: 532235720}
   drawColor: {r: 0.43454072, g: 0.990566, b: 0.5950874, a: 1}
   playersColorsList: {fileID: 11400000, guid: 328f34c00df0b694cb014c8f6937c75f, type: 2}
   verticalListableAreasList:
@@ -2651,7 +2651,7 @@ PrefabInstance:
     - target: {fileID: 1401779888878131200, guid: b481e6a2f0506cd468c8c965e9ae409a,
         type: 3}
       propertyPath: m_Name
-      value: PlayerOne.CardsHand
+      value: PlayerOne.View
       objectReference: {fileID: 0}
     - target: {fileID: 1401779888878131203, guid: b481e6a2f0506cd468c8c965e9ae409a,
         type: 3}

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using DG.Tweening;
-using Audio;
 using UnityEngine.Events;
+using DG.Tweening;
 using TMPro;
+using PonyTriad.Model;
+using PonyTriad.Audio;
 
 [RequireComponent(typeof(SortingGroup))]
 public class PlayerView : MonoBehaviour
 {
     public UnityAction<PlayerView> OnHandReady;
 
-    [SerializeField] private PlayerNumber playerId = PlayerNumber.None;
     [SerializeField] private CardView cardPrefab = null;
     [SerializeField] private TextMeshPro playerScoreText = null;
     [SerializeField] private SpriteRenderer currentTurnArrow = null;
@@ -22,7 +22,7 @@ public class PlayerView : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] private AudioClip drawCardSound = null;
 
-    private List<CardView> cardList = null;
+    private List<CardView> cardHandView = null;
 
     private int cardsDrawFinishedCount = 0;
 
@@ -37,7 +37,7 @@ public class PlayerView : MonoBehaviour
         }
     }
 
-    private int currentPlayerScore = 0;
+    private int currentPlayerScore;
     public int CurrentPlayerScore {
         get { return currentPlayerScore; }
         set {
@@ -48,48 +48,34 @@ public class PlayerView : MonoBehaviour
 
     public bool Ready { get; private set; }
 
-    private void Start() {
+    public void Init(Player _playerModel, bool _enabled, bool _isOpenRuleActive) {
         VertexGradient newColorGradient = playerScoreText.colorGradient;
-        newColorGradient.bottomLeft = newColorGradient.bottomRight = playersColorsList.GetColorByPlayer(playerId);
+        newColorGradient.bottomLeft = newColorGradient.bottomRight = playersColorsList.GetColorByPlayer(_playerModel.Number);
         playerScoreText.colorGradient = newColorGradient;
-    }
 
-    public void Init(CardDefinition[] _cardDatasList, bool _enabled) {
-        _cardDatasList.Shuffle();
-        cardList = new List<CardView>();
+        CurrentPlayerScore = _playerModel.Score;
 
-        CurrentPlayerScore = _cardDatasList.Length;
-
-        for (int cardIndex = 0; cardIndex < _cardDatasList.Length; cardIndex++) {
+        cardHandView = new List<CardView>();
+        for (int cardIndex = 0; cardIndex < _playerModel.CardHand.Count; cardIndex++) {
             CardView newCard = Instantiate(cardPrefab, transform);
-            newCard.Data = _cardDatasList[cardIndex];
-            newCard.PlayerOwner = playerId;
-            newCard.Interactable = _enabled;
-
-            if (!GameController.Instance.HasRuleSet(GameRule.Open)) {
-                newCard.Hidden = true;
-            }
+            newCard.Init(_playerModel.CardHand[cardIndex], _isOpenRuleActive);
 
             float endPosition = cardIndex * (-newCard.SpriteRenderer.bounds.size.y * 0.525f);
-            newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_cardDatasList.Length - cardIndex) * 0.001f);
+            newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_playerModel.CardHand.Count - cardIndex) * 0.001f);
             newCard.transform.DOLocalMoveY(endPosition, 0.35f, false)
-                .SetDelay((_cardDatasList.Length - cardIndex) * 0.095f)
+                .SetDelay((_playerModel.CardHand.Count - cardIndex) * 0.095f)
                 .OnStart(() => {
                     AudioManager.Instance.PlaySound(drawCardSound);
                 })
                 .OnComplete(CardAnimationFinished);
 
-            cardList.Add(newCard);
+            cardHandView.Add(newCard);
         }
     }
 
     public void Enable(bool _enabled) {
-        foreach (CardView cardItem in cardList) {
+        foreach (CardView cardItem in cardHandView) {
             cardItem.Interactable = _enabled;
-
-            if (!GameController.Instance.HasRuleSet(GameRule.Open)) {
-                cardItem.Hidden = true;
-            }
         }
 
         currentTurnArrow.gameObject.SetActive(_enabled);
@@ -98,16 +84,22 @@ public class PlayerView : MonoBehaviour
     }
 
     public void RemoveCard(CardView _card) {
-        cardList.Remove(_card);
+        cardHandView.Remove(_card);
+    }
+
+    private void UpdateView() {
     }
 
     #region Animation Event Functions
     private void CardAnimationFinished() {
         cardsDrawFinishedCount++;
 
-        if (cardsDrawFinishedCount >= cardList.Count && OnHandReady != null) {
+        bool isAllCardAnimationFinished = (cardsDrawFinishedCount >= cardHandView.Count);
+        if (isAllCardAnimationFinished) {
             Ready = true;
-            OnHandReady(this);
+            if (OnHandReady != null) {
+                OnHandReady(this);
+            }
         }
     }
     #endregion

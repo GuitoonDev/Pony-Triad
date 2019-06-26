@@ -1,18 +1,35 @@
-﻿public class Player
+﻿using System.Collections.Generic;
+using UnityEngine.Events;
+
+namespace PonyTriad.Model
 {
-    private const int PLAYER_CARDS_AT_START = 5;
+    public class Player
+    {
+        public UnityAction OnUpdate;
 
-    public Card[] cardHand;
+        public int Score { get; set; }
 
-    public int score;
+        public List<Card> CardHand { get; private set; }
 
-    public PlayerNumber number;
+        public PlayerNumber Number { get; private set; }
 
-    public Player(PlayerNumber _playerNumber) {
-        cardHand = new Card[PLAYER_CARDS_AT_START];
+        public Player(PlayerNumber _playerNumber, CardLevelDefinition[] _cardDefinitionArrayByLevel, int[] _randomCardLevelArray) {
+            CardHand = new List<Card>();
 
-        score = PLAYER_CARDS_AT_START;
+            for (int i = 0; i < _randomCardLevelArray.Length; i++) {
+                CardDefinition randomPickedCard = _cardDefinitionArrayByLevel[_randomCardLevelArray[i]].GetRandomCard();
 
-        number = _playerNumber;
+                Card newCard = new Card(_playerNumber, randomPickedCard);
+                CardHand.Add(newCard);
+            }
+            CardHand.Shuffle();
+
+            Score = _randomCardLevelArray.Length;
+            Number = _playerNumber;
+        }
+
+        public void PlayCard(Card _playedCard) {
+            CardHand.Remove(_playedCard);
+        }
     }
 }

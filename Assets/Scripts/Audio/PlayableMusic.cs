@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Audio
+namespace PonyTriad.Audio
 {
     [Serializable]
     public class PlayableMusic

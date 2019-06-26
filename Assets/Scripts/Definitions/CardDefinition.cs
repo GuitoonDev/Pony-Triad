@@ -7,31 +7,15 @@ public class CardDefinition : ScriptableObject
     public Sprite SpriteImage => spriteImage;
 
     [Header("Sides Power")]
-    [SerializeField] private CardPower powerUp = CardPower.One;
-    public CardPower PowerUp {
-        get {
-            return powerUp;
-        }
-    }
+    [SerializeField] private CardPower powerUp = CardPower.Zero;
+    public CardPower PowerUp { get { return powerUp; } }
 
-    [SerializeField] private CardPower powerDown = CardPower.One;
-    public CardPower PowerDown {
-        get {
-            return powerDown;
-        }
-    }
+    [SerializeField] private CardPower powerDown = CardPower.Zero;
+    public CardPower PowerDown { get { return powerDown; } }
 
-    [SerializeField] private CardPower powerLeft = CardPower.One;
-    public CardPower PowerLeft {
-        get {
-            return powerLeft;
-        }
-    }
+    [SerializeField] private CardPower powerLeft = CardPower.Zero;
+    public CardPower PowerLeft { get { return powerLeft; } }
 
-    [SerializeField] private CardPower powerRight = CardPower.One;
-    public CardPower PowerRight {
-        get {
-            return powerRight;
-        }
-    }
+    [SerializeField] private CardPower powerRight = CardPower.Zero;
+    public CardPower PowerRight { get { return powerRight; } }
 }
