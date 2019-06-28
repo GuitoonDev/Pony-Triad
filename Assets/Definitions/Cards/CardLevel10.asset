@@ -15,5 +15,6 @@ MonoBehaviour:
   cardDataArray:
   - {fileID: 11400000, guid: e3868bb5ea39646468cdea143db857eb, type: 2}
   - {fileID: 11400000, guid: 2c34c6c6776fbcf4c8a71f928c2da7a7, type: 2}
+  - {fileID: 11400000, guid: bf55ca298f2ad7540b738cdbcad79bd4, type: 2}
   - {fileID: 11400000, guid: 4322922434e1e0c4d9a219108e1af7b8, type: 2}
   - {fileID: 11400000, guid: f6659392e5c611c47891291fe590b308, type: 2}

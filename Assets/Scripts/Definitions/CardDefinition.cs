@@ -6,7 +6,7 @@ public class CardDefinition : ScriptableObject
     [SerializeField] private Sprite spriteImage = null;
     public Sprite SpriteImage => spriteImage;
 
-    [Header("Sides Power")]
+    [Header("Power By Side")]
     [SerializeField] private CardPower powerUp = CardPower.Zero;
     public CardPower PowerUp { get { return powerUp; } }
 

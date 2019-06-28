@@ -61,16 +61,12 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.Intro")]
     private void IntroState() {
-        Debug.Log("GameManager::IntroState");
-
-        bool isOpenRuleActive = activeGameRules.HasFlag(GameRule.AllOpen);
-
         game = new Game(cardsListArray, cardsPerPlayer, activeGameRules);
 
-        playerOneView.Init(game.GetPlayerByNumber(PlayerNumber.One), false, isOpenRuleActive);
+        playerOneView.Init(game.GetPlayerByNumber(PlayerNumber.One), false);
         playerOneView.OnHandReady += PlayerHandReady;
 
-        playerTwoView.Init(game.GetPlayerByNumber(PlayerNumber.Two), false, isOpenRuleActive);
+        playerTwoView.Init(game.GetPlayerByNumber(PlayerNumber.Two), false);
         playerTwoView.OnHandReady += PlayerHandReady;
 
         playerViewByNumber[PlayerNumber.One] = playerOneView;
@@ -116,8 +112,7 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.PickCard")]
     private void PickCardState() {
-        Debug.Log("GameManager::PickCardState");
-
+        Debug.LogFormat("GameController::PickCard");
         switch (currentPlayer) {
             case PlayerNumber.One:
                 CurrentPlayer = PlayerNumber.Two;
@@ -130,6 +125,7 @@ public partial class GameController : MonoBehaviour
     }
 
     private void CardPlayed(CardBoardPartView _playedCardBoardArea) {
+        Debug.LogFormat("GameController::CardPlayed");
         playerViewByNumber[CurrentPlayer].RemoveCard(_playedCardBoardArea.Card);
         playerViewByNumber[CurrentPlayer].Enable(false);
 
@@ -141,12 +137,11 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.SameRule")]
     private void SameRuleState() {
-        Debug.Log("GameManager::SameRuleState");
-
+        Debug.LogFormat("GameController::SameRuleState");
         if (turnResultByPhase.TryGetValue(GamePhase.Same, out currentPhaseResult)) {
             SpecialRuleText sameRuleText = Instantiate(sameRuleTextPrefab, uiCanvas.transform);
             sameRuleText.OnAnimationFinished += () => {
-                ProcessWonCardsList(currentPhaseResult.cardsWonList);
+                ProcessWonCardsList(currentPhaseResult.cardWonList);
             };
         }
         else {
@@ -157,12 +152,11 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.PlusRule")]
     private void PlusRuleState() {
-        Debug.Log("GameManager::PlusRuleState");
-
+        Debug.LogFormat("GameController::PlusRuleState");
         if (turnResultByPhase.TryGetValue(GamePhase.Plus, out currentPhaseResult)) {
             SpecialRuleText plusRuleText = Instantiate(plusRuleTextPrefab, uiCanvas.transform);
             plusRuleText.OnAnimationFinished += () => {
-                ProcessWonCardsList(currentPhaseResult.cardsWonList);
+                ProcessWonCardsList(currentPhaseResult.cardWonList);
             };
         }
         else {
@@ -172,10 +166,9 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.Fight")]
     private void FightState() {
-        Debug.Log("GameManager::FightState");
-
+        Debug.LogFormat("GameController::FightState");
         if (turnResultByPhase.TryGetValue(GamePhase.Normal, out currentPhaseResult)) {
-            ProcessWonCardsList(currentPhaseResult.cardsWonList);
+            ProcessWonCardsList(currentPhaseResult.cardWonList);
         }
         else {
             AnimatorFSM.SetTrigger(nextStateTriggerId);
@@ -183,14 +176,16 @@ public partial class GameController : MonoBehaviour
     }
 
     private void ProcessWonCardsList(List<CardOnBoardWon> _cardsWonList) {
+        Debug.LogFormat("GameController::ProcessWonCardsList");
         cardsRotationFinishedCount = 0;
         foreach (CardOnBoardWon cardWonItem in _cardsWonList) {
-            // if (cardWonItem.card.PlayerOwner != cardWonItem.previousPlayerOwner) {
             Debug.LogFormat("Card won : {0}", cardWonItem.card.BoardPosition);
             Vector2Int cardWonBoardPosition = cardWonItem.card.BoardPosition.Value;
-            selectableAreasList[cardWonBoardPosition.x, cardWonBoardPosition.y].Card.ChangePlayerOwner(cardWonItem.direction, CurrentPlayer);
-            cardsRotateCount++;
-            // }
+            CardView targetCardViewItem = selectableAreasList[cardWonBoardPosition.x, cardWonBoardPosition.y].Card;
+            if (targetCardViewItem.PlayerOwner != CurrentPlayer) {
+                targetCardViewItem.ChangePlayerOwner(cardWonItem.direction, CurrentPlayer);
+                cardsRotateCount++;
+            }
         }
     }
 
@@ -202,6 +197,7 @@ public partial class GameController : MonoBehaviour
             cardsRotateCount = 0;
 
             if (currentPhaseResult.comboCardList != null && currentPhaseResult.comboCardList.Count > 0) {
+                Debug.LogFormat("GameController::CardAnimationFinished -> COMBO");
                 SpecialRuleText comboRuleText = Instantiate(comboRuleTextPrefab, uiCanvas.transform);
                 ProcessWonCardsList(currentPhaseResult.comboCardList.Dequeue());
             }
@@ -213,8 +209,7 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.BetweenTurns")]
     private void BetweenTurnState() {
-        Debug.Log("GameManager::BetweenTurnState");
-
+        Debug.LogFormat("GameController::BetweenTurnState");
         playerViewByNumber[PlayerNumber.One].CurrentPlayerScore = game.GetPlayerByNumber(PlayerNumber.One).Score;
         playerViewByNumber[PlayerNumber.Two].CurrentPlayerScore = game.GetPlayerByNumber(PlayerNumber.Two).Score;
 
@@ -228,8 +223,6 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.GameOver")]
     private void GameOverState() {
-        Debug.Log("GameManager::GameOverState");
-
         CurrentPlayer = PlayerNumber.None;
 
         winScreen.gameObject.SetActive(true);

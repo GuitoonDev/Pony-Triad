@@ -19,11 +19,12 @@ public class CardBoardPartView : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 card = value;
                 card.transform.SetParent(transform);
                 card.transform.localPosition = Vector3.zero;
+                card.IsOnBoard = true;
                 card.Interactable = false;
 
                 card.OnCardAnimationFinished += CardAnimationFinished;
 
-                selectionBorder.gameObject.SetActive(IsEmpty);
+                selectionBorder.gameObject.SetActive(false);
 
                 OnCardPlayed(this);
             }
@@ -32,18 +33,14 @@ public class CardBoardPartView : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public Vector2Int BoardPosition { get; set; }
 
-    public bool IsEmpty {
-        get { return card == null; }
-    }
-
     public void OnPointerEnter(PointerEventData eventData) {
-        if (IsEmpty) {
+        if (card == null) {
             selectionBorder.gameObject.SetActive(true);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (IsEmpty) {
+        if (card == null) {
             selectionBorder.gameObject.SetActive(false);
         }
     }

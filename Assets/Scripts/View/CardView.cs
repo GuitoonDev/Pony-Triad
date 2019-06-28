@@ -45,7 +45,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         get { return interactable; }
         set {
             interactable = value;
-            Animator.SetBool("Hidden", !interactable && !isOpenRuleActive);
+            Animator.SetBool("Hidden", !interactable && !isOpen && !IsOnBoard);
         }
     }
 
@@ -74,11 +74,11 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     public Card Model { get; private set; }
-
+    public bool IsOnBoard { get; set; }
 
     private int shineTriggerId;
     private int overPlayerIntId;
-    private bool isOpenRuleActive;
+    private bool isOpen;
 
     private PlayerNumber newPlayerOwner = PlayerNumber.None;
 
@@ -173,7 +173,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void Init(Card _cardModel, bool _isOpenRuleActive) {
         Model = _cardModel;
 
-        isOpenRuleActive = _isOpenRuleActive;
+        isOpen = _isOpenRuleActive;
 
         cardImage.sprite = _cardModel.Sprite;
 

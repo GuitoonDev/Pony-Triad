@@ -26,7 +26,7 @@ namespace PonyTriad.Model
         public Game(CardLevelDefinition[] _cardDefinitionArrayByLevel, int _cardNumber, GameRule _activeGameRules) {
             int[] randomCardLevelArray = new int[_cardNumber];
             for (int i = 0; i < randomCardLevelArray.Length; i++) {
-                randomCardLevelArray[i] = Random.Range(0, _cardDefinitionArrayByLevel.Length - 1);
+                randomCardLevelArray[i] = Random.Range(0, _cardDefinitionArrayByLevel.Length);
             }
 
             playerByNumber[PlayerNumber.One] = new Player(PlayerNumber.One, _cardDefinitionArrayByLevel, randomCardLevelArray);
@@ -90,7 +90,7 @@ namespace PonyTriad.Model
         }
 
         private void ProcessSamePhase(Card _playedCard, Dictionary<CardDirection, Card> _adjacentCardsByDirection, ref Dictionary<GamePhase, ResultPhaseData> _turnResultByPhase) {
-            List<CardOnBoardWon> cardsWonList = new List<CardOnBoardWon>();
+            List<CardOnBoardWon> cardWonList = new List<CardOnBoardWon>();
 
             foreach (KeyValuePair<CardDirection, Card> opponentCardItem in _adjacentCardsByDirection) {
                 CardDirection oppositeDirection = GetOppositeDirection(opponentCardItem.Key);
@@ -98,29 +98,32 @@ namespace PonyTriad.Model
                 bool isSamePower = (_playedCard.GetPowerByDirection(opponentCardItem.Key) == opponentCardItem.Value.GetPowerByDirection(oppositeDirection));
                 bool isRealCard = (opponentCardItem.Value.BoardPosition.HasValue);
                 if (isSamePower && isRealCard) {
-                    cardsWonList.Add(new CardOnBoardWon(opponentCardItem.Value, oppositeDirection));
+                    cardWonList.Add(new CardOnBoardWon(opponentCardItem.Value, oppositeDirection));
                 }
             }
 
             bool allCardsAreOwnedByCurrentPlayer = true;
-            foreach (CardOnBoardWon cardItem in cardsWonList) {
+            foreach (CardOnBoardWon cardItem in cardWonList) {
                 if (cardItem.card.PlayerOwner != _playedCard.PlayerOwner) {
-                    cardItem.card.PlayerOwner = _playedCard.PlayerOwner;
                     allCardsAreOwnedByCurrentPlayer = false;
                 }
             }
 
-            if (cardsWonList.Count > 0 && !allCardsAreOwnedByCurrentPlayer) {
+            if (cardWonList.Count > 1 && !allCardsAreOwnedByCurrentPlayer) {
                 ResultPhaseData sameResultPhaseData = new ResultPhaseData();
-                sameResultPhaseData.cardsWonList = cardsWonList;
+                foreach (CardOnBoardWon cardItem in cardWonList) {
+                    cardItem.card.PlayerOwner = _playedCard.PlayerOwner;
+                }
+                sameResultPhaseData.cardWonList = cardWonList;
 
-                ProcessComboPhase(cardsWonList, ref sameResultPhaseData.comboCardList);
+                ProcessComboPhase(cardWonList, ref sameResultPhaseData.comboCardList);
+
                 _turnResultByPhase[GamePhase.Same] = sameResultPhaseData;
             }
         }
 
         private void ProcessPlusPhase(Card _playedCard, Dictionary<CardDirection, Card> _adjacentCardsByDirection, ref Dictionary<GamePhase, ResultPhaseData> _turnResultByPhase) {
-            List<CardOnBoardWon> cardsWonList = new List<CardOnBoardWon>();
+            List<CardOnBoardWon> cardWonList = new List<CardOnBoardWon>();
             Dictionary<int, List<CardOnBoardWon>> cardWonByAddPowers = new Dictionary<int, List<CardOnBoardWon>>();
 
             foreach (KeyValuePair<CardDirection, Card> opponentCardItem in _adjacentCardsByDirection) {
@@ -142,33 +145,35 @@ namespace PonyTriad.Model
 
             foreach (List<CardOnBoardWon> cardWonByAddPowerItem in cardWonByAddPowers.Values) {
                 if (cardWonByAddPowerItem.Count > 1) {
-                    cardsWonList.AddRange(cardWonByAddPowerItem);
+                    cardWonList.AddRange(cardWonByAddPowerItem);
                 }
             }
 
             bool allCardsAreOwnedByCurrentPlayer = true;
-            foreach (CardOnBoardWon cardItem in cardsWonList) {
+            foreach (CardOnBoardWon cardItem in cardWonList) {
                 if (cardItem.card.PlayerOwner != _playedCard.PlayerOwner) {
-                    cardItem.card.PlayerOwner = _playedCard.PlayerOwner;
                     allCardsAreOwnedByCurrentPlayer = false;
                 }
             }
 
-            if (cardsWonList.Count > 0 && !allCardsAreOwnedByCurrentPlayer) {
+            if (cardWonList.Count > 1 && !allCardsAreOwnedByCurrentPlayer) {
                 ResultPhaseData plusResultPhaseData = new ResultPhaseData();
-                plusResultPhaseData.cardsWonList = cardsWonList;
+                foreach (CardOnBoardWon cardItem in cardWonList) {
+                    cardItem.card.PlayerOwner = _playedCard.PlayerOwner;
+                }
+                plusResultPhaseData.cardWonList = cardWonList;
 
-                ProcessComboPhase(cardsWonList, ref plusResultPhaseData.comboCardList);
+                ProcessComboPhase(cardWonList, ref plusResultPhaseData.comboCardList);
                 _turnResultByPhase[GamePhase.Plus] = plusResultPhaseData;
             }
         }
 
         private void ProcessNormalPhase(Card _playedCard, Dictionary<CardDirection, Card> _adjacentCardsByDirection, ref Dictionary<GamePhase, ResultPhaseData> _turnResultByPhase) {
-            List<CardOnBoardWon> cardsWonInFight = CardFight(_playedCard, _adjacentCardsByDirection);
+            List<CardOnBoardWon> cardWonList = CardFight(_playedCard, _adjacentCardsByDirection);
 
-            if (cardsWonInFight.Count > 0) {
+            if (cardWonList.Count > 0) {
                 ResultPhaseData normalResultPhaseData = new ResultPhaseData();
-                normalResultPhaseData.cardsWonList = cardsWonInFight;
+                normalResultPhaseData.cardWonList = cardWonList;
                 _turnResultByPhase[GamePhase.Normal] = normalResultPhaseData;
             }
         }
@@ -222,8 +227,8 @@ namespace PonyTriad.Model
                         }
 
                         if (isTargetCardWon) {
-                            cardsWonInFight.Add(new CardOnBoardWon(opponentCardItem.Value, opponentCardOppositeDirection));
                             opponentCardItem.Value.PlayerOwner = _targetCardOnBoard.PlayerOwner;
+                            cardsWonInFight.Add(new CardOnBoardWon(opponentCardItem.Value, opponentCardOppositeDirection));
                         }
                     }
                 }

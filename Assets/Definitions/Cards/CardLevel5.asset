@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardDataArray:
   - {fileID: 11400000, guid: 6ff874c33a9804643af52d83219536de, type: 2}
+  - {fileID: 11400000, guid: 1238cd48987357d4b98f222afeb8b24f, type: 2}
   - {fileID: 11400000, guid: ec9a8bee60128334b8ebd241fbf05132, type: 2}
   - {fileID: 11400000, guid: 060ba4d54962a6f499a29af3051d4318, type: 2}
   - {fileID: 11400000, guid: 45feecb1b4cd8ad4591e1a1a31311f3c, type: 2}

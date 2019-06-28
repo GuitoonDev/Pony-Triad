@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92f9d62ee7542ef448115488ee9bffc3, type: 3}
-  m_Name: Pony4
+  m_Name: Pegasus8_3
   m_EditorClassIdentifier: 
-  spriteImage: {fileID: 21300000, guid: aa6d2998eadeb5044ac7788275db2036, type: 3}
-  powerUp: 4
-  powerDown: 5
-  powerLeft: 6
+  spriteImage: {fileID: 21300000, guid: 31dbb5a406c65014faf7e2e50de36505, type: 3}
+  powerUp: 9
+  powerDown: 2
+  powerLeft: 9
   powerRight: 5

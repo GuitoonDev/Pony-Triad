@@ -48,7 +48,7 @@ public class PlayerView : MonoBehaviour
 
     public bool Ready { get; private set; }
 
-    public void Init(Player _playerModel, bool _enabled, bool _isOpenRuleActive) {
+    public void Init(Player _playerModel, bool _enabled) {
         VertexGradient newColorGradient = playerScoreText.colorGradient;
         newColorGradient.bottomLeft = newColorGradient.bottomRight = playersColorsList.GetColorByPlayer(_playerModel.Number);
         playerScoreText.colorGradient = newColorGradient;
@@ -58,7 +58,11 @@ public class PlayerView : MonoBehaviour
         cardHandView = new List<CardView>();
         for (int cardIndex = 0; cardIndex < _playerModel.CardHand.Count; cardIndex++) {
             CardView newCard = Instantiate(cardPrefab, transform);
-            newCard.Init(_playerModel.CardHand[cardIndex], _isOpenRuleActive);
+
+            bool isAllOpenRuleActive = Game.activeRules.HasFlag(GameRule.AllOpen);
+            bool isThreeOpenRuleActive = Game.activeRules.HasFlag(GameRule.ThreeOpen);
+            bool isOpenCard = (isAllOpenRuleActive || (isThreeOpenRuleActive && cardIndex < 3));
+            newCard.Init(_playerModel.CardHand[cardIndex], isOpenCard);
 
             float endPosition = cardIndex * (-newCard.SpriteRenderer.bounds.size.y * 0.525f);
             newCard.transform.localPosition = new Vector3(0, endPosition + 10, (_playerModel.CardHand.Count - cardIndex) * 0.001f);
