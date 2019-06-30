@@ -15,9 +15,10 @@ public enum GameRule // see also here : https://ffxivtriad.com/rules
     Reversed = 1 << 5,
     FallenAce = 1 << 11,
 
+    SuddenDeath = 1 << 7,
+
+    // Currently not implemented rules
     Random = 1 << 6,
     Chaos = 1 << 9,
     Order = 1 << 10,
-
-    SuddenDeath = 1 << 7,
 }

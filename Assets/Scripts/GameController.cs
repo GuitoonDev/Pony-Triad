@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 public partial class GameController : MonoBehaviour
@@ -24,6 +22,7 @@ public partial class GameController : MonoBehaviour
     [Space]
 
     [SerializeField] [EnumFlag("Active Game Rules")] private GameRule activeGameRules = default(GameRule);
+    [SerializeField] private bool randomRules = false;
 
     [Space]
 
@@ -34,10 +33,6 @@ public partial class GameController : MonoBehaviour
 
     [Header("Player Two")]
     [SerializeField] private PlayerView playerTwoView = null;
-
-    [Header("End Game Colors")]
-    [SerializeField] private Color drawColor = default(Color);
-    [SerializeField] private PlayersColorsDefinition playersColorsList = null;
 
     [Header("Field Areas")]
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
@@ -50,9 +45,8 @@ public partial class GameController : MonoBehaviour
     [SerializeField] private SpecialRuleText sameRuleTextPrefab = null;
     [SerializeField] private SpecialRuleText plusRuleTextPrefab = null;
     [SerializeField] private SpecialRuleText comboRuleTextPrefab = null;
-    [SerializeField] private Image winScreen = null;
-    [SerializeField] private TextMeshProUGUI winText = null;
-
+    [SerializeField] private WinScreen winScreen = null;
+    [SerializeField] private RuleBar ruleBarHolder = null;
 
     #region UI Methods
     public void SelectNewGame() {

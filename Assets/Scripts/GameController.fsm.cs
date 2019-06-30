@@ -3,6 +3,7 @@ using UnityEngine;
 using AnimatorStateMachineLibrary;
 using PonyTriad.Model;
 using PonyTriad.Audio;
+using DG.Tweening;
 
 [RequireComponent(typeof(Animator))]
 public partial class GameController : MonoBehaviour
@@ -61,6 +62,43 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.Intro")]
     private void IntroState() {
+        GameRule? customGameRules = CustomGameHolder.NextGameRules;
+
+        randomRules = randomRules || CustomGameHolder.IsRandomRules;
+
+        if (randomRules && !CustomGameHolder.IsSuddenDeathNewGame) {
+            activeGameRules = default(GameRule);
+
+            float openRuleRandomValue = Random.value;
+            if (openRuleRandomValue > 0.5) {
+                activeGameRules |= GameRule.AllOpen;
+            }
+            else if (openRuleRandomValue > 0.25) {
+                activeGameRules |= GameRule.ThreeOpen;
+            }
+
+            activeGameRules |= Random.value > 0.4 ? GameRule.Same : GameRule.None;
+            activeGameRules |= Random.value > 0.4 ? GameRule.Plus : GameRule.None;
+
+            float borderRuleRandomValue = Random.value;
+            if (borderRuleRandomValue > 0.8) {
+                activeGameRules |= GameRule.Borderless;
+            }
+            else if (borderRuleRandomValue > 0.6 && activeGameRules.HasFlag(GameRule.Same)) {
+                activeGameRules |= GameRule.SameWalls;
+
+            }
+
+            activeGameRules |= Random.value > 0.9 ? GameRule.Reversed : GameRule.None;
+            activeGameRules |= Random.value > 0.9 ? GameRule.FallenAce : GameRule.None;
+
+            activeGameRules |= Random.value > 0.45 ? GameRule.SuddenDeath : GameRule.None;
+        }
+        else if (customGameRules.HasValue) {
+            activeGameRules = customGameRules.Value;
+        }
+
+        ruleBarHolder.Init(activeGameRules);
         game = new Game(cardsListArray, cardsPerPlayer, activeGameRules);
 
         playerOneView.Init(game.GetPlayerByNumber(PlayerNumber.One), false);
@@ -139,6 +177,12 @@ public partial class GameController : MonoBehaviour
     private void SameRuleState() {
         Debug.LogFormat("GameController::SameRuleState");
         if (turnResultByPhase.TryGetValue(GamePhase.Same, out currentPhaseResult)) {
+            foreach (CardOnBoardWon cardWonItem in currentPhaseResult.cardWonList) {
+                Vector2Int cardWonBoardPosition = cardWonItem.card.BoardPosition.Value;
+                CardView targetCardViewItem = selectableAreasList[cardWonBoardPosition.x, cardWonBoardPosition.y].Card;
+                targetCardViewItem.StartShinyAnimation();
+            }
+
             SpecialRuleText sameRuleText = Instantiate(sameRuleTextPrefab, uiCanvas.transform);
             sameRuleText.OnAnimationFinished += () => {
                 ProcessWonCardsList(currentPhaseResult.cardWonList);
@@ -154,6 +198,12 @@ public partial class GameController : MonoBehaviour
     private void PlusRuleState() {
         Debug.LogFormat("GameController::PlusRuleState");
         if (turnResultByPhase.TryGetValue(GamePhase.Plus, out currentPhaseResult)) {
+            foreach (CardOnBoardWon cardWonItem in currentPhaseResult.cardWonList) {
+                Vector2Int cardWonBoardPosition = cardWonItem.card.BoardPosition.Value;
+                CardView targetCardViewItem = selectableAreasList[cardWonBoardPosition.x, cardWonBoardPosition.y].Card;
+                targetCardViewItem.StartShinyAnimation();
+            }
+
             SpecialRuleText plusRuleText = Instantiate(plusRuleTextPrefab, uiCanvas.transform);
             plusRuleText.OnAnimationFinished += () => {
                 ProcessWonCardsList(currentPhaseResult.cardWonList);
@@ -225,18 +275,24 @@ public partial class GameController : MonoBehaviour
     private void GameOverState() {
         CurrentPlayer = PlayerNumber.None;
 
-        winScreen.gameObject.SetActive(true);
-
+        PlayerNumber playerWon = PlayerNumber.None;
         if (playerViewByNumber[PlayerNumber.One].CurrentPlayerScore > playerViewByNumber[PlayerNumber.Two].CurrentPlayerScore) {
-            winText.text = string.Format("<#{0}>Blue</color>\nwins !", ColorUtility.ToHtmlStringRGB(playersColorsList.GetColorByPlayer(PlayerNumber.One)));
+            playerWon = PlayerNumber.One;
             AudioManager.Instance.PlayVictoryMusic();
         }
         else if (playerViewByNumber[PlayerNumber.One].CurrentPlayerScore < playerViewByNumber[PlayerNumber.Two].CurrentPlayerScore) {
-            winText.text = string.Format("<#{0}>Red</color>\nwins !", ColorUtility.ToHtmlStringRGB(playersColorsList.GetColorByPlayer(PlayerNumber.Two)));
+            playerWon = PlayerNumber.Two;
             AudioManager.Instance.PlayVictoryMusic();
         }
         else {
-            winText.text = string.Format("<#{0}>Draw</color> !", ColorUtility.ToHtmlStringRGB(drawColor));
+            if (Game.activeRules.HasFlag(GameRule.SuddenDeath)) {
+                CustomGameHolder.NextCardDeckByPlayer = game.GetCurrentOwnedCardByPlayer();
+                CustomGameHolder.NextGameRules = Game.activeRules;
+                CustomGameHolder.IsSuddenDeathNewGame = true;
+                DOVirtual.DelayedCall(3, SelectNewGame);
+            }
         }
+
+        winScreen.Show(playerWon);
     }
 }

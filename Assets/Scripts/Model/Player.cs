@@ -24,7 +24,15 @@ namespace PonyTriad.Model
             }
             CardHand.Shuffle();
 
-            Score = _randomCardLevelArray.Length;
+            Score = CardHand.Count;
+            Number = _playerNumber;
+        }
+
+        public Player(PlayerNumber _playerNumber, CardLevelDefinition[] _cardDefinitionArrayByLevel, List<Card> _definedCardList) {
+            CardHand = _definedCardList;
+            CardHand.Shuffle();
+
+            Score = CardHand.Count;
             Number = _playerNumber;
         }
 

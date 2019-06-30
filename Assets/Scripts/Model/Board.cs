@@ -39,5 +39,34 @@ namespace PonyTriad.Model
 
             return scoreResult;
         }
+
+        public Dictionary<PlayerNumber, List<Card>> GetCurrentOwnedCardByPlayer() {
+            Dictionary<PlayerNumber, List<Card>> currentOwnedCardByPlayer = new Dictionary<PlayerNumber, List<Card>>();
+
+            List<Card> playerOneCardDeck = new List<Card>();
+            List<Card> playerTwoCardDeck = new List<Card>();
+
+            for (int positionX = 0; positionX < CardsPlayedArray.GetLength(0); positionX++) {
+                for (int positionY = 0; positionY < CardsPlayedArray.GetLength(1); positionY++) {
+                    Card currentCard = CardsPlayedArray[positionX, positionY];
+
+                    if (currentCard != null) {
+                        switch (currentCard.PlayerOwner) {
+                            case PlayerNumber.One:
+                                playerOneCardDeck.Add(currentCard);
+                                break;
+
+                            case PlayerNumber.Two:
+                                playerTwoCardDeck.Add(currentCard);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            currentOwnedCardByPlayer[PlayerNumber.One] = playerOneCardDeck;
+            currentOwnedCardByPlayer[PlayerNumber.Two] = playerTwoCardDeck;
+            return currentOwnedCardByPlayer;
+        }
     }
 }

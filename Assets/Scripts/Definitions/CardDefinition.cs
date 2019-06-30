@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "CardDefinition", menuName = "ProtoTriad/Card Definition")]
+[CreateAssetMenu(fileName = "CardDefinition", menuName = "Pony Triad/Card Definition")]
 public class CardDefinition : ScriptableObject
 {
     [SerializeField] private Sprite spriteImage = null;

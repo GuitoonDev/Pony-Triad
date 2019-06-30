@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "CardList", menuName = "ProtoTriad/CardList")]
+[CreateAssetMenu(fileName = "CardList", menuName = "Pony Triad/CardList")]
 public class CardLevelDefinition : ScriptableObject
 {
     [SerializeField] private CardDefinition[] cardDataArray = null;

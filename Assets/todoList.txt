@@ -34,13 +34,16 @@ Todo List
 - Définir la règle "Borderless" - DONE
 - Structurer le jeu en Model-Vue-Controller - DONE
 - Définir la règle "Same Walls" - DONE
+- Définir la règle "Deathmatch" - DONE
+- Afficher les règles courantes au début de la partie - DONE
+- Générer aléatoirement les règles pour une partie - DONE
+- Créer un menu de Crédits (Ne pas oublier les licences creative commons des artistes) - DONE
+- Ajouter animation brillance cartes Plus & Same - DONE
 
-- Définir la règle "Deathmatch" - IN PROGRESS
-
-- Générer aléatoirement les règles pour une partie
-
+-> Step up Features
 - Créer un menu d'Options
-- Créer un menu de Crédits
+- Faire un compteur de victoires
+- Faire une version réseau du jeu
 
 -> God Tier Features :
 - Trouver un graphiste

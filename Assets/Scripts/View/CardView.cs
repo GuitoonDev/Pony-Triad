@@ -186,6 +186,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     public void StartShinyAnimation() {
+        Debug.LogWarning("CardView::StartShinyAnimation");
         Animator.SetTrigger(shineTriggerId);
     }
 

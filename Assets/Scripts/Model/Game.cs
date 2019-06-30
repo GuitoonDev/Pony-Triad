@@ -23,14 +23,30 @@ namespace PonyTriad.Model
             return playerByNumber[_targetPlayer];
         }
 
-        public Game(CardLevelDefinition[] _cardDefinitionArrayByLevel, int _cardNumber, GameRule _activeGameRules) {
-            int[] randomCardLevelArray = new int[_cardNumber];
-            for (int i = 0; i < randomCardLevelArray.Length; i++) {
-                randomCardLevelArray[i] = Random.Range(0, _cardDefinitionArrayByLevel.Length);
-            }
+        public Dictionary<PlayerNumber, List<Card>> GetCurrentOwnedCardByPlayer() {
+            Dictionary<PlayerNumber, List<Card>> currentOwnedCardByPlayer = board.GetCurrentOwnedCardByPlayer();
 
-            playerByNumber[PlayerNumber.One] = new Player(PlayerNumber.One, _cardDefinitionArrayByLevel, randomCardLevelArray);
-            playerByNumber[PlayerNumber.Two] = new Player(PlayerNumber.Two, _cardDefinitionArrayByLevel, randomCardLevelArray);
+            currentOwnedCardByPlayer[PlayerNumber.One].AddRange(playerByNumber[PlayerNumber.One].CardHand);
+            currentOwnedCardByPlayer[PlayerNumber.Two].AddRange(playerByNumber[PlayerNumber.Two].CardHand);
+
+            return currentOwnedCardByPlayer;
+        }
+
+        public Game(CardLevelDefinition[] _cardDefinitionArrayByLevel, int _cardNumber, GameRule _activeGameRules) {
+            Dictionary<PlayerNumber, List<Card>> customDeckByPlayer = CustomGameHolder.NextCardDeckByPlayer;
+            if (customDeckByPlayer != null) {
+                playerByNumber[PlayerNumber.One] = new Player(PlayerNumber.One, _cardDefinitionArrayByLevel, customDeckByPlayer[PlayerNumber.One]);
+                playerByNumber[PlayerNumber.Two] = new Player(PlayerNumber.Two, _cardDefinitionArrayByLevel, customDeckByPlayer[PlayerNumber.Two]);
+            }
+            else {
+                int[] randomCardLevelArray = new int[_cardNumber];
+                for (int i = 0; i < randomCardLevelArray.Length; i++) {
+                    randomCardLevelArray[i] = Random.Range(0, _cardDefinitionArrayByLevel.Length);
+                }
+
+                playerByNumber[PlayerNumber.One] = new Player(PlayerNumber.One, _cardDefinitionArrayByLevel, randomCardLevelArray);
+                playerByNumber[PlayerNumber.Two] = new Player(PlayerNumber.Two, _cardDefinitionArrayByLevel, randomCardLevelArray);
+            }
 
             board = new Board();
 

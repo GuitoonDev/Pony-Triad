@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayersColorsList", menuName = "ProtoTriad/PlayersColorsList")]
+[CreateAssetMenu(fileName = "PlayersColorsList", menuName = "Pony Triad/PlayersColorsList")]
 public class PlayersColorsDefinition : ScriptableObject
 {
     [SerializeField] private Color nonePlayerColor = default(Color);
