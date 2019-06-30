@@ -28,6 +28,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [Header("Sounds")]
     [SerializeField] private AudioClip selectCardSound = null;
     [SerializeField] private AudioClip turnCardSound = null;
+    [SerializeField] private AudioClip specialCardSound = null;
 
     private SpriteRenderer spriteRenderer;
     public SpriteRenderer SpriteRenderer {
@@ -186,7 +187,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     public void StartShinyAnimation() {
-        Debug.LogWarning("CardView::StartShinyAnimation");
+        AudioManager.Instance.PlaySound(specialCardSound);
         Animator.SetTrigger(shineTriggerId);
     }
 
