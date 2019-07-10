@@ -40,11 +40,22 @@ Todo List
 - Créer un menu de Crédits (Ne pas oublier les licences creative commons des artistes) - DONE
 - Ajouter animation brillance cartes Plus & Same - DONE
 
+- BUG : Les cartes font leur flip derrière d'autres déjà sur le plateau (Order in Layer ?)
+- BUG : Le texte "Combo" peut se superposer avec l'effet suivant (Réduire le temps d'affichage ?)
+
+- Tester d'afficher la carte sélectionnée au premier plan
+
 -> Step up Features
+- Ajouter des visuels de cartes
+- Faire une bordure de couleur différente par niveau de carte
+- Ajouter un tutoriel
+- Ajouter des FX
 - Créer un menu d'Options
 - Faire un compteur de victoires
-- Faire une version réseau du jeu
 
 -> God Tier Features :
+- Déployer une solution GameSparks (backend)
+- Faire une IA
+- Faire une version réseau du jeu
 - Trouver un graphiste
 - Trouver un sound-designer
