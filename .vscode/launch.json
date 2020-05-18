@@ -7,7 +7,7 @@
         {
             "name": "Unity Editor",
             "type": "unity",
-            "path": "/d:/Programmation/Unity/prototypes/ArenaGameProto/Library/EditorInstance.json",
+            "path": "/d:/Programmation/Unity/prototypes/PonyTriad/Library/EditorInstance.json",
             "request": "launch"
         },
         {
