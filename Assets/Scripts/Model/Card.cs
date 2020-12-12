@@ -42,13 +42,13 @@ namespace PonyTriad.Model
 
         }
 
-        public Card(PlayerNumber _playerNumber, CardDefinition _definition) {
-            PowerUp = _definition.PowerUp;
-            PowerDown = _definition.PowerDown;
-            PowerLeft = _definition.PowerLeft;
-            PowerRight = _definition.PowerRight;
+        public Card(PlayerNumber _playerNumber, CardData _definition) {
+            PowerUp = _definition.powerUp;
+            PowerDown = _definition.powerDown;
+            PowerLeft = _definition.powerLeft;
+            PowerRight = _definition.powerRight;
 
-            Sprite = _definition.SpriteImage;
+            Sprite = _definition.spriteImage;
 
             PlayerOwner = _playerNumber;
         }

@@ -12,7 +12,7 @@ public class WinScreen : MonoBehaviour
 
     [Header("End Game Colors")]
     [SerializeField] private Color drawColor = default(Color);
-    [SerializeField] private PlayersColorsDefinition playersColorsList = null;
+    [SerializeField] private PlayersColorsData playersColorsList = null;
 
     public void Show(PlayerNumber _playerWon) {
         gameObject.SetActive(true);

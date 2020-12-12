@@ -38,7 +38,7 @@ public partial class GameController : MonoBehaviour
     [SerializeField] private VerticalListableAreas[] verticalListableAreasList = null;
 
     [Header("Cards Lists")]
-    [SerializeField] private CardLevelDefinition[] cardsListArray = null;
+    [SerializeField] private CardLevelData[] cardsListArray = null;
 
     [Header("User Interface")]
     [SerializeField] private Canvas uiCanvas = null;

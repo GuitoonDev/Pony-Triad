@@ -23,7 +23,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private SpriteRenderer cardBackground = null;
 
     [Header("Player Colors")]
-    [SerializeField] private PlayersColorsDefinition playersColorsList = null;
+    [SerializeField] private PlayersColorsData playersColorsList = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip selectCardSound = null;

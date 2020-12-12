@@ -13,11 +13,11 @@ namespace PonyTriad.Model
 
         public PlayerNumber Number { get; private set; }
 
-        public Player(PlayerNumber _playerNumber, CardLevelDefinition[] _cardDefinitionArrayByLevel, int[] _randomCardLevelArray) {
+        public Player(PlayerNumber _playerNumber, CardLevelData[] _cardDefinitionArrayByLevel, int[] _randomCardLevelArray) {
             CardHand = new List<Card>();
 
             for (int i = 0; i < _randomCardLevelArray.Length; i++) {
-                CardDefinition randomPickedCard = _cardDefinitionArrayByLevel[_randomCardLevelArray[i]].GetRandomCard();
+                CardData randomPickedCard = _cardDefinitionArrayByLevel[_randomCardLevelArray[i]].GetRandomCard();
 
                 Card newCard = new Card(_playerNumber, randomPickedCard);
                 CardHand.Add(newCard);
@@ -28,7 +28,7 @@ namespace PonyTriad.Model
             Number = _playerNumber;
         }
 
-        public Player(PlayerNumber _playerNumber, CardLevelDefinition[] _cardDefinitionArrayByLevel, List<Card> _definedCardList) {
+        public Player(PlayerNumber _playerNumber, CardLevelData[] _cardDefinitionArrayByLevel, List<Card> _definedCardList) {
             CardHand = _definedCardList;
             CardHand.Shuffle();
 

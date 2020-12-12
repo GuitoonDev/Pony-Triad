@@ -40,6 +40,8 @@ Todo List
 - Créer un menu de Crédits (Ne pas oublier les licences creative commons des artistes) - DONE
 - Ajouter animation brillance cartes Plus & Same - DONE
 
+- Intégrer les sons du jeu
+
 - BUG : Les cartes font leur flip derrière d'autres déjà sur le plateau (Order in Layer ?)
 - BUG : Le texte "Combo" peut se superposer avec l'effet suivant (Réduire le temps d'affichage ?)
 

@@ -32,7 +32,7 @@ namespace PonyTriad.Model
             return currentOwnedCardByPlayer;
         }
 
-        public Game(CardLevelDefinition[] _cardDefinitionArrayByLevel, int _cardNumber, GameRule _activeGameRules) {
+        public Game(CardLevelData[] _cardDefinitionArrayByLevel, int _cardNumber, GameRule _activeGameRules) {
             Dictionary<PlayerNumber, List<Card>> customDeckByPlayer = CustomGameHolder.NextCardDeckByPlayer;
             if (customDeckByPlayer != null) {
                 playerByNumber[PlayerNumber.One] = new Player(PlayerNumber.One, _cardDefinitionArrayByLevel, customDeckByPlayer[PlayerNumber.One]);

@@ -17,7 +17,7 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private SpriteRenderer currentTurnArrow = null;
 
     [Header("Player Colors")]
-    [SerializeField] private PlayersColorsDefinition playersColorsList = null;
+    [SerializeField] private PlayersColorsData playersColorsList = null;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip drawCardSound = null;
