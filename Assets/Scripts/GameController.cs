@@ -17,11 +17,14 @@ public partial class GameController : MonoBehaviour
 
     private readonly int cardsPerPlayer = 5;
 
-    [SerializeField, Scene] private int mainMenuScene = default;
+    [Scene]
+    [SerializeField] private int mainMenuScene = default;
 
     [Space]
 
-    [SerializeField] [EnumFlag("Active Game Rules")] private GameRule activeGameRules = default(GameRule);
+    [EnumFlag]
+    [SerializeField] private GameRule activeGameRules = default;
+
     [SerializeField] private bool randomRules = false;
 
     [Space]
