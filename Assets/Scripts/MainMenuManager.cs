@@ -5,7 +5,7 @@ using PonyTriad.Audio;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private string gameSceneName = null;
+    [SerializeField, Scene] private int gameScene = default;
 
     [SerializeField] private Image uiPanel = null;
     [SerializeField] private CreditsScreen creditsScreen = null;
@@ -16,7 +16,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void LaunchGame() {
         uiPanel.gameObject.SetActive(false);
-        SceneManager.LoadScene(gameSceneName);
+        SceneManager.LoadScene(gameScene);
     }
 
     public void CreditsScreen() {

@@ -17,7 +17,7 @@ public partial class GameController : MonoBehaviour
 
     private readonly int cardsPerPlayer = 5;
 
-    [SerializeField] private string mainMenuSceneName = null;
+    [SerializeField, Scene] private int mainMenuScene = default;
 
     [Space]
 
@@ -54,7 +54,7 @@ public partial class GameController : MonoBehaviour
     }
 
     public void SelectMainMenu() {
-        SceneManager.LoadScene(mainMenuSceneName);
+        SceneManager.LoadScene(mainMenuScene);
     }
     #endregion
 }

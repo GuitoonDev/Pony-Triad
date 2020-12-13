@@ -1486,7 +1486,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.25, y: -12.490051}
+  m_AnchoredPosition: {x: -0.25, y: -12.490036}
   m_SizeDelta: {x: 796.5, y: -128.26001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1469670051
@@ -1543,7 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7e07eab82404247921500c8f38af7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneName: GameScene
+  gameScene: 1
   uiPanel: {fileID: 238960966}
   creditsScreen: {fileID: 1603437151}
 --- !u!4 &1494300779
