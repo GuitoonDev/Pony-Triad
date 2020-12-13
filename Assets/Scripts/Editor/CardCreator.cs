@@ -28,10 +28,10 @@ public class CardCreator : EditorWindow
     private SerializedProperty propPowerRight;
 
     [MenuItem("Tools/Pony Triad/Card Creator")]
-    private static void Init() {
+    private static void Init()
+    {
         var window = GetWindow<CardCreator>("Card Creator");
         window.minSize = window.maxSize = new Vector2(350, 305);
-
     }
 
     private void OnEnable()
@@ -45,14 +45,17 @@ public class CardCreator : EditorWindow
         propPowerDown = so.FindProperty("powerDown");
         propPowerLeft = so.FindProperty("powerLeft");
         propPowerRight = so.FindProperty("powerRight");
+
+        Undo.undoRedoPerformed += Repaint;
     }
+
+    private void OnDisable() => Undo.undoRedoPerformed -= Repaint;
 
     private void OnGUI()
     {
-        // TODO : choisir le chemin de création de l'asset
         var labelStyle = new GUIStyle(GUI.skin.label) {
             alignment = TextAnchor.MiddleCenter,
-            fontStyle = FontStyle.Bold
+            fontStyle = FontStyle.Bold,
         };
         EditorGUILayout.LabelField("Card Creator", labelStyle, GUILayout.ExpandWidth(true));
 
