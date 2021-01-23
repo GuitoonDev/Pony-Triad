@@ -254,7 +254,7 @@ namespace PonyTriad.Model
         }
 
         private CardDirection GetOppositeDirection(CardDirection _targetDirection) {
-            CardDirection _oppositeDirection = CardDirection.Up;
+            CardDirection _oppositeDirection = default;
             switch (_targetDirection) {
                 case CardDirection.Up:
                     _oppositeDirection = CardDirection.Down;
@@ -316,19 +316,25 @@ namespace PonyTriad.Model
                     }
                 }
 
-                if (leftPosition >= 0 && board.CardsPlayedArray[leftPosition, cardBoardPosition.y] != null) {
-                    cardBoardAreasAround[CardDirection.Left] = board.CardsPlayedArray[leftPosition, cardBoardPosition.y];
-                }
-                if (rightPosition < board.CardsPlayedArray.GetLength(0) && board.CardsPlayedArray[rightPosition, cardBoardPosition.y] != null) {
-                    cardBoardAreasAround[CardDirection.Right] = board.CardsPlayedArray[rightPosition, cardBoardPosition.y];
-                }
-                if (upPosition >= 0 && board.CardsPlayedArray[cardBoardPosition.x, upPosition] != null) {
-                    cardBoardAreasAround[CardDirection.Up] = board.CardsPlayedArray[cardBoardPosition.x, upPosition];
-                }
-                if (downPosition < board.CardsPlayedArray.GetLength(1) && board.CardsPlayedArray[cardBoardPosition.x, downPosition] != null) {
-                    cardBoardAreasAround[CardDirection.Down] = board.CardsPlayedArray[cardBoardPosition.x, downPosition];
+                Card targetCard = board.CardsPlayedArray[leftPosition, cardBoardPosition.y];
+                if (leftPosition >= 0 && targetCard != null) {
+                    cardBoardAreasAround[CardDirection.Left] = targetCard;
                 }
 
+                targetCard = board.CardsPlayedArray[rightPosition, cardBoardPosition.y];
+                if (rightPosition < board.CardsPlayedArray.GetLength(0) && targetCard != null) {
+                    cardBoardAreasAround[CardDirection.Right] = targetCard;
+                }
+
+                targetCard = board.CardsPlayedArray[cardBoardPosition.x, upPosition];
+                if (upPosition >= 0 && targetCard != null) {
+                    cardBoardAreasAround[CardDirection.Up] = targetCard;
+                }
+
+                targetCard = board.CardsPlayedArray[cardBoardPosition.x, downPosition];
+                if (downPosition < board.CardsPlayedArray.GetLength(1) && targetCard != null) {
+                    cardBoardAreasAround[CardDirection.Down] = targetCard;
+                }
             }
 
             return cardBoardAreasAround;

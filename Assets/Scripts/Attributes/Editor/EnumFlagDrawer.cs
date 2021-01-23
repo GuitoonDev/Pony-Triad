@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnumFlagDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-        Enum targetEnum = (Enum)Enum.ToObject(fieldInfo.FieldType, property.intValue);
+        var targetEnum = (Enum)Enum.ToObject(fieldInfo.FieldType, property.intValue);
 
         EditorGUI.BeginProperty(position, label, property);
         EditorGUI.BeginChangeCheck();

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class CardCreator : EditorWindow
     private static void Init()
     {
         var window = GetWindow<CardCreator>("Card Creator");
-        window.minSize = window.maxSize = new Vector2(350, 305);
+        window.minSize = window.maxSize = new Vector2(350, 290);
     }
 
     private void OnEnable()
@@ -64,16 +65,9 @@ public class CardCreator : EditorWindow
         so.Update();
         EditorGUILayout.PropertyField(propCardName, new GUIContent("Name"));
 
-        EditorGUI.BeginChangeCheck();
         propCardSprite.objectReferenceValue = EditorGUILayout.ObjectField("Icon", propCardSprite.objectReferenceValue, typeof(Sprite), false);
-        if (EditorGUI.EndChangeCheck())
-        {
-            Undo.RecordObject(propCardSprite.objectReferenceValue, UNDO_GAME_CARD_SPRITE);
-        }
-
+        
         EditorGUILayout.PropertyField(propCardLevel);
-
-        EditorGUILayout.Space(10f);
 
         using(new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
@@ -119,16 +113,32 @@ public class CardCreator : EditorWindow
         // Définir le niveau de la carte
         if (GUILayout.Button("Create Card"))
         {
-            CardData newCard = CreateInstance<CardData>();
-            newCard.spriteImage = cardSprite;
-            newCard.powerUp = (CardPower)propPowerUp.enumValueIndex;
-            newCard.powerDown = (CardPower)propPowerDown.enumValueIndex;
-            newCard.powerLeft = (CardPower)propPowerLeft.enumValueIndex;
-            newCard.powerRight = (CardPower)propPowerRight.enumValueIndex;
+            if(IsCardValid())
+            {
+                CardData newCard = CreateInstance<CardData>();
+                newCard.spriteImage = cardSprite;
+                newCard.powerUp = (CardPower)propPowerUp.enumValueIndex;
+                newCard.powerDown = (CardPower)propPowerDown.enumValueIndex;
+                newCard.powerLeft = (CardPower)propPowerLeft.enumValueIndex;
+                newCard.powerRight = (CardPower)propPowerRight.enumValueIndex;
 
-            AssetDatabase.CreateAsset(newCard, $"Assets/Datas/Cards/CardsByLevel/Level{propCardLevel.intValue}/{cardName}.asset");
+                AssetDatabase.CreateAsset(newCard, $"Assets/Datas/Cards/CardsByLevel/Level{propCardLevel.intValue}/{cardName}.asset");
+            }
+            else
+            {
+                Debug.LogError("The card you want to generate is not valid.");
+            }
         }
     }
 
-    // Vérifier la validité les champs de la carte avant de la créer !
+    private bool IsCardValid()
+    {
+        return cardSprite != null
+            && propPowerUp.enumValueIndex != (int)CardPower.Zero
+            && propPowerDown.enumValueIndex != (int)CardPower.Zero
+            && propPowerLeft.enumValueIndex != (int)CardPower.Zero
+            && propPowerRight.enumValueIndex != (int)CardPower.Zero;
+    }
+
+    // Vérifier la validité des champs de la carte avant de la créer !
 }

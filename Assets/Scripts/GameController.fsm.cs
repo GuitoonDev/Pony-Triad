@@ -273,16 +273,14 @@ public partial class GameController : MonoBehaviour
 
     [StateEnterMethod("Base Layer.GameOver")]
     private void GameOverState() {
-        CurrentPlayer = PlayerNumber.None;
+        PlayerNumber playerWon = CurrentPlayer = PlayerNumber.None;
 
-        PlayerNumber playerWon = PlayerNumber.None;
         if (playerViewByNumber[PlayerNumber.One].CurrentPlayerScore > playerViewByNumber[PlayerNumber.Two].CurrentPlayerScore) {
             playerWon = PlayerNumber.One;
             AudioManager.Instance.PlayVictoryMusic();
         }
         else if (playerViewByNumber[PlayerNumber.One].CurrentPlayerScore < playerViewByNumber[PlayerNumber.Two].CurrentPlayerScore) {
             playerWon = PlayerNumber.Two;
-            AudioManager.Instance.PlayVictoryMusic();
         }
         else {
             if (Game.activeRules.HasFlag(GameRule.SuddenDeath)) {
@@ -291,6 +289,11 @@ public partial class GameController : MonoBehaviour
                 CustomGameHolder.IsSuddenDeathNewGame = true;
                 DOVirtual.DelayedCall(3, SelectNewGame);
             }
+        }
+
+        if(playerWon != PlayerNumber.None)
+        {
+            AudioManager.Instance.PlayVictoryMusic();
         }
 
         winScreen.Show(playerWon);

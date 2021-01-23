@@ -27,12 +27,7 @@ public class CardDataEditor : Editor
     public override void OnInspectorGUI()
     {
         so.Update();
-        //EditorGUI.BeginChangeCheck();
         propSpriteImage.objectReferenceValue = EditorGUILayout.ObjectField("Icon", propSpriteImage.objectReferenceValue, typeof(Sprite), false);
-        //if (EditorGUI.EndChangeCheck())
-        //{
-        //    Undo.RecordObject(propCardSprite.objectReferenceValue, UNDO_GAME_CARD_SPRITE);
-        //}
 
         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
